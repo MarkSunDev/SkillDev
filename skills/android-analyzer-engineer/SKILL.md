@@ -29,24 +29,33 @@ A combined workflow that integrates two skills:
 
 ## Phase 1 — Manifest Analysis (`analyzer/`)
 
-### 1.1 Acquire the APK
+### 1.1 Prerequisites
 
-**Option A — Download by package name:**
+**apkeep** must be installed for package-name downloads:
 
 ```bash
-python3 ${SKILL_DIR}/analyzer/apkcombo_download.py <package.name>
+# macOS / Linux
+brew install apkeep
+
+# Windows — download from https://github.com/EFForg/apkeep/releases/latest
+# apkeep-x86_64-pc-windows-msvc.exe
+
+# Any platform (requires Rust)
+cargo install apkeep
+```
+
+### 1.2 Acquire the APK
+
+**Option A — Analyze by package name (download via apkeep + analyze in one step):**
+
+```bash
+python3 ${SKILL_DIR}/analyzer/android_analyzer.py <package.name>
 ```
 
 **Option B — Use a local APK/XAPK:**
 
 ```bash
 python3 ${SKILL_DIR}/analyzer/android_analyzer.py path/to/app.apk
-```
-
-**Option C — Analyze by package name (download + analyze in one step):**
-
-```bash
-python3 ${SKILL_DIR}/analyzer/android_analyzer.py <package.name>
 ```
 
 ### 1.2 Workspace

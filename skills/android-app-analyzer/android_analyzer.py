@@ -51,16 +51,61 @@ def ensure_analysis_dependencies():
     etree = etree_module
 
 
-def download_apk(package_name, downloads_dir):
-    """Download the latest package artifact into the managed downloads directory."""
+def check_apkeep():
+    """Verify apkeep is available, print install instructions if not."""
 
-    from apkcombo_download import download_package
+    import shutil
+    if shutil.which("apkeep"):
+        return True
+    print("Error: apkeep is not installed or not in PATH.")
+    print("Install instructions:")
+    print("  macOS/Linux (Homebrew): brew install apkeep")
+    print("  Windows:    download apkeep-x86_64-pc-windows-msvc.exe from")
+    print("              https://github.com/EFForg/apkeep/releases/latest")
+    print("  Rust/Cargo: cargo install apkeep")
+    return False
+
+
+def download_apk(package_name, downloads_dir):
+    """Download the latest APK/XAPK via apkeep (APKPure, no credentials required)."""
+
+    import subprocess
 
     print("=" * 60)
     print("Phase 1: Download package")
     print("=" * 60)
-    downloaded_path = download_package(package_name=package_name, output_dir=str(downloads_dir))
-    return Path(downloaded_path)
+
+    if not check_apkeep():
+        sys.exit(1)
+
+    print(f"[apkeep] Downloading {package_name} from APKPure...")
+    result = subprocess.run(
+        ["apkeep", "-a", package_name, "-d", "apk-pure", str(downloads_dir)],
+        capture_output=False,
+    )
+    if result.returncode != 0:
+        print(f"Error: apkeep exited with code {result.returncode}.")
+        sys.exit(1)
+
+    # apkeep saves as <package_name>.apk or <package_name>.xapk
+    for ext in (".xapk", ".apk"):
+        candidate = downloads_dir / f"{package_name}{ext}"
+        if candidate.exists():
+            print(f"    Downloaded: {candidate}")
+            return candidate
+
+    # Fallback: pick the most recently modified file
+    candidates = sorted(
+        list(downloads_dir.glob("*.apk")) + list(downloads_dir.glob("*.xapk")),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if candidates:
+        print(f"    Downloaded: {candidates[0]}")
+        return candidates[0]
+
+    print("Error: apkeep reported success but no APK/XAPK file was found in the downloads directory.")
+    sys.exit(1)
 
 
 def extract_apk_from_xapk(xapk_path, extracted_root):
