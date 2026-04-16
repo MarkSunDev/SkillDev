@@ -12,6 +12,9 @@ SkillDev/
 │       ├── LICENSE                  # 可选：许可证
 │       ├── requirements.txt         # 可选：Python 依赖
 │       ├── *.py                     # 可选：辅助脚本
+│       ├── scripts/                 # 可选：Shell 脚本
+│       ├── references/              # 可选：参考文档
+│       ├── commands/                # 可选：斜杠命令
 │       ├── tests/                   # 可选：单元测试
 │       └── examples/                # 可选：示例图片 / 输出
 └── README.md
@@ -24,6 +27,8 @@ SkillDev/
 | [gemini-figure-prompt-zh-lite](skills/gemini-figure-prompt-zh-lite/SKILL.md) | 将论文 Methodology 或 Raw Data 转为可直接粘贴到 Gemini Web 的学术图提示词 |
 | [mobile-code-review](skills/mobile-code-review/SKILL.md) | Flutter / Android / iOS 代码审查，涵盖安全、内存生命周期、UI 性能与架构 |
 | [android-app-analyzer](skills/android-app-analyzer/SKILL.md) | 通过包名或本地 APK/XAPK 分析 Android 应用，输出 Manifest 元数据、权限、后台保活策略、推送集成与广告 SDK 报告 |
+| [android-reverse-engineering-re](skills/android-reverse-engineering-re/SKILL.md) | 使用 jadx / Fernflower 反编译 APK/XAPK/JAR/AAR，追踪 UI→网络调用链，提取并文档化 HTTP API 端点（来源：SimoneAvogadro，Apache 2.0） |
+| [android-analyzer-engineer](skills/android-analyzer-engineer/SKILL.md) | 综合 android-app-analyzer 与 android-reverse-engineering-re，一站式完成 Manifest 分析 + 反编译 + API 提取的完整 Android 深度分析 |
 
 ## 新增 Skill
 
