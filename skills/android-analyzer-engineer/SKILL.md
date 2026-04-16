@@ -27,26 +27,26 @@ A combined workflow that integrates two skills:
 
 ---
 
-## Phase 1 — Manifest Analysis (`android-app-analyzer`)
+## Phase 1 — Manifest Analysis (`analyzer/`)
 
 ### 1.1 Acquire the APK
 
 **Option A — Download by package name:**
 
 ```bash
-python3 ${SKILL_DIR}/android-app-analyzer/apkcombo_download.py <package.name>
+python3 ${SKILL_DIR}/analyzer/apkcombo_download.py <package.name>
 ```
 
 **Option B — Use a local APK/XAPK:**
 
 ```bash
-python3 ${SKILL_DIR}/android-app-analyzer/android_analyzer.py path/to/app.apk
+python3 ${SKILL_DIR}/analyzer/android_analyzer.py path/to/app.apk
 ```
 
 **Option C — Analyze by package name (download + analyze in one step):**
 
 ```bash
-python3 ${SKILL_DIR}/android-app-analyzer/android_analyzer.py <package.name>
+python3 ${SKILL_DIR}/analyzer/android_analyzer.py <package.name>
 ```
 
 ### 1.2 Workspace
@@ -75,12 +75,12 @@ The generated `*_analysis.md` covers:
 
 ---
 
-## Phase 2 — Reverse Engineering (`android-reverse-engineering-re`)
+## Phase 2 — Reverse Engineering (`re/`)
 
 ### 2.1 Check & Install Dependencies
 
 ```bash
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/check-deps.sh
+bash ${SKILL_DIR}/re/scripts/check-deps.sh
 ```
 
 Required: **Java 17+**, **jadx**
@@ -89,9 +89,9 @@ Optional (recommended): **Vineflower/Fernflower**, **dex2jar**
 Install missing deps automatically:
 
 ```bash
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/install-dep.sh jadx
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/install-dep.sh vineflower
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/install-dep.sh dex2jar
+bash ${SKILL_DIR}/re/scripts/install-dep.sh jadx
+bash ${SKILL_DIR}/re/scripts/install-dep.sh vineflower
+bash ${SKILL_DIR}/re/scripts/install-dep.sh dex2jar
 ```
 
 ### 2.2 Decompile
@@ -100,13 +100,13 @@ Use the APK from Phase 1 (or a separately provided file):
 
 ```bash
 # Default: jadx (APK/XAPK/JAR/AAR)
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/decompile.sh <file>
+bash ${SKILL_DIR}/re/scripts/decompile.sh <file>
 
 # Better Java output on complex code (JAR/AAR preferred)
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/decompile.sh --engine fernflower <file>
+bash ${SKILL_DIR}/re/scripts/decompile.sh --engine fernflower <file>
 
 # Side-by-side comparison
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/decompile.sh --engine both --deobf <file>
+bash ${SKILL_DIR}/re/scripts/decompile.sh --engine both --deobf <file>
 ```
 
 Engine selection:
@@ -133,18 +133,18 @@ Follow the execution path from UI to network:
 Activity.onCreate() → click handler → ViewModel → Repository → ApiService → HTTP
 ```
 
-Reference: `${SKILL_DIR}/android-reverse-engineering-re/references/call-flow-analysis.md`
+Reference: `${SKILL_DIR}/re/references/call-flow-analysis.md`
 
 ### 2.5 Extract & Document APIs
 
 ```bash
 # Full sweep
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/find-api-calls.sh <output>/sources/
+bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/
 
 # Targeted
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/find-api-calls.sh <output>/sources/ --retrofit
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/find-api-calls.sh <output>/sources/ --urls
-bash ${SKILL_DIR}/android-reverse-engineering-re/scripts/find-api-calls.sh <output>/sources/ --auth
+bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --retrofit
+bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --urls
+bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
 ```
 
 Document each endpoint:
@@ -162,7 +162,7 @@ Document each endpoint:
 - **Called from**: `LoginActivity → LoginViewModel → UserRepository → ApiService`
 ```
 
-Reference: `${SKILL_DIR}/android-reverse-engineering-re/references/api-extraction-patterns.md`
+Reference: `${SKILL_DIR}/re/references/api-extraction-patterns.md`
 
 ---
 
