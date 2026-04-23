@@ -1,5 +1,6 @@
 ---
 name: android-analyzer-engineer
+version: 1.2.0
 description: Use when the user wants to perform a full Android app investigation — combining manifest analysis (permissions, background strategies, ad SDKs) with decompilation and reverse engineering (jadx/Fernflower, call flow tracing, API extraction). Triggers on requests like "analyze this APK", "reverse engineer and report on this Android app", "find all API endpoints in this app", or any task requiring both surface-level manifest inspection and deep source-level analysis.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: android-app-analyzer
+version: 1.2.0
 description: Use when analyzing an Android app by package name or local APK/XAPK to inspect manifest metadata, permissions, background keep-alive strategies, push integrations, and ad SDK usage.
 ---
 
@@ -8,6 +9,36 @@ description: Use when analyzing an Android app by package name or local APK/XAPK
 ## Overview
 
 This skill analyzes Android application packages and exports a structured Markdown report from `AndroidManifest.xml`. It supports both package-name downloads via `apkeep` and direct analysis of local APK/XAPK files.
+
+## Version History
+
+| Version | Changes |
+|---|---|
+| 1.2.0 | SyncAdapter / ContactDirectory 策略描述修正为保活滥用语义 |
+| 1.1.0 | 报告改为中文格式；敏感权限标注改为【敏感】|
+| 1.0.0 | 用 apkeep 替换 APKCombo 下载器；移除 apkcombo_download.py |
+
+## Upgrade
+
+如果已安装旧版本，升级步骤：
+
+```bash
+# 1. 进入 skill 所在目录（~/.claude/skills/ 或项目 .claude/skills/）
+cd ~/.claude/skills/android-app-analyzer   # 全局安装
+# 或
+cd .claude/skills/android-app-analyzer     # 项目级安装
+
+# 2. 如果是 git clone 方式安装，直接 pull
+git pull
+
+# 3. 如果是手动复制安装，重新复制新版本文件覆盖旧文件
+cp /path/to/new/android_analyzer.py .
+cp /path/to/new/SKILL.md .
+cp /path/to/new/workspace_manager.py .
+cp /path/to/new/dependency_bootstrap.py .
+```
+
+Python 依赖无需重新安装（`androguard`、`lxml` 版本要求未变）。
 
 ## When to Use
 
