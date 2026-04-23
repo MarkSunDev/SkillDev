@@ -217,20 +217,29 @@ def analyze_strategies(manifest_text, info):
     has_sync = "android.content.SyncAdapter" in manifest_text
     sync_services = [service for service in info["services"] if "sync" in service.lower()]
     strategies["sync_adapter"] = {
-        "name": "Sync adapter",
+        "name": "Sync adapter (keep-alive)",
         "detected": has_sync,
         "details": sync_services if has_sync else [],
-        "description": "Uses Android sync adapters to keep background jobs active.",
+        "description": (
+            "Abuses Android's SyncAdapter mechanism to bypass Doze/Battery Optimization. "
+            "Declaring a SyncAdapter causes the system to exempt the app from standby restrictions "
+            "and periodically wake it up — even when the user has never enabled any real sync feature."
+        ),
     }
 
     has_contact_directory = any(
         meta_data["name"] == "android.content.ContactDirectory" for meta_data in info["meta_data"]
     )
     strategies["contact_directory"] = {
-        "name": "Contact directory provider",
+        "name": "Contact directory provider (keep-alive)",
         "detected": has_contact_directory,
         "details": [],
-        "description": "Registers a contact directory provider that can keep the app visible to system lookups.",
+        "description": (
+            "Abuses Android's ContactDirectory provider to bypass Doze/Battery Optimization. "
+            "Registering as a contact directory forces the system to treat the app as a persistent "
+            "data provider, preventing it from being placed in App Standby buckets — "
+            "regardless of whether the app provides any real contact data."
+        ),
     }
 
     has_boot_permission = "android.permission.RECEIVE_BOOT_COMPLETED" in info["permissions"]
@@ -430,8 +439,8 @@ def generate_report(info, strategies, ad_sdks, third_party, output_path):
 
     # Chinese display names for background strategies
     strategy_names_zh = {
-        "sync_adapter": "同步适配器（Sync Adapter）",
-        "contact_directory": "联系人目录提供者",
+        "sync_adapter": "滥用同步适配器保活（SyncAdapter）",
+        "contact_directory": "滥用联系人目录提供者保活（ContactDirectory）",
         "boot_completed": "开机自启广播接收器",
         "fcm": "Firebase 云消息推送（FCM）",
         "full_screen_intent": "全屏意图（Full-screen Intent）",
@@ -442,8 +451,17 @@ def generate_report(info, strategies, ad_sdks, third_party, output_path):
     }
 
     strategy_descriptions_zh = {
-        "sync_adapter": "使用 Android 同步适配器机制在后台保持长期任务活跃。",
-        "contact_directory": "注册联系人目录提供者，可使应用在系统查询时保持可见。",
+        "sync_adapter": (
+            "滥用 Android SyncAdapter 机制绕过 Doze 模式和电池优化。"
+            "声明同步适配器会让系统将该应用豁免于待机限制并定期唤醒它——"
+            "即便用户从未开启任何真实的同步功能，这本质上是一种保活手段而非正当的数据同步需求。"
+        ),
+        "contact_directory": (
+            "滥用 Android ContactDirectory Provider 机制绕过 Doze 模式和电池优化。"
+            "注册联系人目录提供者会迫使系统将该应用视为持久数据提供者，"
+            "阻止其被划入 App Standby 休眠分组——无论该应用是否提供任何真实的联系人数据，"
+            "这本质上是一种保活手段而非正当的联系人管理目的。"
+        ),
         "boot_completed": "设备重启后自动拉起，恢复后台任务。",
         "fcm": "通过 FCM 接收服务端推送消息，实现远程唤醒。",
         "full_screen_intent": "可弹出全屏通知（如来电、闹钟等紧急场景）。",
