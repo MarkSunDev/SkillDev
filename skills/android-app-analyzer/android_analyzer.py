@@ -408,7 +408,7 @@ def detect_third_party_services(info, manifest_text):
 
 
 def generate_report(info, strategies, ad_sdks, third_party, output_path):
-    """Generate a Markdown report from manifest analysis results."""
+    """Generate a Chinese Markdown report from manifest analysis results."""
 
     sensitive_permissions = {
         "ACCESS_FINE_LOCATION",
@@ -428,97 +428,125 @@ def generate_report(info, strategies, ad_sdks, third_party, output_path):
         "BODY_SENSORS",
     }
 
+    # Chinese display names for background strategies
+    strategy_names_zh = {
+        "sync_adapter": "同步适配器（Sync Adapter）",
+        "contact_directory": "联系人目录提供者",
+        "boot_completed": "开机自启广播接收器",
+        "fcm": "Firebase 云消息推送（FCM）",
+        "full_screen_intent": "全屏意图（Full-screen Intent）",
+        "system_alert_window": "悬浮窗（System Alert Window）",
+        "foreground_service": "前台服务（Foreground Service）",
+        "exact_alarm": "精确闹钟（Exact Alarm）",
+        "workmanager": "WorkManager / JobScheduler",
+    }
+
+    strategy_descriptions_zh = {
+        "sync_adapter": "使用 Android 同步适配器机制在后台保持长期任务活跃。",
+        "contact_directory": "注册联系人目录提供者，可使应用在系统查询时保持可见。",
+        "boot_completed": "设备重启后自动拉起，恢复后台任务。",
+        "fcm": "通过 FCM 接收服务端推送消息，实现远程唤醒。",
+        "full_screen_intent": "可弹出全屏通知（如来电、闹钟等紧急场景）。",
+        "system_alert_window": "可在其他应用之上绘制悬浮窗口。",
+        "foreground_service": "通过前台服务 + 常驻通知保持长期任务在前台运行。",
+        "exact_alarm": "使用精确闹钟调度定时任务或时间敏感型唤醒。",
+        "workmanager": "使用系统托管的后台调度（WorkManager / JobScheduler）执行延迟或周期性任务。",
+    }
+
     lines = [
-        "# Android App Analysis Report",
+        "# Android 应用分析报告",
         "",
-        f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"**生成时间：** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         "",
         "---",
         "",
-        "## 1. Basic Information",
+        "## 一、基本信息",
         "",
-        "| Field | Value |",
+        "| 字段 | 值 |",
         "|---|---|",
-        f"| **Package** | `{info['package']}` |",
-        f"| **Version** | {info['version_name']} (versionCode: {info['version_code']}) |",
+        f"| **包名** | `{info['package']}` |",
+        f"| **版本** | {info['version_name']}（versionCode: {info['version_code']}）|",
         f"| **compileSdk** | {info['compile_sdk']} |",
         f"| **targetSdk** | {info['target_sdk']} |",
         f"| **minSdk** | {info['min_sdk']} |",
-        f"| **Application** | `{info['application_name']}` |",
+        f"| **Application 类** | `{info['application_name']}` |",
         "",
-        "## 2. Background, Messaging, and Scheduling Signals",
+        "## 二、后台保活与消息推送策略",
         "",
-        "| Strategy | Status | Details |",
+        "| 策略 | 状态 | 详情 |",
         "|---|---|---|",
     ]
 
     for key, strategy in strategies.items():
-        status = "**Detected**" if strategy["detected"] else "Not found"
+        status = "**已检测到**" if strategy["detected"] else "未发现"
         details = ""
         if strategy["details"]:
             if len(strategy["details"]) <= 3:
-                details = ", ".join(f"`{detail}`" for detail in strategy["details"])
+                details = "、".join(f"`{detail}`" for detail in strategy["details"])
             else:
-                details = f"{len(strategy['details'])} components"
+                details = f"{len(strategy['details'])} 个组件"
         if key == "fcm" and not strategy["detected"] and strategy.get("has_firebase_any"):
-            details = "Firebase components found, but no FCM signal"
-        lines.append(f"| {strategy['name']} | {status} | {details} |")
+            details = "存在 Firebase 组件，但未检测到 FCM 信号"
+        name_zh = strategy_names_zh.get(key, strategy["name"])
+        lines.append(f"| {name_zh} | {status} | {details} |")
 
-    lines.extend(["", "### Detected Strategy Details", ""])
-    for strategy in strategies.values():
+    lines.extend(["", "### 已检测策略详情", ""])
+    for key, strategy in strategies.items():
         if not strategy["detected"]:
             continue
-        lines.append(f"#### {strategy['name']}")
+        name_zh = strategy_names_zh.get(key, strategy["name"])
+        desc_zh = strategy_descriptions_zh.get(key, strategy["description"])
+        lines.append(f"#### {name_zh}")
         lines.append("")
-        lines.append(f"- **Description:** {strategy['description']}")
+        lines.append(f"- **说明：** {desc_zh}")
         if strategy["details"]:
-            lines.append("- **Related components:**")
+            lines.append("- **相关组件：**")
             for detail in strategy["details"]:
                 lines.append(f"  - `{detail}`")
         lines.append("")
 
-    lines.append("## 3. Advertising SDKs")
+    lines.append("## 三、广告 SDK")
     lines.append("")
     if ad_sdks:
-        lines.append(f"Detected **{len(ad_sdks)}** advertising SDKs:")
+        lines.append(f"共检测到 **{len(ad_sdks)}** 个广告 SDK：")
         lines.append("")
-        lines.append("| SDK | Notes |")
+        lines.append("| SDK | 备注 |")
         lines.append("|---|---|")
         for sdk_name, extra in sorted(ad_sdks.items()):
-            note = f"App ID: `{extra}`" if extra else ""
+            note = f"App ID：`{extra}`" if extra else ""
             lines.append(f"| {sdk_name} | {note} |")
     else:
-        lines.append("No common advertising SDKs were detected.")
+        lines.append("未检测到常见广告 SDK。")
     lines.append("")
 
-    lines.append("## 4. Third-Party Services")
+    lines.append("## 四、第三方服务")
     lines.append("")
     if third_party:
         for service_name in sorted(third_party):
             lines.append(f"- {service_name}")
     else:
-        lines.append("No common third-party services were detected.")
+        lines.append("未检测到常见第三方服务。")
     lines.append("")
 
-    lines.append("## 5. Permissions")
+    lines.append("## 五、权限列表")
     lines.append("")
-    lines.append(f"Detected **{len(info['permissions'])}** permissions:")
+    lines.append(f"共检测到 **{len(info['permissions'])}** 个权限：")
     lines.append("")
 
     system_permissions = [permission for permission in info["permissions"] if permission.startswith("android.permission.")]
     custom_permissions = [permission for permission in info["permissions"] if not permission.startswith("android.permission.")]
 
     if system_permissions:
-        lines.append(f"### System Permissions ({len(system_permissions)})")
+        lines.append(f"### 系统权限（{len(system_permissions)} 个）")
         lines.append("")
         for permission in sorted(system_permissions):
             short_name = permission.replace("android.permission.", "")
-            suffix = " [sensitive]" if short_name in sensitive_permissions else ""
+            suffix = " 【敏感】" if short_name in sensitive_permissions else ""
             lines.append(f"- `{permission}`{suffix}")
         lines.append("")
 
     if custom_permissions:
-        lines.append(f"### Custom or Third-Party Permissions ({len(custom_permissions)})")
+        lines.append(f"### 自定义 / 第三方权限（{len(custom_permissions)} 个）")
         lines.append("")
         for permission in sorted(custom_permissions):
             lines.append(f"- `{permission}`")
@@ -526,14 +554,14 @@ def generate_report(info, strategies, ad_sdks, third_party, output_path):
 
     lines.extend(
         [
-            "## 6. Component Counts",
+            "## 六、组件数量统计",
             "",
-            "| Component | Count |",
+            "| 组件类型 | 数量 |",
             "|---|---|",
-            f"| Activity | {len(info['activities'])} |",
-            f"| Service | {len(info['services'])} |",
-            f"| Receiver | {len(info['receivers'])} |",
-            f"| Provider | {len(info['providers'])} |",
+            f"| Activity（界面）| {len(info['activities'])} |",
+            f"| Service（服务）| {len(info['services'])} |",
+            f"| Receiver（广播接收器）| {len(info['receivers'])} |",
+            f"| Provider（内容提供者）| {len(info['providers'])} |",
             "",
         ]
     )
