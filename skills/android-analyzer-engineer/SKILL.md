@@ -1,9 +1,11 @@
 ---
 name: android-analyzer-engineer
-version: 2.0.0
+version: 3.0.0
 description: |
-  Full Android app investigation combining manifest analysis and reverse engineering.
-  Use when asked to "分析竞品", "analyze this APK", "reverse engineer this Android app",
+  Full Android app investigation: fetch Google Play store metadata, download APK,
+  parse manifest, detect ad SDKs / keep-alive strategies / permissions, generate a
+  fixed-format Markdown report, and optionally publish to Feishu Docs.
+  Use when asked to "分析竞品", "analyze this app", "reverse engineer this Android app",
   "find API endpoints", "全面分析", or any task requiring manifest inspection,
   ad SDK detection, background strategy analysis, or deep source-level analysis.
 triggers:
@@ -21,180 +23,139 @@ allowed-tools:
   - Bash
   - Read
   - Write
-  - WebFetch
 ---
 
 # Android Analyzer & Engineer
 
-**版本：2.0.0**
+**版本：3.0.0**
 
 ## 版本历史
 
 | 版本 | 变更内容 |
 |---|---|
-| 2.0.0 | 合并 android-app-analyzer（已废弃）：Phase 1 新增竞品分析模式（diandian URL 提取包名 → Google Play 商店信息抓取）、fetch_google_play.py；正文改为中文 |
-| 1.2.0 | SyncAdapter / ContactDirectory 策略描述修正为保活滥用语义 |
-| 1.1.0 | 报告改为中文格式；敏感权限标注改为【敏感】|
-| 1.0.0 | 初始版本：整合 android-app-analyzer 与 android-reverse-engineering-re |
+| 3.0.0 | 重构商店数据获取：移除 diandian/opencli/gstack/WebFetch 爬虫方案，改用 google-play-scraper（Node.js）；输入仅支持包名；报告格式固定为八节结构；新增飞书文档创建步骤；报告新增评分分布、IAP、数据安全声明、权限 Play Store 对比 |
+| 2.0.0 | 合并 android-app-analyzer：Phase 1 新增 diandian URL 提取包名、fetch_google_play.py |
+| 1.2.0 | SyncAdapter / ContactDirectory 策略描述修正 |
+| 1.1.0 | 报告改为中文格式；敏感权限标注【敏感】|
+| 1.0.0 | 初始版本 |
 
 ## 功能概述
 
-整合两个能力的完整 Android 应用调查工作流：
+整合完整 Android 应用调查工作流：
 
-- **Phase 1（Manifest 分析）** — 通过包名下载或分析本地 APK/XAPK；支持 diandian.com URL 输入自动提取包名并从 Google Play 抓取商店信息；解析 `AndroidManifest.xml` 的权限、后台保活策略、广告 SDK；生成结构化中文报告。
-- **Phase 2（逆向工程）** — 用 jadx 或 Fernflower/Vineflower 反编译 APK；追踪从 UI 到网络的调用链；提取并文档化 HTTP API 接口。
+- **Phase 1（竞品分析）** — 用户提供包名；通过 `google-play-scraper` 获取商店详情（评分、下载量、IAP、数据安全声明、权限声明等）；通过 `apkeep` 下载 APK/XAPK；`androguard` 解析 Manifest 的权限、保活策略、广告 SDK；输出**固定八节格式**的中文报告；若环境存在 `feishu_doc` 工具则自动创建飞书文档。
+- **Phase 2（逆向工程）** — 用 jadx 或 Fernflower/Vineflower 反编译 APK；追踪 UI → 网络调用链；提取并��档化 HTTP API 接口。
 
-## 使用时机决策
+## 使用时机
 
 | 用户意图 | 建议路径 |
 |---|---|
-| "这个 app 有什么权限 / SDK？" | 仅 Phase 1（Manifest 分析） |
-| "帮我分析竞品" / 给了点点链接或包名 | 仅 Phase 1（含 Google Play 商店信息） |
-| "反编译这个 APK" / "找 API 接口" | 仅 Phase 2（逆向工程） |
+| "这个 app 有什么权限 / SDK？" | Phase 1 |
+| "帮我分析竞品" + 包名 | Phase 1 |
+| "反编译这个 APK" / "找 API 接口" | Phase 2 |
 | "全面分析" / "能找到什么就找什么" | Phase 1 + Phase 2 |
 
 ---
 
-## Phase 1 — Manifest 分析与竞品报告（`analyzer/`）
+## Phase 1 — 竞品分析（`analyzer/`）
 
-### 1.1 前置要求
+### 1.1 前置依赖
 
-**apkeep**（通过包名下载 APK 时必须安装，分析本地文件可跳过）：
+**Node.js + google-play-scraper**（获取商店信息）：
 
 ```bash
-# macOS / Linux
-brew install apkeep
-
-# 任意平台（需要 Rust）
-cargo install apkeep
-
-# Windows：从 GitHub Releases 下载预编译二进制
-# https://github.com/EFForg/apkeep/releases/latest
+# 在 analyzer/ 目录安装
+cd ${SKILL_DIR}/analyzer
+npm install google-play-scraper
 ```
 
-**Python 依赖**（首次运行时自动安装，也可提前安装）：
+> 若 Node.js 未安装，商店数据获取步骤自动跳过，报告仍输出 APK 分析部分。
+
+**apkeep**（下载 APK）：
+
+```bash
+brew install apkeep          # macOS / Linux (Homebrew)
+cargo install apkeep         # 任意平台（需要 Rust）
+# 或从 https://github.com/EFForg/apkeep/releases/latest 下载二进制
+```
+
+**Python 依赖**（首次运行自动安装）：
 
 ```bash
 python3 -m pip install -r ${SKILL_DIR}/analyzer/requirements.txt
 ```
 
-### 1.2 输入识别与包名提取
+### 1.2 输入规范
 
-支持三种输入方式：
+**只接受包名**，格式：`com.example.app`
 
-| 输入类型 | 示例 | 处理方式 |
-|---|---|---|
-| **点点数据链接** | `https://app.diandian.com/app/.../googleplay?...&id=com.xxx` | 正则提取 `id=` 参数作为包名，不访问点点页面 |
-| **包名** | `com.example.app` | 直接使用 |
-| **本地文件** | `/path/to/app.apk` 或 `.xapk` | 跳过商店信息，直接分析 |
-
-```bash
-INPUT="<用户输入的内容>"
-
-if echo "$INPUT" | grep -q "diandian.com"; then
-    # 从点点 URL 提取包名
-    PACKAGE=$(echo "$INPUT" | grep -oP '(?<=id=)[^&]+' | \
-        python3 -c "import sys,urllib.parse; print(urllib.parse.unquote(sys.stdin.read().strip()))")
-elif echo "$INPUT" | grep -qP '^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*){1,}$'; then
-    PACKAGE="$INPUT"
-else
-    # 本地文件，跳过商店信息
-    PACKAGE=""
-fi
+```
+✅ com.whatsapp
+✅ kjv.bible.kingjamesbible
+❌ URL、文件路径、点点链接（不再支持）
 ```
 
-### 1.3 抓取 Google Play 商店信息
+如果用户提供的是 URL 或其他格式，直接告知需要提供 Android 包名，不做任何自动提取或转换。
 
-有包名时，从 Google Play 获取商店信息（公开页面，无需登录）。
+### 1.3 执行流程
 
-构造 URL：`https://play.google.com/store/apps/details?id=<PACKAGE>&hl=en-us&gl=us`
+```
+Step 0: 获取商店信息（google-play-scraper）
+  └── node store_fetcher.js <package>
+      ├── app()         → 基本信息、评分、下载量、IAP、版本、近期更新
+      ├── permissions() → Play Store 声明权限列表
+      └── datasafety()  → 数据安全声明
 
-**抓取工具优先���：**
+Step 1: 下载 APK（apkeep）
+  └── apkeep -a <package> -d apk-pure <downloads_dir>
 
-**优先级 1：`opencli browser`**（JS 完整渲染，推荐）
+Step 2: 解析 Manifest（androguard）
+  └── python3 analyzer/android_analyzer.py <package>
 
-```bash
-SKILL_DIR="$HOME/.claude/skills/android-analyzer-engineer"
-CACHE_DIR="$SKILL_DIR/.cache/$PACKAGE"
-mkdir -p "$CACHE_DIR/web-articles"
+Step 3: 生成固定格式报告
+  └── <workspace>/reports/<package>_report.md
 
-GPLAY_URL="https://play.google.com/store/apps/details?id=${PACKAGE}&hl=en-us&gl=us"
-opencli browser open "$GPLAY_URL"
-opencli browser wait time 2
-opencli browser extract > "$CACHE_DIR/web-articles/google_play.md"
-
-# 单独获取图标 URL（extract 输出不含图标）
-ICON_URL=$(opencli browser eval "
-  const imgs = Array.from(document.querySelectorAll('img'));
-  const icon = imgs.find(img => img.src && img.src.includes('play-lh') && img.width > 60 && !img.src.includes('w526'));
-  icon ? icon.src.replace(/=w\d+-h\d+-rw/, '=s256-rw') : ''
-" 2>/dev/null | tr -d '"')
+Step 4: 检查飞书文档工具
+  └── if feishu_doc tool exists → 创建飞书文档
 ```
 
-**优先级 2：gstack browse**（无头浏览器，opencli 不可用时）
-
-使用 `/browse` skill 导航至 Google Play 页面，提取 Markdown 内容保存至 `$CACHE_DIR/web-articles/google_play.md`，图标 URL 同理通过 eval 获取。
-
-**优先级 3：WebFetch**（最后兜底，Google Play JS 渲染可能拿到残缺内容）
-
-> ⚠️ 商店信息抓取失败时，自动降级：跳过商店信息，继续输出 APK 分析部分。
-
-**解析 Google Play 数据：**
-
-```bash
-GPLAY_JSON=$(python3 "$SKILL_DIR/analyzer/fetch_google_play.py" \
-    "$CACHE_DIR/web-articles/google_play.md" "$PACKAGE")
-```
-
-输出字段：`app_name`、`developer`、`rating`、`rating_count`、`downloads`、`last_update`（YYYY-MM-DD）、`category`（中文）、`google_play_url`。
-
-### 1.4 APK 静态分析
+### 1.4 调用方式
 
 ```bash
 SKILL_DIR="$HOME/.claude/skills/android-analyzer-engineer"
 
-# 通过包名下载并分析
-python3 "$SKILL_DIR/analyzer/android_analyzer.py" "$PACKAGE"
+# 标准分析（获取商店信息 + 下载 + 分析）
+python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app
 
-# 本地文件
-python3 "$SKILL_DIR/analyzer/android_analyzer.py" /path/to/app.apk
+# 跳过下载（使用缓存 APK）
+python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app --skip-download
 
-# 已有缓存，跳过下载
-python3 "$SKILL_DIR/analyzer/android_analyzer.py" "$PACKAGE" --skip-download
+# 跳过商店信息（仅 APK 分析）
+python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
 ```
 
-**工作空间**（`.cache/android-app-analyzer/<包名>/`）：
+**工作空间结构**（`.cache/android-app-analyzer/<包名>/`）：
 
 ```
-downloads/   — APK / XAPK 文件
-extracted/   — 从 XAPK 解压的基础 APK
-reports/     — *_manifest.xml、*_analysis.md
-run.json     — 运行元数据
+downloads/   — 原始 APK / XAPK 文件
+extracted/   — 从 XAPK 中提取的基础 APK
+reports/     — <package>_report.md、<package>_manifest.xml
+temp/        — 临时文件
+run.json     — 运行元数据（路径、版本、时间）
 ```
 
-缓存限制：超过 5 个包工作区警告；超过 20 个停止运行，需手动清理。
+缓存限制：超过 5 个包工作区发出警告；超过 20 个停止运行，需手动清理。
 
-### 1.5 报告内容
+### 1.5 固定报告格式
 
-生成的 `*_analysis.md` 包含：
-
-1. **基本信息** — 包名、版本、compileSdk、targetSdk、minSdk
-2. **后台保活与推送策略** — 开机自启、FCM、前台服务、精确闹钟、WorkManager、同步适配器、悬浮窗
-3. **广告 SDK** — AdMob（含 App ID）、AppLovin、IronSource、Unity Ads、Meta、Mintegral、ByteDance/Pangle 等 20+ 个
-4. **第三方服务** — Firebase Analytics/Crashlytics、Adjust、AppsFlyer、Branch、Sentry、ExoPlayer 等
-5. **权限列表** — 系统权限（标注【敏感】）和自定义权限
-6. **组件统计** — Activity、Service、Receiver、Provider 数量
-
-### 1.6 竞品分析报告模板
-
-**完整竞品报告（有商店信息）：**
+生成的 `<package>_report.md` **严格遵循以下八节结构**，内容由分析结果填充，节标题和顺序不可更改：
 
 ```markdown
-# 竞品分析：<app_name>
+# 竞品分析报告：<app_name>
 
-> 分析时间：<当前日期>
-> 包名：`<package>`
-> 数据来源：Google Play + APK 静态分析
+> **分析时间：** YYYY-MM-DD HH:MM:SS
+> **包名：** `<package>`
+> **数据来源：** Google Play + APK 静态分析
 
 ---
 
@@ -202,63 +163,138 @@ run.json     — 运行元数据
 
 | 字段 | 值 |
 |---|---|
-| **图标** | ![](<icon_url>) |
-| **应用名称** | <app_name> |
-| **包名** | `<package>` |
-| **开发者** | <developer> |
-| **评分** | ⭐ <rating>（<rating_count>） |
-| **下载量** | <downloads> |
-| **最近更新** | <last_update> |
-| **分类** | <category> |
-| **Google Play** | [点击查看](<google_play_url>) |
+| **图标** | ![icon](<icon_url>) |
+| **应用名称** | ... |
+| **包名** | `...` |
+| **开发者** | ... |
+| **开发者邮箱** | ... |
+| **开发者网站** | ... |
+| **评分** | ★ X.XX（N 条评价）|
+| **下载量** | ... |
+| **价格** | 免费（含内购）/ ¥XX |
+| **分类** | ... |
+| **内容分级** | ... |
+| **适配 Android** | X.X 及以上 |
+| **最近更新** | YYYY-MM-DD |
+| **当前版本** | ... |
+| **Google Play** | [查看页面](...) |
+
+**评分分布：**
+| 星级 | 数量 |
+|---|---|
+| ★★★★★ | N |
+...
+
+**近期更新说明：**
+> ...
+
+**隐私政策：** [链接](...)
 
 ---
 
 ## 二、APK 基本信息
 
-（粘贴 APK 分析报告的「基本信息」章节）
+| 字段 | 值 |
+|---|---|
+| **包名** | `...` |
+| **版本名** | ... |
+| **版本号** | ... |
+| **compileSdk** | ... |
+| **targetSdk** | ... |
+| **minSdk** | ... |
+| **Application 类** | `...` |
 
 ---
 
 ## 三、后台保活与推送策略
 
-（粘贴 APK 分析报告的「后台保活与消息推送策略」章节）
+共检测到 N 项策略（共 9 项）：
+
+| 策略 | 状态 | 说明 |
+|---|---|---|
+| 滥用同步适配器保活（SyncAdapter） | ✅ 已检测 / ➖ 未发现 | ... |
+| 滥用联系人目录提供者保活（ContactDirectory） | ... | ... |
+| 开机自启广播接收器 | ... | ... |
+| Firebase 云消息推送（FCM） | ... | ... |
+| 全屏意图（Full-screen Intent） | ... | ... |
+| 悬浮窗（System Alert Window） | ... | ... |
+| 前台服务（Foreground Service） | ... | ... |
+| 精确闹钟（Exact Alarm） | ... | ... |
+| WorkManager / JobScheduler | ... | ... |
+
+### 已检测策略详情
+（每个已检测策略的详细说明和相关组件）
 
 ---
 
 ## 四、广告 SDK
 
-（粘贴 APK 分析报告的「广告 SDK」章节）
+共检测到 N 个广告 SDK：
+
+| SDK | 备注 |
+|---|---|
+| ... | App ID: `...` / — |
 
 ---
 
-## 五、第三方服务
+## 五、第三方服务与 SDK
 
-（粘贴 APK 分析报告的「第三方服务」章节）
+共检测到 N 个第三方服务：
+- ...
 
 ---
 
 ## 六、权限列表
 
-（粘贴 APK 分析报告的「权限列表」章节）
+共 N 个权限（系统 N，自定义/第三方 N）
+
+⚠️ 敏感权限（N 个）：
+- `android.permission.XXX` 【敏感】
+
+⚠️ 以下敏感权限存在于 APK 中，但未在 Google Play 商店页面声明：
+（若存在差异时显示）
+
+### 系统权限（N 个）
+- `android.permission.XXX`
+- `android.permission.YYY` 【敏感】
+
+### 自定义 / 第三方权限（N 个）
+- `com.xxx.permission.YYY`
 
 ---
 
 ## 七、组件统计
 
-（粘贴 APK 分析报告的「组件数量统计」章节）
+| 组件类型 | 数量 |
+|---|---|
+| Activity（界面）| N |
+| Service（服务）| N |
+| Receiver（广播接收器）| N |
+| Provider（内容提供者）| N |
+
+---
+
+## 八、数据安全声明（Google Play）
+
+（来自 google-play-scraper datasafety()，列出收集的数据类型和用途）
+
+---
+
+*报告由 android-analyzer-engineer v3.0.0 自动生成 · YYYY-MM-DD HH:MM:SS*
 ```
 
-**无商店信息模式（本地文件 / 抓取失败降级）：**
+### 1.6 飞书文档创建
 
-```markdown
-# APK 分析：<package_or_filename>
+报告文件生成并经 Claude 确认内容无误后，检查是否存在飞书文档工具：
 
-> 分析时间：<当前日期>
-> 数据来源：APK 静态分析
-> ⚠️ 商店信息不可用
-
-（从二开始，结构同上）
+```
+if feishu_doc tool is available:
+    使用飞书文档工具创建文档
+    标题：竞品分析：<app_name>（<package>）
+    内容：完整报告 Markdown
+    创建完成后输出文档链接
+else:
+    提示用户报告已保存到本地路径，并显示完整报告内容
 ```
 
 ---
@@ -274,79 +310,64 @@ bash ${SKILL_DIR}/re/scripts/check-deps.sh
 必须安装：**Java 17+**、**jadx**
 推荐安装：**Vineflower/Fernflower**、**dex2jar**
 
-安装缺失依赖：
-
 ```bash
 bash ${SKILL_DIR}/re/scripts/install-dep.sh jadx
 bash ${SKILL_DIR}/re/scripts/install-dep.sh vineflower
 bash ${SKILL_DIR}/re/scripts/install-dep.sh dex2jar
 ```
 
-安装脚本自动检测 OS，尽量不需要 sudo。如需 sudo 且用户拒绝，脚本会打印手动安装说明（退出码 2）。
-
 ### 2.2 反编译
 
-使用 Phase 1 下载的 APK 或单独提供的文件：
-
 ```bash
-# 默认：jadx（适合 APK/XAPK/JAR/AAR）
-bash ${SKILL_DIR}/re/scripts/decompile.sh <file>
+# 默认：jadx
+bash ${SKILL_DIR}/re/scripts/decompile.sh <apk_file>
 
-# 混淆代码时加 --deobf
-bash ${SKILL_DIR}/re/scripts/decompile.sh --deobf <file>
+# 混淆代码
+bash ${SKILL_DIR}/re/scripts/decompile.sh --deobf <apk_file>
 
-# JAR/AAR 推荐 Fernflower（Java 还原质量更好）
+# JAR/AAR 推荐 Fernflower
 bash ${SKILL_DIR}/re/scripts/decompile.sh --engine fernflower <file>
 
-# jadx 有警告时，双引擎对比
+# 双引擎对比
 bash ${SKILL_DIR}/re/scripts/decompile.sh --engine both --deobf <file>
 ```
-
-**引擎选择指南：**
 
 | 输入类型 | 推荐策略 |
 |---|---|
 | APK / XAPK | jadx 优先；混淆时加 `--deobf` |
-| JAR / AAR | fernflower（Java 还原质量更好） |
+| JAR / AAR | fernflower（Java 还原质量更好）|
 | jadx 输出有警告 | `--engine both` 逐类对比 |
 
 ### 2.3 分析结构
 
-反编译完成后：
-
-1. 读取 `<output>/resources/AndroidManifest.xml` — 找 launcher Activity、Application 类、权限声明
-2. 浏览 `<output>/sources/` — 找 `api`、`network`、`data`、`repository` 等包
+1. 读取 `<output>/resources/AndroidManifest.xml` — 找 launcher Activity、Application 类
+2. 浏览 `<output>/sources/` — 找 `api`、`network`、`data`、`repository` 包
 3. 识别架构模式（MVP / MVVM / Clean Architecture）
 
-详细追踪技术参考：`${SKILL_DIR}/re/references/call-flow-analysis.md`
+参考：`${SKILL_DIR}/re/references/call-flow-analysis.md`
 
 ### 2.4 追踪调用链
-
-从 UI 到网络的典型路径：
 
 ```
 Activity.onCreate() → 点击事件 → ViewModel → Repository → ApiService → HTTP 请求
 ```
 
-混淆代码时的策略：
-- **字符串不会被混淆**：从 URL、错误信息、常量入手
+混淆代码策略：
+- **字符串不被混淆**：从 URL、错误信息、常量入手
 - **Android 框架类保留原名**：`Activity`、`Fragment`、`Intent`
-- **库的公开 API 保留**：Retrofit 注解、OkHttp builder 可直接识别
-- 使用 `--deobf` 让 jadx 生成可读替换名
+- **库公开 API 保留**：Retrofit 注解、OkHttp builder 可直接识别
+- 用 `--deobf` 让 jadx 生成可读替换名
 
 ### 2.5 提取并文档化 API
 
 ```bash
-# 全量扫描
 bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/
-
-# 精准扫描
 bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --retrofit
 bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --urls
 bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
 ```
 
-每个接口按以下格式文档化：
+每个接口格式：
 
 ```markdown
 ### `METHOD /path`
@@ -361,20 +382,19 @@ bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
 - **调用链**：`LoginActivity → LoginViewModel → UserRepository → ApiService`
 ```
 
-API 提取模式参考：`${SKILL_DIR}/re/references/api-extraction-patterns.md`
-
 ---
 
 ## 完整分析输出
 
-完整分析（Phase 1 + Phase 2）最终交付：
+Phase 1 + Phase 2 交付：
 
-1. **竞品报告**（`*_analysis.md`）— 商店信息、权限、SDK、后台策略
-2. **反编译源码** — 输出目录
-3. **架构摘要** — 主要包结构、架构模式
-4. **API 文档** — 所有发现的接口（按上述格式）
-5. **调用链图** — 关键路径（重点：认证流程、核心功能）
-6. **交叉验证发现** — 例：「Manifest 声明 AdMob → 源码确认 `MobileAds.initialize()` 在 `Application.onCreate()` 调用」
+1. **竞品报告**（固定八节格式 Markdown）
+2. **飞书文档**（若 feishu_doc 工具可用）
+3. **反编译源码**（输出目录）
+4. **架构摘要**（主要包结构、架构模式）
+5. **API 文档**（所有发现的接口）
+6. **调用链图**（认证流程、核心功能关键路径）
+7. **交叉验证发现**（Manifest 声明 vs 源码实现）
 
 ---
 
@@ -382,43 +402,39 @@ API 提取模式参考：`${SKILL_DIR}/re/references/api-extraction-patterns.md`
 
 | 问题 | 解决方法 |
 |---|---|
-| `apkeep` 未安装 | Homebrew、cargo，或从 GitHub Releases 下载二进制 |
-| `python` 指向 Python 2 | 明确使用 `python3` |
-| 工作区包数量超限 | 手动删除 `.cache/android-app-analyzer/` 下的旧目录 |
-| XAPK 无法提取基础 APK | 上游包问题，手动从 APKCombo 下载后指定本地路径 |
-| APK 下载失败 | 手动下载放到 `.cache/android-app-analyzer/<package>/downloads/`，用本地路径重新分析 |
-| opencli 不可用 | 降级为 gstack browse，再降级为 WebFetch |
-| Google Play 解析失败 | 自动降级，仅输出 APK 分析（无商店信息） |
-| Phase 2 先于 Phase 1 运行 | Manifest 报告很快，通常已能回答问题，不必反编译 |
-| `--engine fernflower` 用于 APK 但无 dex2jar | 先安装 dex2jar：`install-dep.sh dex2jar` |
-| 将混淆类名作为发现点报告 | 用 `--deobf` 或通过字符串字面量和库调用导航 |
-| 文档化接口时缺少调用链 | 必须追溯到 Activity/Fragment 入口点 |
+| `node` 不在 PATH | 安装 Node.js；或用 `--skip-store` 跳过商店数据 |
+| `google-play-scraper` 未安装 | `cd analyzer && npm install google-play-scraper` |
+| 商店数据获取失败（网络/限流）| 重试；或用 `--skip-store` 仅做 APK 分析 |
+| `apkeep` 未安装 | `brew install apkeep` 或从 GitHub Releases 下载 |
+| APK 下载失败 | 手动放至 `.cache/android-app-analyzer/<pkg>/downloads/`，加 `--skip-download` |
+| XAPK 无法提取基础 APK | 手动从 APKCombo 下载，用本地路径重新分析 |
+| 工作区包数量超限 | 删除 `.cache/android-app-analyzer/` 下旧目录 |
+| `--engine fernflower` 用于 APK 但无 dex2jar | `install-dep.sh dex2jar` |
 
 ---
 
 ## 完整执行示例
 
 ```
-用户: 帮我分析这个竞品
-      https://app.diandian.com/app/oy1qiouqq8r5s1n/googleplay?market=11&country=24&id=kjv.bible.kingjamesbible
+用户: 帮我全面分析竞品 com.whatsapp
 
 执行流程（Phase 1）：
-1. 从点点 URL 正则提取包名 → kjv.bible.kingjamesbible（不访问点点页面）
-2. opencli browser 抓取 Google Play 页面 + eval 获取图标 URL
-3. fetch_google_play.py 解析 → 开发者: Ozion, 评分: 4.80, 更新: 2026-04-17
-4. android_analyzer.py 分析 APK → 生成 *_analysis.md
-5. 合并输出完整竞品报告
-```
+Step 0: node store_fetcher.js com.whatsapp
+        → app_name: WhatsApp, developer: WhatsApp LLC
+        → rating: 4.00, installs: 5,000,000,000+
+        → permissions: [...], data_safety: [...]
+Step 1: apkeep -a com.whatsapp -d apk-pure downloads/
+        → downloads/com.whatsapp.xapk
+Step 2: python3 android_analyzer.py com.whatsapp
+        → 解析 Manifest：权限 N 个，FCM ✅，前台服务 ✅
+Step 3: 生成 com.whatsapp_report.md（固定八节格式）
+Step 4: 检测到 feishu_doc 工具 → 创建飞书文档
+        → 文档链接：https://...
 
-```
-用户: 全面分析 com.example.app，找出所有 API 接口
-
-执行流程（Phase 1 + Phase 2）：
-1. 从 Google Play 获取商店信息
-2. android_analyzer.py 分析 Manifest → 生成权限/SDK 报告
-3. check-deps.sh 检查逆向工具
-4. decompile.sh 反编译 APK（jadx）
-5. find-api-calls.sh 提取所有 HTTP 接口
-6. 追踪关键调用链，交叉验证 Manifest 声明
-7. 输出完整报告
+执行流程（Phase 2，如用户需要）：
+5. check-deps.sh → jadx OK
+6. decompile.sh --deobf com.whatsapp.apk
+7. find-api-calls.sh sources/ --all
+8. 追踪关键调用链，交叉验证 Manifest 声明
+9. 输出 API 文档
 ```
