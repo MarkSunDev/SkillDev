@@ -34,6 +34,7 @@ class PackageWorkspace:
     extracted_dir: Path
     reports_dir: Path
     temp_dir: Path
+    history_dir: Path
 
 
 def sanitize_workspace_name(name: str) -> str:
@@ -114,8 +115,9 @@ def create_package_workspace(workspace_root: Path, package_name: str) -> Package
     extracted_dir = package_dir / "extracted"
     reports_dir = package_dir / "reports"
     temp_dir = package_dir / "temp"
+    history_dir = package_dir / "history"
 
-    for directory in (package_dir, downloads_dir, extracted_dir, reports_dir, temp_dir):
+    for directory in (package_dir, downloads_dir, extracted_dir, reports_dir, temp_dir, history_dir):
         directory.mkdir(parents=True, exist_ok=True)
 
     return PackageWorkspace(
@@ -125,4 +127,5 @@ def create_package_workspace(workspace_root: Path, package_name: str) -> Package
         extracted_dir=extracted_dir,
         reports_dir=reports_dir,
         temp_dir=temp_dir,
+        history_dir=history_dir,
     )

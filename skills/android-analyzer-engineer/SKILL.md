@@ -27,12 +27,13 @@ allowed-tools:
 
 # Android Analyzer & Engineer
 
-**版本：3.1.0**
+**版本：3.2.0**
 
 ## 版本历史
 
 | 版本 | 变更内容 |
 |---|---|
+| 3.2.0 | 新增版本历史追踪：每次分析后自动归档报告到 `history/`，更新 `versions.json` 索引；新增 `compare.py` 支持跨版本 diff（权限/SDK/保活策略/组件变化） |
 | 3.1.0 | 修复工作区路径：默认缓存改为 `~/.cache/android-app-analyzer/`，不再依赖脚本所在目录，任意 CWD 调用结果一致；store_fetcher.js 自动安装 google-play-scraper（对齐 dependency_bootstrap.py 模式，无需预提交 node_modules）；修复 google-play-scraper 新版 ESM default export 兼容问题；SKILL.md 路径引用全部从硬编码 `SKILL_DIR` 改为 harness 注入的 `BASE_DIR` |
 | 3.0.0 | 重构商店数据获取：移除 diandian/opencli/gstack/WebFetch 爬虫方案，改用 google-play-scraper（Node.js）；输入仅支持包名；报告格式固定为八节结构；新增飞书文档创建步骤；报告新增评分分布、IAP、数据安全声明、权限 Play Store 对比 |
 | 2.0.0 | 合并 android-app-analyzer：Phase 1 新增 diandian URL 提取包名、fetch_google_play.py |
@@ -141,14 +142,67 @@ python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
 ```
 downloads/   — 原始 APK / XAPK 文件
 extracted/   — 从 XAPK 中提取的基础 APK
-reports/     — <package>_report.md、<package>_manifest.xml
+reports/     — <package>_report.md、<package>_manifest.xml（当前最新）
+history/     — 按版本归档：<日期>_v<版本名>_<版本号>_report.md / _manifest.xml
+               版本 diff 报告：<日期>_diff_<vA>_to_<vB>.md
 temp/        — 临时文件
-run.json     — 运行元数据（路径、版本、时间）
+run.json     — 最近一次运行元数据（路径、版本、时间）
+versions.json — 所有历史版本索引（版本名、版本号、分析时间、归档报告文件名）
 ```
 
 缓存限制：超过 5 个包工作区发出警告；超过 20 个停止运行，需手动清理。
 
-### 1.5 固定报告格式
+### 1.5 版本历史与对比
+
+每次分析完成后，报告和 Manifest 自动归档到 `history/`，`versions.json` 记录所有历史版本索引。
+
+**查看历史版本列表：**
+
+```bash
+python3 "${BASE_DIR}/analyzer/compare.py" com.example.app --list
+```
+
+**对比最近两次分析（默认行为）：**
+
+```bash
+python3 "${BASE_DIR}/analyzer/compare.py" com.example.app
+```
+
+**对比指定版本名：**
+
+```bash
+python3 "${BASE_DIR}/analyzer/compare.py" com.example.app -a 2.24.9 -b 2.25.1
+```
+
+**对比指定索引（0-based）：**
+
+```bash
+python3 "${BASE_DIR}/analyzer/compare.py" com.example.app -i 0 -j 2
+```
+
+**保存 diff 报告到 history/：**
+
+```bash
+python3 "${BASE_DIR}/analyzer/compare.py" com.example.app --save
+```
+
+**diff 报告涵盖：**
+
+| 维度 | 内容 |
+|---|---|
+| APK 基本信息 | 版本名/号、SDK 版本变化 |
+| 后台保活策略 | 各项策略状态变化（✅/➖）|
+| 广告 SDK | 新增/移除的广告 SDK |
+| 第三方服务 | 新增/移除的第三方服务 |
+| 权限 | 新增/移除的权限（含敏感权限）|
+| 组件统计 | Activity / Service / Receiver / Provider 数量变化 |
+
+**当用户说以下内容时触发版本对比：**
+- "对比上次分析" / "和上个版本比较" → `compare.py <pkg>`
+- "查看历史版本" / "分析过几次" → `compare.py <pkg> --list`
+- "对比 v2.24 和 v2.25" → `compare.py <pkg> -a 2.24 -b 2.25`
+
+### 1.6 固定报告格式
 
 生成的 `<package>_report.md` **严格遵循以下八节结构**，内容由分析结果填充，节标题和顺序不可更改：
 
@@ -285,7 +339,7 @@ run.json     — 运行元数据（路径、版本、时间）
 *报告由 android-analyzer-engineer v3.0.0 自动生成 · YYYY-MM-DD HH:MM:SS*
 ```
 
-### 1.6 飞书文档创建
+### 1.7 飞书文档创建
 
 报告文件生成并经 Claude 确认内容无误后，检查是否存在飞书文档工具：
 

@@ -753,6 +753,60 @@ def write_run_metadata(workspace, source_target, info, apk_path, report_path, ma
     return path
 
 
+def archive_version(workspace, info, report_path, manifest_path) -> Path:
+    """Copy report and manifest into history/ with a versioned filename.
+
+    Filename format: <YYYY-MM-DD>_v<version_name>_<version_code>_report.md
+    Returns the archived report path.
+    """
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    version_name = (info.get("version_name") or "unknown").replace(" ", "_")
+    version_code = info.get("version_code") or "0"
+    stem = f"{date_str}_v{version_name}_{version_code}"
+
+    archived_report = workspace.history_dir / f"{stem}_report.md"
+    archived_manifest = workspace.history_dir / f"{stem}_manifest.xml"
+
+    import shutil as _shutil
+    _shutil.copy2(report_path, archived_report)
+    if manifest_path and Path(manifest_path).exists():
+        _shutil.copy2(manifest_path, archived_manifest)
+
+    return archived_report
+
+
+def update_versions_index(workspace, info, store, archived_report: Path) -> Path:
+    """Append this run to versions.json (create if missing).
+
+    Each entry:
+      {
+        "version_name": "2.25.1",
+        "version_code": "12345",
+        "analyzed_at":  "2025-04-25T10:00:00",
+        "report":       "history/2025-04-25_v2.25.1_12345_report.md"
+      }
+    """
+    versions_path = workspace.package_dir / "versions.json"
+    if versions_path.exists():
+        try:
+            entries = json.loads(versions_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            entries = []
+    else:
+        entries = []
+
+    entry = {
+        "version_name": info.get("version_name") or "",
+        "version_code": info.get("version_code") or "",
+        "app_name":     (store or {}).get("app_name") or info.get("package", ""),
+        "analyzed_at":  datetime.now().isoformat(),
+        "report":       archived_report.name,
+    }
+    entries.append(entry)
+    versions_path.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8")
+    return versions_path
+
+
 # ---------------------------------------------------------------------------
 # Main analysis orchestration
 # ---------------------------------------------------------------------------
@@ -805,9 +859,15 @@ def analyze_apk(apk_path: Path, workspace, source_target: str, store: dict | Non
         manifest_path=manifest_file,
     )
 
+    # Archive this version into history/
+    archived_report = archive_version(workspace, info, report_path, manifest_file)
+    versions_path = update_versions_index(workspace, info, store, archived_report)
+
     print(f"  Report:    {report_path}")
     print(f"  Manifest:  {manifest_file}")
     print(f"  Metadata:  {meta_path}")
+    print(f"  Archived:  {archived_report}")
+    print(f"  Versions:  {versions_path}")
     print(f"\n{'=' * 60}")
     print("Done")
     print("=" * 60)
