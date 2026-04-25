@@ -1,6 +1,6 @@
 ---
 name: android-analyzer-engineer
-version: 3.0.0
+version: 3.1.0
 description: |
   Full Android app investigation: fetch Google Play store metadata, download APK,
   parse manifest, detect ad SDKs / keep-alive strategies / permissions, generate a
@@ -27,12 +27,13 @@ allowed-tools:
 
 # Android Analyzer & Engineer
 
-**版本：3.0.0**
+**版本：3.1.0**
 
 ## 版本历史
 
 | 版本 | 变更内容 |
 |---|---|
+| 3.1.0 | 修复工作区路径：默认缓存改为 `~/.cache/android-app-analyzer/`，不再依赖脚本所在目录，任意 CWD 调用结果一致；store_fetcher.js 自动安装 google-play-scraper（对齐 dependency_bootstrap.py 模式，无需预提交 node_modules）；修复 google-play-scraper 新版 ESM default export 兼容问题；SKILL.md 路径引用全部从硬编码 `SKILL_DIR` 改为 harness 注入的 `BASE_DIR` |
 | 3.0.0 | 重构商店数据获取：移除 diandian/opencli/gstack/WebFetch 爬虫方案，改用 google-play-scraper（Node.js）；输入仅支持包名；报告格式固定为八节结构；新增飞书文档创建步骤；报告新增评分分布、IAP、数据安全声明、权限 Play Store 对比 |
 | 2.0.0 | 合并 android-app-analyzer：Phase 1 新增 diandian URL 提取包名、fetch_google_play.py |
 | 1.2.0 | SyncAdapter / ContactDirectory 策略描述修正 |
@@ -65,7 +66,7 @@ allowed-tools:
 
 ```bash
 # 在 analyzer/ 目录安装
-cd ${SKILL_DIR}/analyzer
+cd ${BASE_DIR}/analyzer
 npm install google-play-scraper
 ```
 
@@ -82,7 +83,7 @@ cargo install apkeep         # 任意平台（需要 Rust）
 **Python 依赖**（首次运行自动安装）：
 
 ```bash
-python3 -m pip install -r ${SKILL_DIR}/analyzer/requirements.txt
+python3 -m pip install -r ${BASE_DIR}/analyzer/requirements.txt
 ```
 
 ### 1.2 输入规范
@@ -122,16 +123,17 @@ Step 4: 检查飞书文档工具
 ### 1.4 调用方式
 
 ```bash
-SKILL_DIR="$HOME/.claude/skills/android-analyzer-engineer"
+# BASE_DIR is injected by the Claude Code harness as the skill's own directory.
+# Do NOT hardcode ~/.claude/skills/... — the skill may live anywhere.
 
 # 标准分析（获取商店信息 + 下载 + 分析）
-python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app
+python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app
 
 # 跳过下载（使用缓存 APK）
-python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app --skip-download
+python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app --skip-download
 
 # 跳过商店信息（仅 APK 分析）
-python3 "${SKILL_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
+python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
 ```
 
 **工作空间结构**（`.cache/android-app-analyzer/<包名>/`）：
@@ -304,32 +306,32 @@ else:
 ### 2.1 检查并安装依赖
 
 ```bash
-bash ${SKILL_DIR}/re/scripts/check-deps.sh
+bash ${BASE_DIR}/re/scripts/check-deps.sh
 ```
 
 必须安装：**Java 17+**、**jadx**
 推荐安装：**Vineflower/Fernflower**、**dex2jar**
 
 ```bash
-bash ${SKILL_DIR}/re/scripts/install-dep.sh jadx
-bash ${SKILL_DIR}/re/scripts/install-dep.sh vineflower
-bash ${SKILL_DIR}/re/scripts/install-dep.sh dex2jar
+bash ${BASE_DIR}/re/scripts/install-dep.sh jadx
+bash ${BASE_DIR}/re/scripts/install-dep.sh vineflower
+bash ${BASE_DIR}/re/scripts/install-dep.sh dex2jar
 ```
 
 ### 2.2 反编译
 
 ```bash
 # 默认：jadx
-bash ${SKILL_DIR}/re/scripts/decompile.sh <apk_file>
+bash ${BASE_DIR}/re/scripts/decompile.sh <apk_file>
 
 # 混淆代码
-bash ${SKILL_DIR}/re/scripts/decompile.sh --deobf <apk_file>
+bash ${BASE_DIR}/re/scripts/decompile.sh --deobf <apk_file>
 
 # JAR/AAR 推荐 Fernflower
-bash ${SKILL_DIR}/re/scripts/decompile.sh --engine fernflower <file>
+bash ${BASE_DIR}/re/scripts/decompile.sh --engine fernflower <file>
 
 # 双引擎对比
-bash ${SKILL_DIR}/re/scripts/decompile.sh --engine both --deobf <file>
+bash ${BASE_DIR}/re/scripts/decompile.sh --engine both --deobf <file>
 ```
 
 | 输入类型 | 推荐策略 |
@@ -344,7 +346,7 @@ bash ${SKILL_DIR}/re/scripts/decompile.sh --engine both --deobf <file>
 2. 浏览 `<output>/sources/` — 找 `api`、`network`、`data`、`repository` 包
 3. 识别架构模式（MVP / MVVM / Clean Architecture）
 
-参考：`${SKILL_DIR}/re/references/call-flow-analysis.md`
+参考：`${BASE_DIR}/re/references/call-flow-analysis.md`
 
 ### 2.4 追踪调用链
 
@@ -361,10 +363,10 @@ Activity.onCreate() → 点击事件 → ViewModel → Repository → ApiService
 ### 2.5 提取并文档化 API
 
 ```bash
-bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/
-bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --retrofit
-bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --urls
-bash ${SKILL_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
+bash ${BASE_DIR}/re/scripts/find-api-calls.sh <output>/sources/
+bash ${BASE_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --retrofit
+bash ${BASE_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --urls
+bash ${BASE_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
 ```
 
 每个接口格式：

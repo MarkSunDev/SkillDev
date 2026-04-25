@@ -10,6 +10,11 @@ from typing import Optional
 
 DEFAULT_CACHE_PARENT = ".cache"
 DEFAULT_WORKSPACE_NAME = "android-app-analyzer"
+
+# User-level cache root: ~/.cache/android-app-analyzer/
+# Used when no explicit --output is given, regardless of where the script lives.
+USER_CACHE_ROOT = Path.home() / DEFAULT_CACHE_PARENT / DEFAULT_WORKSPACE_NAME
+
 SOFT_WORKSPACE_LIMIT = 5
 HARD_WORKSPACE_LIMIT = 20
 WORKSPACE_NAME_PATTERN = re.compile(r"[^A-Za-z0-9._-]+")
@@ -45,13 +50,22 @@ def resolve_workspace_root(
     repo_root: Optional[Path] = None,
     output_root: Optional[Path] = None,
 ) -> Path:
-    """Resolve and create the managed workspace root."""
+    """Resolve and create the managed workspace root.
+
+    Priority:
+      1. ``output_root`` if explicitly provided (via --output flag).
+      2. ``~/.cache/android-app-analyzer/`` — user-level cache, independent of
+         where the script lives so the workspace is always the same no matter
+         how the script is invoked.
+
+    ``repo_root`` is kept for backwards-compatibility but is no longer used
+    for the default path.
+    """
 
     if output_root is not None:
         workspace_root = Path(output_root).resolve()
     else:
-        base_root = Path(repo_root).resolve() if repo_root is not None else Path(__file__).resolve().parent
-        workspace_root = base_root / DEFAULT_CACHE_PARENT / DEFAULT_WORKSPACE_NAME
+        workspace_root = USER_CACHE_ROOT
 
     workspace_root.mkdir(parents=True, exist_ok=True)
     return workspace_root

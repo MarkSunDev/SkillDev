@@ -21,9 +21,46 @@
 
 'use strict';
 
+const path = require('path');
+const { execFileSync } = require('child_process');
+
+// node_modules lives next to this script — resolve from __dirname so the
+// script works regardless of the working directory Claude invokes it from.
+const NODE_MODULES = path.join(__dirname, 'node_modules');
+process.env.NODE_PATH = NODE_MODULES +
+  (process.env.NODE_PATH ? path.delimiter + process.env.NODE_PATH : '');
+require('module').Module._initPaths();
+
+// Auto-install google-play-scraper on first run (mirrors dependency_bootstrap.py
+// pattern used for Python deps — no pre-committed node_modules needed).
+function ensureGooglePlayScraper() {
+  try {
+    require('google-play-scraper');
+    return; // already installed
+  } catch (_) {}
+
+  process.stderr.write('[store] google-play-scraper not found — installing...\n');
+  try {
+    execFileSync('npm', ['install', '--prefix', __dirname, 'google-play-scraper', '--save'], {
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
+    // Re-initialise Node module paths so the freshly installed package is found.
+    require('module').Module._initPaths();
+    process.stderr.write('[store] google-play-scraper installed.\n');
+  } catch (e) {
+    process.stderr.write(
+      '[store] Auto-install failed. Run manually:\n' +
+      `  npm install --prefix ${__dirname} google-play-scraper\n`
+    );
+    process.exit(1);
+  }
+}
+
+ensureGooglePlayScraper();
+
 const packageName = process.argv[2];
-const lang        = process.argv[3] || 'zh-CN';
-const country     = process.argv[4] || 'cn';
+const lang = process.argv[3] || 'zh-CN';
+const country = process.argv[4] || 'cn';
 
 if (!packageName) {
   process.stderr.write('Usage: node store_fetcher.js <package_name> [lang] [country]\n');
@@ -32,13 +69,12 @@ if (!packageName) {
 
 let gplay;
 try {
-  gplay = require('google-play-scraper');
+  const _mod = require('google-play-scraper');
+  // Support both legacy (direct export) and new ESM-compat (default export) builds.
+  gplay = (_mod && typeof _mod.app === 'function') ? _mod : (_mod && _mod.default);
+  if (!gplay || typeof gplay.app !== 'function') throw new Error('unexpected module shape');
 } catch (e) {
-  process.stderr.write(
-    'google-play-scraper is not installed.\n' +
-    'Run: npm install google-play-scraper\n' +
-    '(in the analyzer/ directory or globally)\n'
-  );
+  process.stderr.write(`[store] Failed to load google-play-scraper: ${e.message}\n`);
   process.exit(1);
 }
 
@@ -78,31 +114,31 @@ async function fetchAll(pkgId) {
   }
 
   return {
-    app_name:          a.title          || '',
-    developer:         a.developer      || '',
-    developer_id:      a.developerId    || '',
-    developer_email:   a.developerEmail || '',
+    app_name: a.title || '',
+    developer: a.developer || '',
+    developer_id: a.developerId || '',
+    developer_email: a.developerEmail || '',
     developer_website: a.developerWebsite || '',
-    icon:              a.icon           || '',
-    rating:            typeof a.score === 'number' ? a.score.toFixed(2) : '',
-    rating_count:      a.ratings        || 0,
-    rating_histogram:  histogram,
-    installs:          a.installs       || '',
-    min_installs:      a.minInstalls    || 0,
-    price:             a.priceText      || '免费',
-    free:              a.free !== false,
-    offers_iap:        a.offersIAP      || false,
-    android_version:   a.androidVersion || '',
-    content_rating:    a.contentRating  || '',
-    genre:             a.genre          || '',
-    genre_id:          a.genreId        || '',
-    last_update:       lastUpdate,
-    version:           a.version        || '',
-    recent_changes:    a.recentChanges  || '',
-    privacy_policy:    a.privacyPolicy  || '',
-    google_play_url:   a.url            || `https://play.google.com/store/apps/details?id=${pkgId}`,
-    permissions:       perms.status === 'fulfilled' ? (perms.value || []) : [],
-    data_safety:       safety.status === 'fulfilled' ? (safety.value || []) : [],
+    icon: a.icon || '',
+    rating: typeof a.score === 'number' ? a.score.toFixed(2) : '',
+    rating_count: a.ratings || 0,
+    rating_histogram: histogram,
+    installs: a.installs || '',
+    min_installs: a.minInstalls || 0,
+    price: a.priceText || '免费',
+    free: a.free !== false,
+    offers_iap: a.offersIAP || false,
+    android_version: a.androidVersion || '',
+    content_rating: a.contentRating || '',
+    genre: a.genre || '',
+    genre_id: a.genreId || '',
+    last_update: lastUpdate,
+    version: a.version || '',
+    recent_changes: a.recentChanges || '',
+    privacy_policy: a.privacyPolicy || '',
+    google_play_url: a.url || `https://play.google.com/store/apps/details?id=${pkgId}`,
+    permissions: perms.status === 'fulfilled' ? (perms.value || []) : [],
+    data_safety: safety.status === 'fulfilled' ? (safety.value || []) : [],
   };
 }
 
