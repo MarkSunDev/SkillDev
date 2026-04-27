@@ -1,38 +1,39 @@
 ---
 name: android-analyzer-engineer
-version: 3.1.0
+version: 3.3.0
 description: |
-  Full Android app investigation: fetch Google Play store metadata, download APK,
-  parse manifest, detect ad SDKs / keep-alive strategies / permissions, generate a
-  fixed-format Markdown report, and optionally publish to Feishu Docs.
-  Use when asked to "分析竞品", "analyze this app", "reverse engineer this Android app",
-  "find API endpoints", "全面分析", or any task requiring manifest inspection,
-  ad SDK detection, background strategy analysis, or deep source-level analysis.
+  Full Android app investigation: fetch Google Play store metadata, download APK,
+  parse manifest, detect ad SDKs / keep-alive strategies / permissions, generate a
+  fixed-format Markdown report, and optionally publish to Feishu Docs.
+  Use when asked to "分析竞品", "analyze this app", "reverse engineer this Android app",
+  "find API endpoints", "全面分析", or any task requiring manifest inspection,
+  ad SDK detection, background strategy analysis, or deep source-level analysis.
 triggers:
-  - 分析竞品
-  - 竞品报告
-  - 分析这个app
-  - 分析 apk
-  - analyze competitor
-  - reverse engineer
-  - find API endpoints
-  - android package analysis
-  - 反编译
-  - 提取接口
+  - 分析竞品
+  - 竞品报告
+  - 分析这个app
+  - 分析 apk
+  - analyze competitor
+  - reverse engineer
+  - find API endpoints
+  - android package analysis
+  - 反编译
+  - 提取接口
 allowed-tools:
-  - Bash
-  - Read
-  - Write
+  - Bash
+  - Read
+  - Write
 ---
 
 # Android Analyzer & Engineer
 
-**版本：3.2.0**
+**版本：3.3.0**
 
 ## 版本历史
 
 | 版本 | 变更内容 |
 |---|---|
+| 3.3.0 | 飞书文档创建改为调用 `/feishu_create_doc` skill（slash command），不再直接使用 `feishu_doc` MCP tool |
 | 3.2.0 | 新增版本历史追踪：每次分析后自动归档报告到 `history/`，更新 `versions.json` 索引；新增 `compare.py` 支持跨版本 diff（权限/SDK/保活策略/组件变化） |
 | 3.1.0 | 修复工作区路径：默认缓存改为 `~/.cache/android-app-analyzer/`，不再依赖脚本所在目录，任意 CWD 调用结果一致；store_fetcher.js 自动安装 google-play-scraper（对齐 dependency_bootstrap.py 模式，无需预提交 node_modules）；修复 google-play-scraper 新版 ESM default export 兼容问题；SKILL.md 路径引用全部从硬编码 `SKILL_DIR` 改为 harness 注入的 `BASE_DIR` |
 | 3.0.0 | 重构商店数据获取：移除 diandian/opencli/gstack/WebFetch 爬虫方案，改用 google-play-scraper（Node.js）；输入仅支持包名；报告格式固定为八节结构；新增飞书文档创建步骤；报告新增评分分布、IAP、数据安全声明、权限 Play Store 对比 |
@@ -45,8 +46,8 @@ allowed-tools:
 
 整合完整 Android 应用调查工作流：
 
-- **Phase 1（竞品分析）** — 用户提供包名；通过 `google-play-scraper` 获取商店详情（评分、下载量、IAP、数据安全声明、权限声明等）；通过 `apkeep` 下载 APK/XAPK；`androguard` 解析 Manifest 的权限、保活策略、广告 SDK；输出**固定八节格式**的中文报告；若环境存在 `feishu_doc` 工具则自动创建飞书文档。
-- **Phase 2（逆向工程）** — 用 jadx 或 Fernflower/Vineflower 反编译 APK；追踪 UI → 网络调用链；提取并��档化 HTTP API 接口。
+- **Phase 1（竞品分析）** — 用户提供包名；通过 `google-play-scraper` 获取商店详情（评分、下载量、IAP、数据安全声明、权限声明等）；通过 `apkeep` 下载 APK/XAPK；`androguard` 解析 Manifest 的权限、保活策略、广告 SDK；输出**固定八节格式**的中文报告；分析完成后调用 `/feishu_create_doc` skill 创建飞书文档。
+- **Phase 2（逆向工程）** — 用 jadx 或 Fernflower/Vineflower 反编译 APK；追踪 UI → 网络调用链；提取并文档化 HTTP API 接口。
 
 ## 使用时机
 
@@ -76,8 +77,8 @@ npm install google-play-scraper
 **apkeep**（下载 APK）：
 
 ```bash
-brew install apkeep          # macOS / Linux (Homebrew)
-cargo install apkeep         # 任意平台（需要 Rust）
+brew install apkeep          # macOS / Linux (Homebrew)
+cargo install apkeep         # 任意平台（需要 Rust）
 # 或从 https://github.com/EFForg/apkeep/releases/latest 下载二进制
 ```
 
@@ -103,22 +104,21 @@ python3 -m pip install -r ${BASE_DIR}/analyzer/requirements.txt
 
 ```
 Step 0: 获取商店信息（google-play-scraper）
-  └── node store_fetcher.js <package>
-      ├── app()         → 基本信息、评分、下载量、IAP、版本、近期更新
-      ├── permissions() → Play Store 声明权限列表
-      └── datasafety()  → 数据安全声明
+  └── node store_fetcher.js <package>
+      ├── app()         → 基本信息、评分、下载量、IAP、版本、近期更新
+      ├── permissions() → Play Store 声明权限列表
+      └── datasafety()  → 数据安全声明
 
 Step 1: 下载 APK（apkeep）
-  └── apkeep -a <package> -d apk-pure <downloads_dir>
+  └── apkeep -a <package> -d apk-pure <downloads_dir>
 
 Step 2: 解析 Manifest（androguard）
-  └── python3 analyzer/android_analyzer.py <package>
+  └── python3 analyzer/android_analyzer.py <package>
 
 Step 3: 生成固定格式报告
-  └── <workspace>/reports/<package>_report.md
+  └── <workspace>/reports/<package>_report.md
 
-Step 4: 检查飞书文档工具
-  └── if feishu_doc tool exists → 创建飞书文档
+Step 4: 调用 /feishu_create_doc skill → 创建飞书文档
 ```
 
 ### 1.4 调用方式
@@ -140,13 +140,13 @@ python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
 **工作空间结构**（`.cache/android-app-analyzer/<包名>/`）：
 
 ```
-downloads/   — 原始 APK / XAPK 文件
-extracted/   — 从 XAPK 中提取的基础 APK
-reports/     — <package>_report.md、<package>_manifest.xml（当前最新）
-history/     — 按版本归档：<日期>_v<版本名>_<版本号>_report.md / _manifest.xml
-               版本 diff 报告：<日期>_diff_<vA>_to_<vB>.md
-temp/        — 临时文件
-run.json     — 最近一次运行元数据（路径、版本、时间）
+downloads/   — 原始 APK / XAPK 文件
+extracted/   — 从 XAPK 中提取的基础 APK
+reports/     — <package>_report.md、<package>_manifest.xml（当前最新）
+history/     — 按版本归档：<日期>_v<版本名>_<版本号>_report.md / _manifest.xml
+               版本 diff 报告：<日期>_diff_<vA>_to_<vB>.md
+temp/        — 临时文件
+run.json     — 最近一次运行元数据（路径、版本、时间）
 versions.json — 所有历史版本索引（版本名、版本号、分析时间、归档报告文件名）
 ```
 
@@ -336,22 +336,23 @@ python3 "${BASE_DIR}/analyzer/compare.py" com.example.app --save
 
 ---
 
-*报告由 android-analyzer-engineer v3.0.0 自动生成 · YYYY-MM-DD HH:MM:SS*
+*报告由 android-analyzer-engineer v3.3.0 自动生成 · YYYY-MM-DD HH:MM:SS*
 ```
 
 ### 1.7 飞书文档创建
 
-报告文件生成并经 Claude 确认内容无误后，检查是否存在飞书文档工具：
+报告文件生成并经 Claude 确认内容无误后，**调用 `/feishu_create_doc` skill** 创建飞书文档：
 
 ```
-if feishu_doc tool is available:
-    使用飞书文档工具创建文档
-    标题：竞品分析：<app_name>（<package>）
-    内容：完整报告 Markdown
-    创建完成后输出文档链接
-else:
-    提示用户报告已保存到本地路径，并显示完整报告内容
+调用 /feishu_create_doc skill，传入：
+    title:    竞品分析：<app_name>（<package>）
+    markdown: 完整报告 Markdown 内容（读取 <workspace>/reports/<package>_report.md）
+
+创建完成后输出文档链接。
+若 /feishu_create_doc skill 不可用，提示用户报告已保存到本地路径，并显示完整报告内容。
 ```
+
+> ⚠️ 注意：此处必须使用 `/feishu_create_doc` **skill**（slash command），而非 MCP tool。
 
 ---
 
@@ -445,7 +446,7 @@ bash ${BASE_DIR}/re/scripts/find-api-calls.sh <output>/sources/ --auth
 Phase 1 + Phase 2 交付：
 
 1. **竞品报告**（固定八节格式 Markdown）
-2. **飞书文档**（若 feishu_doc 工具可用）
+2. **飞书文档**（通过 `/feishu_create_doc` skill 创建）
 3. **反编译源码**（输出目录）
 4. **架构摘要**（主要包结构、架构模式）
 5. **API 文档**（所有发现的接口）
@@ -476,16 +477,16 @@ Phase 1 + Phase 2 交付：
 
 执行流程（Phase 1）：
 Step 0: node store_fetcher.js com.whatsapp
-        → app_name: WhatsApp, developer: WhatsApp LLC
-        → rating: 4.00, installs: 5,000,000,000+
-        → permissions: [...], data_safety: [...]
+        → app_name: WhatsApp, developer: WhatsApp LLC
+        → rating: 4.00, installs: 5,000,000,000+
+        → permissions: [...], data_safety: [...]
 Step 1: apkeep -a com.whatsapp -d apk-pure downloads/
-        → downloads/com.whatsapp.xapk
+        → downloads/com.whatsapp.xapk
 Step 2: python3 android_analyzer.py com.whatsapp
-        → 解析 Manifest：权限 N 个，FCM ✅，前台服务 ✅
+        → 解析 Manifest：权限 N 个，FCM ✅，前台服务 ✅
 Step 3: 生成 com.whatsapp_report.md（固定八节格式）
-Step 4: 检测到 feishu_doc 工具 → 创建飞书文档
-        → 文档链接：https://...
+Step 4: 调用 /feishu_create_doc skill → 创建飞书文档
+        → 文档链接：https://...
 
 执行流程（Phase 2，如用户需要）：
 5. check-deps.sh → jadx OK
@@ -494,3 +495,4 @@ Step 4: 检测到 feishu_doc 工具 → 创建飞书文档
 8. 追踪关键调用链，交叉验证 Manifest 声明
 9. 输出 API 文档
 ```
+
