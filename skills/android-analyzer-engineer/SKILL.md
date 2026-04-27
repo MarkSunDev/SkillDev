@@ -2,28 +2,28 @@
 name: android-analyzer-engineer
 version: 3.3.1
 description: |
-  【必须使用此 skill】当用户要求分析竞品、分析 APK、反编译、逆向工程、查找接口、全面分析某个 Android 应用时，
-  必须调用此 skill，禁止直接用网络搜索替代。
-  此 skill 完成：从 Google Play 获取商店信息、下载 APK、解析 Manifest、逆向代码、检测广告 SDK / 保活策略 / 权限，
-  生成固定八节格式中文报告，最后通过 /feishu_create_doc skill 创建飞书文档。
-  触发关键词（遇到以下任意内容必须使用）："分析竞品"、"竞品报告"、"分析这个app"、"分析 apk"、"逆向"、
-  "反编译"、"提取接口"、"全面分析"、"analyze competitor"、"reverse engineer"、"find API endpoints"、
-  "android package analysis"、包名格式如 com.xxx.yyy。
+  【必须使用此 skill】当用户要求分析竞品、分析 APK、反编译、逆向工程、查找接口、全面分析某个 Android 应用时，
+  必须调用此 skill，禁止直接用网络搜索替代。
+  此 skill 完成：从 Google Play 获取商店信息、下载 APK、解析 Manifest、逆向代码、检测广告 SDK / 保活策略 / 权限，
+  生成固定八节格式中文报告，最后通过 /feishu_create_doc skill 创建飞书文档。
+  触发关键词（遇到以下任意内容必须使用）："分析竞品"、"竞品报告"、"分析这个app"、"分析 apk"、"逆向"、
+  "反编译"、"提取接口"、"全面分析"、"analyze competitor"、"reverse engineer"、"find API endpoints"、
+  "android package analysis"、包名格式如 com.xxx.yyy。
 triggers:
-  - 分析竞品
-  - 竞品报告
-  - 分析这个app
-  - 分析 apk
-  - analyze competitor
-  - reverse engineer
-  - find API endpoints
-  - android package analysis
-  - 反编译
-  - 提取接口
+  - 分析竞品
+  - 竞品报告
+  - 分析这个app
+  - 分析 apk
+  - analyze competitor
+  - reverse engineer
+  - find API endpoints
+  - android package analysis
+  - 反编译
+  - 提取接口
 allowed-tools:
-  - Bash
-  - Read
-  - Write
+  - Bash
+  - Read
+  - Write
 ---
 
 # Android Analyzer & Engineer
@@ -79,8 +79,8 @@ npm install google-play-scraper
 **apkeep**（下载 APK）：
 
 ```bash
-brew install apkeep          # macOS / Linux (Homebrew)
-cargo install apkeep         # 任意平台（需要 Rust）
+brew install apkeep          # macOS / Linux (Homebrew)
+cargo install apkeep         # 任意平台（需要 Rust）
 # 或从 https://github.com/EFForg/apkeep/releases/latest 下载二进制
 ```
 
@@ -106,19 +106,19 @@ python3 -m pip install -r ${BASE_DIR}/analyzer/requirements.txt
 
 ```
 Step 0: 获取商店信息（google-play-scraper）
-  └── node store_fetcher.js <package>
-      ├── app()         → 基本信息、评分、下载量、IAP、版本、近期更新
-      ├── permissions() → Play Store 声明权限列表
-      └── datasafety()  → 数据安全声明
+  └── node store_fetcher.js <package>
+      ├── app()         → 基本信息、评分、下载量、IAP、版本、近期更新
+      ├── permissions() → Play Store 声明权限列表
+      └── datasafety()  → 数据安全声明
 
 Step 1: 下载 APK（apkeep）
-  └── apkeep -a <package> -d apk-pure <downloads_dir>
+  └── apkeep -a <package> -d apk-pure <downloads_dir>
 
 Step 2: 解析 Manifest（androguard）
-  └── python3 analyzer/android_analyzer.py <package>
+  └── python3 analyzer/android_analyzer.py <package>
 
 Step 3: 生成固定格式报告
-  └── <workspace>/reports/<package>_report.md
+  └── <workspace>/reports/<package>_report.md
 
 Step 4: 调用 /feishu_create_doc skill → 创建飞书文档
 ```
@@ -142,13 +142,13 @@ python3 "${BASE_DIR}/analyzer/android_analyzer.py" com.example.app --skip-store
 **工作空间结构**（`.cache/android-app-analyzer/<包名>/`）：
 
 ```
-downloads/   — 原始 APK / XAPK 文件
-extracted/   — 从 XAPK 中提取的基础 APK
-reports/     — <package>_report.md、<package>_manifest.xml（当前最新）
-history/     — 按版本归档：<日期>_v<版本名>_<版本号>_report.md / _manifest.xml
-               版本 diff 报告：<日期>_diff_<vA>_to_<vB>.md
-temp/        — 临时文件
-run.json     — 最近一次运行元数据（路径、版本、时间）
+downloads/   — 原始 APK / XAPK 文件
+extracted/   — 从 XAPK 中提取的基础 APK
+reports/     — <package>_report.md、<package>_manifest.xml（当前最新）
+history/     — 按版本归档：<日期>_v<版本名>_<版本号>_report.md / _manifest.xml
+               版本 diff 报告：<日期>_diff_<vA>_to_<vB>.md
+temp/        — 临时文件
+run.json     — 最近一次运行元数据（路径、版本、时间）
 versions.json — 所有历史版本索引（版本名、版本号、分析时间、归档报告文件名）
 ```
 
@@ -347,8 +347,8 @@ python3 "${BASE_DIR}/analyzer/compare.py" com.example.app --save
 
 ```
 调用 /feishu_create_doc skill，传入：
-    title:    竞品分析：<app_name>（<package>）
-    markdown: 完整报告 Markdown 内容（读取 <workspace>/reports/<package>_report.md）
+    title:    竞品分析：<app_name>（<package>）
+    markdown: 完整报告 Markdown 内容（读取 <workspace>/reports/<package>_report.md）
 
 创建完成后输出文档链接。
 若 /feishu_create_doc skill 不可用，提示用户报告已保存到本地路径，并显示完整报告内容。
@@ -479,16 +479,16 @@ Phase 1 + Phase 2 交付：
 
 执行流程（Phase 1）：
 Step 0: node store_fetcher.js com.whatsapp
-        → app_name: WhatsApp, developer: WhatsApp LLC
-        → rating: 4.00, installs: 5,000,000,000+
-        → permissions: [...], data_safety: [...]
+        → app_name: WhatsApp, developer: WhatsApp LLC
+        → rating: 4.00, installs: 5,000,000,000+
+        → permissions: [...], data_safety: [...]
 Step 1: apkeep -a com.whatsapp -d apk-pure downloads/
-        → downloads/com.whatsapp.xapk
+        → downloads/com.whatsapp.xapk
 Step 2: python3 android_analyzer.py com.whatsapp
-        → 解析 Manifest：权限 N 个，FCM ✅，前台服务 ✅
+        → 解析 Manifest：权限 N 个，FCM ✅，前台服务 ✅
 Step 3: 生成 com.whatsapp_report.md（固定八节格式）
 Step 4: 调用 /feishu_create_doc skill → 创建飞书文档
-        → 文档链接：https://...
+        → 文档链接：https://...
 
 执行流程（Phase 2，如用户需要）：
 5. check-deps.sh → jadx OK
