@@ -1,13 +1,14 @@
 ---
 name: android-analyzer-engineer
-version: 3.3.0
+version: 3.3.1
 description: |
-  Full Android app investigation: fetch Google Play store metadata, download APK,
-  parse manifest, detect ad SDKs / keep-alive strategies / permissions, generate a
-  fixed-format Markdown report, and optionally publish to Feishu Docs.
-  Use when asked to "分析竞品", "analyze this app", "reverse engineer this Android app",
-  "find API endpoints", "全面分析", or any task requiring manifest inspection,
-  ad SDK detection, background strategy analysis, or deep source-level analysis.
+  【必须使用此 skill】当用户要求分析竞品、分析 APK、反编译、逆向工程、查找接口、全面分析某个 Android 应用时，
+  必须调用此 skill，禁止直接用网络搜索替代。
+  此 skill 完成：从 Google Play 获取商店信息、下载 APK、解析 Manifest、逆向代码、检测广告 SDK / 保活策略 / 权限，
+  生成固定八节格式中文报告，最后通过 /feishu_create_doc skill 创建飞书文档。
+  触发关键词（遇到以下任意内容必须使用）："分析竞品"、"竞品报告"、"分析这个app"、"分析 apk"、"逆向"、
+  "反编译"、"提取接口"、"全面分析"、"analyze competitor"、"reverse engineer"、"find API endpoints"、
+  "android package analysis"、包名格式如 com.xxx.yyy。
 triggers:
   - 分析竞品
   - 竞品报告
@@ -27,12 +28,13 @@ allowed-tools:
 
 # Android Analyzer & Engineer
 
-**版本：3.3.0**
+**版本：3.3.1**
 
 ## 版本历史
 
 | 版本 | 变更内容 |
 |---|---|
+| 3.3.1 | 修复 description 全角竖线（`｜`→`|`）导致 YAML 解析失败、skill 不被触发的 bug；强化 description 触发语义，明确包名格式 com.xxx.yyy 也应触发此 skill |
 | 3.3.0 | 飞书文档创建改为调用 `/feishu_create_doc` skill（slash command），不再直接使用 `feishu_doc` MCP tool |
 | 3.2.0 | 新增版本历史追踪：每次分析后自动归档报告到 `history/`，更新 `versions.json` 索引；新增 `compare.py` 支持跨版本 diff（权限/SDK/保活策略/组件变化） |
 | 3.1.0 | 修复工作区路径：默认缓存改为 `~/.cache/android-app-analyzer/`，不再依赖脚本所在目录，任意 CWD 调用结果一致；store_fetcher.js 自动安装 google-play-scraper（对齐 dependency_bootstrap.py 模式，无需预提交 node_modules）；修复 google-play-scraper 新版 ESM default export 兼容问题；SKILL.md 路径引用全部从硬编码 `SKILL_DIR` 改为 harness 注入的 `BASE_DIR` |
@@ -336,7 +338,7 @@ python3 "${BASE_DIR}/analyzer/compare.py" com.example.app --save
 
 ---
 
-*报告由 android-analyzer-engineer v3.3.0 自动生成 · YYYY-MM-DD HH:MM:SS*
+*报告由 android-analyzer-engineer v3.3.1 自动生成 · YYYY-MM-DD HH:MM:SS*
 ```
 
 ### 1.7 飞书文档创建
