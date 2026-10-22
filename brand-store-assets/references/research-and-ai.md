@@ -228,7 +228,7 @@ text is hard to read, adjust `--ink`, `--scrim`, or regenerate a quieter backdro
 
 - `scripts/generate_cast.py` generates fictional adult portraits from text only.
   It is for mockups, not for real users or a supplied person's likeness.
-- `scripts/style_packs.py` picks one of 20 dating/social art-direction packs.
+- `scripts/style_packs.py` picks one of 30 dating/social art-direction packs.
 - Read `mockups-and-cast.md` and `dating-style-packs.md` before using either.
 
 ### AI QA checklist

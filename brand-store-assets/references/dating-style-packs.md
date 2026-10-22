@@ -1,6 +1,6 @@
 # Dating / social style packs
 
-The skill ships **20 art-direction packs** for dating and social store images:
+The skill ships **30 art-direction packs** for dating and social store images:
 `assets/style-packs/dating.json`. They are prompts plus palettes, not finished
 layouts. The poster template turns a pack into a visual system; the app mockup
 keeps the product's own UI palette.
@@ -34,7 +34,7 @@ or use the app's own palette as the primary direction. The Flicker delivery uses
 **After Hours Amber** for this reason; the cream/red Paper Hearts attempt was
 rejected.
 
-## The 20 packs
+## The 30 packs
 
 | # | ID | Mood |
 |---|---|---|
@@ -58,6 +58,16 @@ rejected.
 | 18 | `quiet-luxury` | Taupe, cream and burgundy; old-money restraint |
 | 19 | `electric-violet` | Violet nightlife, acid-lime accent |
 | 20 | `analog-romance` | Muted red, cream, film grain; a photo album |
+| 21 | `editorial-minimal` | Warm white, ink, muted cobalt; a magazine spread with space |
+| 22 | `soft-grunge` | Washed lilac and charcoal, faded print, soft rebellion |
+| 23 | `campus` | Cream, forest green, varsity red; campus paper and late library |
+| 24 | `luxury-night` | Black-green, champagne, emerald; a quiet table after midnight |
+| 25 | `playful-sticker` | Butter yellow, sky blue, coral; die-cut stickers and doodles |
+| 26 | `garden-party` | Sage, buttercream, tomato; a long table under trees |
+| 27 | `coastal` | Sea blue, sand, coral; sun-bleached and salt-air easy |
+| 28 | `after-party` | Champagne cream, black, silver; flash-photo energy |
+| 29 | `rainy-city` | Slate blue, wet asphalt, amber; a window seat in the rain |
+| 30 | `zine` | Off-white paper, riso pink and blue, xerox grain |
 
 ## How a pack is applied
 
@@ -156,13 +166,15 @@ marketing for this product, not a style demo.
 1. Run `--next` (or `--random` again).
 2. Rebuild the poster manifest with the new palette and props.
 3. Keep the same app mockups and cast, unless the user also wants a new cast.
-4. Re-render the five panels and the feature graphic.
+4. Re-render the set and, for Play, the feature graphic.
 5. Do not mix two packs in one set.
 
-The current Flicker test used **Paper Hearts** (`paper-hearts`): cream paper, red
-ink, serif headline, red italic accent. The phone content stayed Flicker's dark
-coral UI. The next pack in the rotation is `neon-arcade`; if the user wants a
-different direction, run `--next` from the Flicker folder.
+The current Flicker delivery uses **After Hours Amber** (`after-hours-amber`): deep
+night field, cream, coral, serif headline. That pack matches the app's own dark
+coral UI. The cream/red Paper Hearts attempt was rejected because it fought the
+product; it remains in the library as an option, not as the Flicker default. Neon
+Arcade remains an alternative rebuilt-UI set in `upload-neon/`. The next pack in
+the rotation after After Hours Amber is `peach-noir`.
 
 ## Safety and claims
 

@@ -1,16 +1,31 @@
 {
   "category": "dating-social",
-  "version": 1,
+  "version": 2,
   "note": "Art-direction packs for dating/social store images. Palettes drive the poster wrapper; the app UI keeps its own product palette. Cast prompts are for fictional adults only, fully clothed and non-explicit.",
   "packs": [
     {
       "id": "after-hours-amber",
       "name": "After Hours Amber",
-      "tags": ["nocturnal", "editorial", "warm"],
+      "tags": [
+        "nocturnal",
+        "editorial",
+        "warm"
+      ],
       "mood": "Late-night city editorial: deep ink, amber streetlight, quiet intimacy.",
-      "palette": {"field": "#141014", "ink": "#F5ECE4", "accent": "#E8876A", "accent2": "#F2C6A0", "paper": "#F2E6DA"},
+      "palette": {
+        "field": "#141014",
+        "ink": "#F5ECE4",
+        "accent": "#E8876A",
+        "accent2": "#F2C6A0",
+        "paper": "#F2E6DA"
+      },
       "display": "Heavy sans headline, serif italic second line, small uppercase pill badge.",
-      "props": ["spark motif", "dashed orbit", "uppercase pill badge", "small floating callout"],
+      "props": [
+        "spark motif",
+        "dashed orbit",
+        "uppercase pill badge",
+        "small floating callout"
+      ],
       "background_prompt": "Abstract late-night city bokeh, deep ink field, amber streetlight glow, fine 35mm grain, generous negative space, no text, no people, no logo, no device.",
       "cast_prompt": "candid 35mm portrait, warm streetlight, night city bokeh, natural skin, fully clothed, editorial, relaxed",
       "avoid": "neon overload, fake ratings, heart clichés"
@@ -18,11 +33,25 @@
     {
       "id": "peach-noir",
       "name": "Peach Noir",
-      "tags": ["romantic", "cinematic", "warm"],
+      "tags": [
+        "romantic",
+        "cinematic",
+        "warm"
+      ],
       "mood": "Film-noir shadows warmed by peach and coral; intimate but grown-up.",
-      "palette": {"field": "#2A1418", "ink": "#FFF0E6", "accent": "#FF8F6B", "accent2": "#FFD1B8", "paper": "#F6E3D8"},
+      "palette": {
+        "field": "#2A1418",
+        "ink": "#FFF0E6",
+        "accent": "#FF8F6B",
+        "accent2": "#FFD1B8",
+        "paper": "#F6E3D8"
+      },
       "display": "Heavy display sans; one serif italic line; quiet uppercase eyebrow.",
-      "props": ["peach starburst badge", "film-frame corners", "soft callout card"],
+      "props": [
+        "peach starburst badge",
+        "film-frame corners",
+        "soft callout card"
+      ],
       "background_prompt": "Abstract cinematic backdrop, deep wine shadows and peach light, soft 35mm grain, blurred window light, no text, no people, no logo.",
       "cast_prompt": "cinematic 35mm portrait, peach window light, deep shadow, natural skin, fully clothed, intimate but modest",
       "avoid": "red-light clichés, lingerie, fake awards"
@@ -30,11 +59,25 @@
     {
       "id": "soft-focus",
       "name": "Soft Focus",
-      "tags": ["light", "dreamy", "minimal"],
+      "tags": [
+        "light",
+        "dreamy",
+        "minimal"
+      ],
       "mood": "Warm paper and dusty rose; a gentle, human, low-contrast set.",
-      "palette": {"field": "#F4E8E4", "ink": "#2A1B20", "accent": "#C96A6E", "accent2": "#E8B4A8", "paper": "#FBF5F0"},
+      "palette": {
+        "field": "#F4E8E4",
+        "ink": "#2A1B20",
+        "accent": "#C96A6E",
+        "accent2": "#E8B4A8",
+        "paper": "#FBF5F0"
+      },
       "display": "Elegant serif headline, airy sans support, tiny letter-spaced label.",
-      "props": ["soft circle badge", "thin rule", "small handwritten note"],
+      "props": [
+        "soft circle badge",
+        "thin rule",
+        "small handwritten note"
+      ],
       "background_prompt": "Warm off-white paper texture, dusty rose wash, soft daylight, very low contrast, fine paper grain, no text, no people, no logo.",
       "cast_prompt": "soft daylight portrait, warm paper tones, natural makeup, fully clothed, gentle candid expression, 35mm film",
       "avoid": "harsh contrast, neon, busy props"
@@ -42,11 +85,25 @@
     {
       "id": "city-pop",
       "name": "City Pop",
-      "tags": ["retro", "playful", "sunset"],
+      "tags": [
+        "retro",
+        "playful",
+        "sunset"
+      ],
       "mood": "80s city-pop sunset: teal, coral, cream, chrome accents.",
-      "palette": {"field": "#0F2A33", "ink": "#FFF4E6", "accent": "#FF7A59", "accent2": "#FFD166", "paper": "#F7EAD9"},
+      "palette": {
+        "field": "#0F2A33",
+        "ink": "#FFF4E6",
+        "accent": "#FF7A59",
+        "accent2": "#FFD166",
+        "paper": "#F7EAD9"
+      },
       "display": "Wide bold sans, tight leading, one outlined accent word.",
-      "props": ["sunset circle", "chrome star", "retro ticket badge"],
+      "props": [
+        "sunset circle",
+        "chrome star",
+        "retro ticket badge"
+      ],
       "background_prompt": "Abstract 1980s city-pop sunset, teal and coral gradient, chrome highlights, fine grain, no text, no people, no logo.",
       "cast_prompt": "1980s city-pop editorial portrait, warm sunset light, glossy but natural, fully clothed, playful",
       "avoid": "literal cassette tapes, trademarked logos"
@@ -54,11 +111,25 @@
     {
       "id": "chrome-hearts",
       "name": "Chrome Hearts",
-      "tags": ["y2k", "cool", "metallic"],
+      "tags": [
+        "y2k",
+        "cool",
+        "metallic"
+      ],
       "mood": "Y2K chrome, black glass and one hot-pink accent; club-kid confidence.",
-      "palette": {"field": "#0B0B0D", "ink": "#F2F2F4", "accent": "#C8C8D0", "accent2": "#FF6B8A", "paper": "#E8E8EE"},
+      "palette": {
+        "field": "#0B0B0D",
+        "ink": "#F2F2F4",
+        "accent": "#C8C8D0",
+        "accent2": "#FF6B8A",
+        "paper": "#E8E8EE"
+      },
       "display": "Condensed heavy sans; chrome gradient accent; tiny technical labels.",
-      "props": ["chrome heart", "metallic pill", "Y2K starburst"],
+      "props": [
+        "chrome heart",
+        "metallic pill",
+        "Y2K starburst"
+      ],
       "background_prompt": "Abstract chrome and black glass surface, liquid metal highlights, hot-pink rim light, fine grain, no text, no people, no logo.",
       "cast_prompt": "Y2K editorial portrait, chrome reflections, cool rim light, fully clothed, confident, 35mm",
       "avoid": "trademarked chrome logos, fake luxury brands"
@@ -66,11 +137,25 @@
     {
       "id": "lavender-haze",
       "name": "Lavender Haze",
-      "tags": ["soft", "dreamy", "queer-friendly"],
+      "tags": [
+        "soft",
+        "dreamy",
+        "queer-friendly"
+      ],
       "mood": "Lavender dusk, lilac glow and cream; soft, open, romantic.",
-      "palette": {"field": "#2A2038", "ink": "#F6EEFF", "accent": "#C8A8FF", "accent2": "#FFC9D8", "paper": "#F3ECFA"},
+      "palette": {
+        "field": "#2A2038",
+        "ink": "#F6EEFF",
+        "accent": "#C8A8FF",
+        "accent2": "#FFC9D8",
+        "paper": "#F3ECFA"
+      },
       "display": "Serif headline with a lilac italic line; airy sans support.",
-      "props": ["haze blob", "thin star line", "soft badge"],
+      "props": [
+        "haze blob",
+        "thin star line",
+        "soft badge"
+      ],
       "background_prompt": "Abstract lavender haze, lilac and blush gradient, soft focus, fine grain, no text, no people, no logo.",
       "cast_prompt": "soft lavender-hour portrait, lilac rim light, gentle expression, fully clothed, natural, 35mm",
       "avoid": "over-saturation, unicorn clichés"
@@ -78,11 +163,25 @@
     {
       "id": "matcha-milk",
       "name": "Matcha Milk",
-      "tags": ["calm", "organic", "light"],
+      "tags": [
+        "calm",
+        "organic",
+        "light"
+      ],
       "mood": "Sage, oat and cream; calm, grounded, slow dating.",
-      "palette": {"field": "#EDF0E4", "ink": "#243128", "accent": "#6F8F6A", "accent2": "#D9C7A7", "paper": "#F7F7EF"},
+      "palette": {
+        "field": "#EDF0E4",
+        "ink": "#243128",
+        "accent": "#6F8F6A",
+        "accent2": "#D9C7A7",
+        "paper": "#F7F7EF"
+      },
       "display": "Humanist sans headline, serif accent, generous spacing.",
-      "props": ["leaf-like spark", "paper label", "small organic badge"],
+      "props": [
+        "leaf-like spark",
+        "paper label",
+        "small organic badge"
+      ],
       "background_prompt": "Abstract matcha-and-oat paper texture, sage wash, soft daylight, fine fiber grain, no text, no people, no logo.",
       "cast_prompt": "soft daylight portrait, sage and oat tones, natural skin, fully clothed, calm candid expression",
       "avoid": "wellness claims, medical imagery"
@@ -90,11 +189,25 @@
     {
       "id": "red-room",
       "name": "Red Room",
-      "tags": ["bold", "intimate", "night"],
+      "tags": [
+        "bold",
+        "intimate",
+        "night"
+      ],
       "mood": "Deep red room, warm skin tones and a single hard light.",
-      "palette": {"field": "#2A0E12", "ink": "#FFEDE5", "accent": "#E34B4B", "accent2": "#F2A65A", "paper": "#F7DDD2"},
+      "palette": {
+        "field": "#2A0E12",
+        "ink": "#FFEDE5",
+        "accent": "#E34B4B",
+        "accent2": "#F2A65A",
+        "paper": "#F7DDD2"
+      },
       "display": "Heavy sans, one serif italic line, high-contrast cream.",
-      "props": ["red circle badge", "hard shadow", "small cream callout"],
+      "props": [
+        "red circle badge",
+        "hard shadow",
+        "small cream callout"
+      ],
       "background_prompt": "Abstract deep-red room, single hard light, soft haze, fine grain, no text, no people, no logo.",
       "cast_prompt": "editorial portrait in a deep-red room, warm hard light, fully clothed, confident, 35mm",
       "avoid": "red-light district clichés, nudity"
@@ -102,11 +215,25 @@
     {
       "id": "blue-hour",
       "name": "Blue Hour",
-      "tags": ["cool", "cinematic", "calm"],
+      "tags": [
+        "cool",
+        "cinematic",
+        "calm"
+      ],
       "mood": "Midnight blue and ice light; after-dusk stillness.",
-      "palette": {"field": "#0D1B2A", "ink": "#EAF2FF", "accent": "#7FB3FF", "accent2": "#F2C6A0", "paper": "#E6EEF7"},
+      "palette": {
+        "field": "#0D1B2A",
+        "ink": "#EAF2FF",
+        "accent": "#7FB3FF",
+        "accent2": "#F2C6A0",
+        "paper": "#E6EEF7"
+      },
       "display": "Clean bold sans; serif italic accent; sparse information.",
-      "props": ["moon arc", "glass badge", "thin blue callout"],
+      "props": [
+        "moon arc",
+        "glass badge",
+        "thin blue callout"
+      ],
       "background_prompt": "Abstract blue-hour cityscape blur, midnight blue and ice blue, soft haze, fine grain, no text, no people, no logo.",
       "cast_prompt": "blue-hour portrait, cool ambient light, warm skin, fully clothed, quiet candid expression, 35mm",
       "avoid": "cold-blue skin, fake nightlife claims"
@@ -114,11 +241,25 @@
     {
       "id": "golden-hour",
       "name": "Golden Hour",
-      "tags": ["warm", "romantic", "sunset"],
+      "tags": [
+        "warm",
+        "romantic",
+        "sunset"
+      ],
       "mood": "Terracotta and gold; a long sunset, unhurried.",
-      "palette": {"field": "#3A2418", "ink": "#FFF2E2", "accent": "#F2A65A", "accent2": "#FFD9A0", "paper": "#F8E8D4"},
+      "palette": {
+        "field": "#3A2418",
+        "ink": "#FFF2E2",
+        "accent": "#F2A65A",
+        "accent2": "#FFD9A0",
+        "paper": "#F8E8D4"
+      },
       "display": "Bold serif headline, light sans support, warm cream.",
-      "props": ["sun disc", "gold rule", "small starburst"],
+      "props": [
+        "sun disc",
+        "gold rule",
+        "small starburst"
+      ],
       "background_prompt": "Abstract golden-hour texture, terracotta and honey light, soft lens flare, fine grain, no text, no people, no logo.",
       "cast_prompt": "golden-hour portrait, warm backlight, natural skin, fully clothed, relaxed candid, 35mm",
       "avoid": "overly orange skin, fake sunset claims"
@@ -126,11 +267,25 @@
     {
       "id": "monochrome-edit",
       "name": "Monochrome Edit",
-      "tags": ["minimal", "editorial", "cool"],
+      "tags": [
+        "minimal",
+        "editorial",
+        "cool"
+      ],
       "mood": "Black, white and one coral accent; gallery-clean.",
-      "palette": {"field": "#111111", "ink": "#F5F5F5", "accent": "#E8876A", "accent2": "#BDBDBD", "paper": "#EDEDED"},
+      "palette": {
+        "field": "#111111",
+        "ink": "#F5F5F5",
+        "accent": "#E8876A",
+        "accent2": "#BDBDBD",
+        "paper": "#EDEDED"
+      },
       "display": "High-contrast serif or heavy sans; one coral word; lots of space.",
-      "props": ["thin frame", "coral dot", "small index number"],
+      "props": [
+        "thin frame",
+        "coral dot",
+        "small index number"
+      ],
       "background_prompt": "Abstract black-and-white studio backdrop, soft gray gradient, fine grain, no text, no people, no logo.",
       "cast_prompt": "black-and-white editorial portrait, soft studio light, fully clothed, natural expression, 35mm",
       "avoid": "color clutter, fake gallery awards"
@@ -138,11 +293,25 @@
     {
       "id": "paper-hearts",
       "name": "Paper Hearts",
-      "tags": ["editorial", "warm", "analog"],
+      "tags": [
+        "editorial",
+        "warm",
+        "analog"
+      ],
       "mood": "Cream paper, red ink, printed matter; a love letter, not a billboard.",
-      "palette": {"field": "#F4EBDD", "ink": "#2A1A1A", "accent": "#C23B3B", "accent2": "#E2A08A", "paper": "#FBF4E8"},
+      "palette": {
+        "field": "#F4EBDD",
+        "ink": "#2A1A1A",
+        "accent": "#C23B3B",
+        "accent2": "#E2A08A",
+        "paper": "#FBF4E8"
+      },
       "display": "Serif headline, small caps, generous margins; red italic accent.",
-      "props": ["postage stamp", "red rule", "paper label"],
+      "props": [
+        "postage stamp",
+        "red rule",
+        "paper label"
+      ],
       "background_prompt": "Warm cream paper with subtle print texture, red ink accents, soft daylight, no text, no people, no logo.",
       "cast_prompt": "analog paper-toned portrait, soft window light, natural skin, fully clothed, quiet candid",
       "avoid": "fake vintage brands, postage stamps with real leaders"
@@ -150,11 +319,25 @@
     {
       "id": "neon-arcade",
       "name": "Neon Arcade",
-      "tags": ["playful", "night", "neon"],
+      "tags": [
+        "playful",
+        "night",
+        "neon"
+      ],
       "mood": "Dark arcade, hot pink and cyan neon, playful energy.",
-      "palette": {"field": "#0A0A18", "ink": "#F5F0FF", "accent": "#FF4FD8", "accent2": "#4FF0E8", "paper": "#E8E4F5"},
+      "palette": {
+        "field": "#0A0A18",
+        "ink": "#F5F0FF",
+        "accent": "#FF4FD8",
+        "accent2": "#4FF0E8",
+        "paper": "#E8E4F5"
+      },
       "display": "Wide heavy sans; outlined neon accent; short punchy lines.",
-      "props": ["neon starburst", "pixel heart", "arcade token badge"],
+      "props": [
+        "neon starburst",
+        "pixel heart",
+        "arcade token badge"
+      ],
       "background_prompt": "Abstract neon arcade reflection, hot pink and cyan light, dark glass, fine grain, no text, no people, no logo.",
       "cast_prompt": "neon-lit portrait, pink and cyan rim light, fully clothed, playful expression, 35mm",
       "avoid": "epileptic strobe, gaming trademarks"
@@ -162,11 +345,25 @@
     {
       "id": "brutalist-match",
       "name": "Brutalist Match",
-      "tags": ["raw", "bold", "graphic"],
+      "tags": [
+        "raw",
+        "bold",
+        "graphic"
+      ],
       "mood": "Concrete gray, acid yellow, black type; unapologetic and graphic.",
-      "palette": {"field": "#D8D5CE", "ink": "#121212", "accent": "#D7FF3F", "accent2": "#FF6B4A", "paper": "#F0EEE8"},
+      "palette": {
+        "field": "#D8D5CE",
+        "ink": "#121212",
+        "accent": "#596600",
+        "accent2": "#D7FF3F",
+        "paper": "#F0EEE8"
+      },
       "display": "Ultra-bold sans, oversized, tight; no serif.",
-      "props": ["black frame", "acid sticker", "raw grid label"],
+      "props": [
+        "black frame",
+        "acid sticker",
+        "raw grid label"
+      ],
       "background_prompt": "Abstract raw concrete texture, flat gray, acid-yellow highlight, hard shadow, no text, no people, no logo.",
       "cast_prompt": "raw daylight portrait against concrete, natural skin, fully clothed, direct gaze, 35mm",
       "avoid": "derivative Swiss posters, fake art awards"
@@ -174,11 +371,25 @@
     {
       "id": "glasshouse",
       "name": "Glasshouse",
-      "tags": ["fresh", "light", "modern"],
+      "tags": [
+        "fresh",
+        "light",
+        "modern"
+      ],
       "mood": "Frosted glass, mint and cream; clean, modern, approachable.",
-      "palette": {"field": "#E8F1EC", "ink": "#1E2A24", "accent": "#5C8D7A", "accent2": "#F2C6A0", "paper": "#F6FBF7"},
+      "palette": {
+        "field": "#E8F1EC",
+        "ink": "#1E2A24",
+        "accent": "#5C8D7A",
+        "accent2": "#F2C6A0",
+        "paper": "#F6FBF7"
+      },
       "display": "Modern sans headline; serif accent; clean asymmetric grid.",
-      "props": ["frosted card", "mint circle", "thin glass rule"],
+      "props": [
+        "frosted card",
+        "mint circle",
+        "thin glass rule"
+      ],
       "background_prompt": "Abstract frosted glass and mint light, soft caustics, clean gradient, fine grain, no text, no people, no logo.",
       "cast_prompt": "bright editorial portrait behind frosted glass, mint light, natural skin, fully clothed, calm",
       "avoid": "green-screen look, fake plant claims"
@@ -186,11 +397,25 @@
     {
       "id": "midnight-bloom",
       "name": "Midnight Bloom",
-      "tags": ["romantic", "night", "floral"],
+      "tags": [
+        "romantic",
+        "night",
+        "floral"
+      ],
       "mood": "Black night, magenta bloom, a flower opening after dark.",
-      "palette": {"field": "#180F1E", "ink": "#F8EAF4", "accent": "#E85D9A", "accent2": "#B58CFF", "paper": "#F3E3EC"},
+      "palette": {
+        "field": "#180F1E",
+        "ink": "#F8EAF4",
+        "accent": "#E85D9A",
+        "accent2": "#B58CFF",
+        "paper": "#F3E3EC"
+      },
       "display": "High-contrast serif headline; magenta italic accent; soft sans support.",
-      "props": ["abstract flower", "magenta glow", "petal-shaped badge"],
+      "props": [
+        "abstract flower",
+        "magenta glow",
+        "petal-shaped badge"
+      ],
       "background_prompt": "Abstract midnight floral blur, magenta and violet petals, dark background, soft glow, no text, no people, no logo.",
       "cast_prompt": "midnight portrait with soft magenta rim light, natural skin, fully clothed, romantic but modest",
       "avoid": "explicit poses, real flower brands"
@@ -198,11 +423,25 @@
     {
       "id": "sunset-strip",
       "name": "Sunset Strip",
-      "tags": ["sunny", "playful", "bold"],
+      "tags": [
+        "sunny",
+        "playful",
+        "bold"
+      ],
       "mood": "Coral sunset, yellow light, palm shadows; a warm, extroverted set.",
-      "palette": {"field": "#F26B5E", "ink": "#2A1420", "accent": "#FFD166", "accent2": "#FF9E8A", "paper": "#FFE8D6"},
+      "palette": {
+        "field": "#F26B5E",
+        "ink": "#2A1420",
+        "accent": "#5E121C",
+        "accent2": "#FFD166",
+        "paper": "#FFE8D6"
+      },
       "display": "Bold sans headline, one playful serif accent, short lines.",
-      "props": ["sun badge", "palm shadow", "ticket sticker"],
+      "props": [
+        "sun badge",
+        "palm shadow",
+        "ticket sticker"
+      ],
       "background_prompt": "Abstract sunset strip, coral and yellow gradient, palm-leaf shadows, fine grain, no text, no people, no logo.",
       "cast_prompt": "sunset portrait, warm coral and yellow light, natural skin, fully clothed, playful candid",
       "avoid": "spring-break stereotypes, fake venue names"
@@ -210,11 +449,25 @@
     {
       "id": "quiet-luxury",
       "name": "Quiet Luxury",
-      "tags": ["premium", "restrained", "warm"],
+      "tags": [
+        "premium",
+        "restrained",
+        "warm"
+      ],
       "mood": "Taupe, cream and burgundy; old-money restraint, no flash.",
-      "palette": {"field": "#2A2420", "ink": "#F4EDE4", "accent": "#A85C4A", "accent2": "#D6B98C", "paper": "#EFE7DA"},
+      "palette": {
+        "field": "#2A2420",
+        "ink": "#F4EDE4",
+        "accent": "#A85C4A",
+        "accent2": "#D6B98C",
+        "paper": "#EFE7DA"
+      },
       "display": "Refined serif headline, small sans caps, huge margins.",
-      "props": ["thin gold rule", "wax-seal badge", "small serif monogram"],
+      "props": [
+        "thin gold rule",
+        "wax-seal badge",
+        "small serif monogram"
+      ],
       "background_prompt": "Abstract quiet-luxury texture, taupe and cream, soft window light, subtle grain, no text, no people, no logo.",
       "cast_prompt": "quiet-luxury portrait, soft window light, natural skin, fully clothed, understated, 35mm",
       "avoid": "fake designer logos, luxury car clichés"
@@ -222,11 +475,25 @@
     {
       "id": "electric-violet",
       "name": "Electric Violet",
-      "tags": ["club", "bold", "modern"],
+      "tags": [
+        "club",
+        "bold",
+        "modern"
+      ],
       "mood": "Violet nightlife, acid-lime accent, electric and young.",
-      "palette": {"field": "#1A0F2E", "ink": "#F4EEFF", "accent": "#A45CFF", "accent2": "#C8FF4F", "paper": "#EDE4FA"},
+      "palette": {
+        "field": "#1A0F2E",
+        "ink": "#F4EEFF",
+        "accent": "#A45CFF",
+        "accent2": "#C8FF4F",
+        "paper": "#EDE4FA"
+      },
       "display": "Heavy sans, tight, one acid-lime line or badge.",
-      "props": ["violet glow", "acid pill", "club stamp"],
+      "props": [
+        "violet glow",
+        "acid pill",
+        "club stamp"
+      ],
       "background_prompt": "Abstract electric-violet club light, acid-lime rim, dark haze, fine grain, no text, no people, no logo.",
       "cast_prompt": "violet club-light portrait, acid-lime rim, fully clothed, confident, 35mm",
       "avoid": "drug references, real club names"
@@ -234,14 +501,288 @@
     {
       "id": "analog-romance",
       "name": "Analog Romance",
-      "tags": ["analog", "nostalgic", "warm"],
+      "tags": [
+        "analog",
+        "nostalgic",
+        "warm"
+      ],
       "mood": "Muted red, cream and film grain; a photo album from a good year.",
-      "palette": {"field": "#3A2420", "ink": "#F6E8D8", "accent": "#D96C4F", "accent2": "#E8B48A", "paper": "#F2E2D0"},
+      "palette": {
+        "field": "#3A2420",
+        "ink": "#F6E8D8",
+        "accent": "#D96C4F",
+        "accent2": "#E8B48A",
+        "paper": "#F2E2D0"
+      },
       "display": "Serif headline, handwritten-style accent, small sans support.",
-      "props": ["film frame", "date stamp", "paper photo corner"],
+      "props": [
+        "film frame",
+        "date stamp",
+        "paper photo corner"
+      ],
       "background_prompt": "Abstract analog film texture, muted red and cream, dust and grain, soft light leak, no text, no people, no logo.",
       "cast_prompt": "analog film portrait, muted red and cream, natural skin, fully clothed, candid, 35mm",
       "avoid": "fake camera brands, real photo dates"
+    },
+    {
+      "id": "editorial-minimal",
+      "name": "Editorial Minimal",
+      "tags": [
+        "minimal",
+        "editorial",
+        "light"
+      ],
+      "mood": "Warm white, ink and one muted cobalt; a magazine spread with room to breathe.",
+      "palette": {
+        "field": "#F7F4EE",
+        "ink": "#1B1B1B",
+        "accent": "#2F5D7C",
+        "accent2": "#C7B9A6",
+        "paper": "#FFFFFF"
+      },
+      "display": "High-contrast serif headline, small sans caps, huge margins, one cobalt rule.",
+      "props": [
+        "thin cobalt rule",
+        "small index number",
+        "one editorial photo crop"
+      ],
+      "background_prompt": "Abstract warm-white editorial paper, faint fiber grain, a single muted cobalt light edge, no text, no people, no logo.",
+      "cast_prompt": "editorial daylight portrait, warm white room, natural skin, fully clothed, quiet confident, 35mm",
+      "avoid": "fake magazine awards, crowded collages"
+    },
+    {
+      "id": "soft-grunge",
+      "name": "Soft Grunge",
+      "tags": [
+        "grunge",
+        "soft",
+        "cool"
+      ],
+      "mood": "Washed lilac and charcoal, faded print, a soft rebellion.",
+      "palette": {
+        "field": "#2A2730",
+        "ink": "#F0EAF0",
+        "accent": "#B9A7C9",
+        "accent2": "#D98CA8",
+        "paper": "#E7DFE4"
+      },
+      "display": "Condensed sans headline, one smudged serif accent, torn-edge details.",
+      "props": [
+        "torn paper edge",
+        "silver star",
+        "faded sticker"
+      ],
+      "background_prompt": "Abstract washed lilac and charcoal, xerox grain, faint scratches, soft flash, no text, no people, no logo.",
+      "cast_prompt": "soft-grunge portrait, washed flash, faded lilac light, fully clothed, quiet attitude, 35mm",
+      "avoid": "glamorized self-harm, real band logos"
+    },
+    {
+      "id": "campus",
+      "name": "Campus",
+      "tags": [
+        "collegiate",
+        "warm",
+        "playful"
+      ],
+      "mood": "Cream, forest green and varsity red; a campus paper, a late library, a first date.",
+      "palette": {
+        "field": "#F2E8D5",
+        "ink": "#1E3326",
+        "accent": "#A63A32",
+        "accent2": "#C9A86A",
+        "paper": "#FBF5E8"
+      },
+      "display": "Collegiate serif or varsity sans, small caps, patch and stamp details.",
+      "props": [
+        "varsity patch",
+        "notebook tab",
+        "stamped seal"
+      ],
+      "background_prompt": "Abstract campus paper, cream and forest green, faint grid and stamp texture, no text, no people, no logo.",
+      "cast_prompt": "campus daylight portrait, library or quad, natural skin, fully clothed, collegiate knitwear, 35mm",
+      "avoid": "real university marks, fake acceptance claims"
+    },
+    {
+      "id": "luxury-night",
+      "name": "Luxury Night",
+      "tags": [
+        "premium",
+        "night",
+        "elegant"
+      ],
+      "mood": "Black-green, champagne and emerald; a quiet table after midnight.",
+      "palette": {
+        "field": "#0C1412",
+        "ink": "#F6EBD6",
+        "accent": "#C9A45C",
+        "accent2": "#1F6B57",
+        "paper": "#EFE3CD"
+      },
+      "display": "Art-deco-influenced serif, wide caps, thin gold rules, restrained.",
+      "props": [
+        "thin gold frame",
+        "emerald glass",
+        "champagne seal"
+      ],
+      "background_prompt": "Abstract dark green velvet, champagne spotlight, soft emerald reflection, fine grain, no text, no people, no logo.",
+      "cast_prompt": "luxury-night portrait, champagne spotlight, dark green velvet, fully clothed, elegant, 35mm",
+      "avoid": "fake designer logos, luxury car clichés"
+    },
+    {
+      "id": "playful-sticker",
+      "name": "Playful Sticker",
+      "tags": [
+        "playful",
+        "bright",
+        "sticker"
+      ],
+      "mood": "Butter yellow, sky blue and coral; a sticker-covered notebook, a playful first message.",
+      "palette": {
+        "field": "#FFD86B",
+        "ink": "#1E2430",
+        "accent": "#B83A33",
+        "accent2": "#5BB8E8",
+        "paper": "#FFF6D9"
+      },
+      "display": "Rounded heavy sans, one hand-drawn accent, irregular sticker shapes.",
+      "props": [
+        "die-cut sticker",
+        "doodle arrow",
+        "smiley tab"
+      ],
+      "background_prompt": "Abstract butter-yellow paper with faint sky-blue doodles, playful sticker shadows, no text, no people, no logo.",
+      "cast_prompt": "playful daylight portrait, butter-yellow and sky-blue set, fully clothed, bright smile, 35mm",
+      "avoid": "childish clip-art, fake game rewards"
+    },
+    {
+      "id": "garden-party",
+      "name": "Garden Party",
+      "tags": [
+        "garden",
+        "warm",
+        "soft"
+      ],
+      "mood": "Sage, buttercream and tomato; a long table under trees.",
+      "palette": {
+        "field": "#DDE8D4",
+        "ink": "#233A2A",
+        "accent": "#C94F3D",
+        "accent2": "#F0D9A8",
+        "paper": "#F7F3E7"
+      },
+      "display": "Warm serif headline, one tomato italic line, hand-written menu details.",
+      "props": [
+        "gingham ribbon",
+        "tomato-red seal",
+        "botanical line"
+      ],
+      "background_prompt": "Abstract garden-party light, sage leaves and buttercream linen, soft dappled sun, no text, no people, no logo.",
+      "cast_prompt": "garden daylight portrait, dappled sun, sage and cream, fully clothed, relaxed, 35mm",
+      "avoid": "fake food claims, wedding-brand logos"
+    },
+    {
+      "id": "coastal",
+      "name": "Coastal",
+      "tags": [
+        "coastal",
+        "airy",
+        "sun"
+      ],
+      "mood": "Sea blue, sand and coral; sun-bleached, salt-air ease.",
+      "palette": {
+        "field": "#DCEBF1",
+        "ink": "#16323C",
+        "accent": "#C9553F",
+        "accent2": "#E8D3B0",
+        "paper": "#F7F1E6"
+      },
+      "display": "Airy serif or humanist sans, one coral italic line, wide tracking.",
+      "props": [
+        "sun-bleached photo edge",
+        "shell-like arc",
+        "sand tag"
+      ],
+      "background_prompt": "Abstract coastal light, sea-blue and sand, sun-bleached grain, soft horizon, no text, no people, no logo.",
+      "cast_prompt": "coastal daylight portrait, sea-blue and sand, sun-bleached, fully clothed, relaxed, 35mm",
+      "avoid": "swimwear, spring-break clichés"
+    },
+    {
+      "id": "after-party",
+      "name": "After Party",
+      "tags": [
+        "party",
+        "night",
+        "flash"
+      ],
+      "mood": "Champagne cream, black and silver; flash-photo energy after the party.",
+      "palette": {
+        "field": "#17131A",
+        "ink": "#F4EBDD",
+        "accent": "#C9C9D4",
+        "accent2": "#D9A7B0",
+        "paper": "#EFE5D8"
+      },
+      "display": "Bold sans or high-contrast serif, one silver line, small flash-date stamp.",
+      "props": [
+        "flash-photo frame",
+        "silver star",
+        "champagne cork"
+      ],
+      "background_prompt": "Abstract after-party flash, black and champagne, silver highlights, hard flash shadow, fine grain, no text, no people, no logo.",
+      "cast_prompt": "after-party flash portrait, champagne and black, fully clothed, candid laugh, 35mm",
+      "avoid": "drunk/party excess, drug references"
+    },
+    {
+      "id": "rainy-city",
+      "name": "Rainy City",
+      "tags": [
+        "rain",
+        "cinematic",
+        "cool"
+      ],
+      "mood": "Slate blue, wet asphalt and amber; a window seat while the city rains.",
+      "palette": {
+        "field": "#25303A",
+        "ink": "#EAF0F2",
+        "accent": "#E8A45A",
+        "accent2": "#6FA3B8",
+        "paper": "#E8EDF0"
+      },
+      "display": "Cinematic serif, one amber italic line, small rain-streak details.",
+      "props": [
+        "rain-streak overlay",
+        "amber window glow",
+        "transit ticket"
+      ],
+      "background_prompt": "Abstract rainy-city window, slate blue and wet asphalt, amber streetlight bokeh, rain streaks, no text, no people, no logo.",
+      "cast_prompt": "rainy-city portrait, window light, amber and slate, fully clothed, quiet, 35mm",
+      "avoid": "real transit logos, gloomy unsafe settings"
+    },
+    {
+      "id": "zine",
+      "name": "Zine",
+      "tags": [
+        "zine",
+        "riso",
+        "graphic"
+      ],
+      "mood": "Off-white paper, riso pink and blue, xerox grain; an art-school zine.",
+      "palette": {
+        "field": "#F4F0E6",
+        "ink": "#151515",
+        "accent": "#C22A72",
+        "accent2": "#3D6FE0",
+        "paper": "#FFFDF7"
+      },
+      "display": "Bold grotesque headline, typewriter/riso accents, visible halftone.",
+      "props": [
+        "riso registration mark",
+        "xerox photo edge",
+        "hand-stamped label"
+      ],
+      "background_prompt": "Abstract xerox paper, riso pink and blue misregistration, halftone dots, no text, no people, no logo.",
+      "cast_prompt": "art-school zine portrait, xerox flash, riso pink and blue, fully clothed, playful, 35mm",
+      "avoid": "real zine logos, unreadable type"
     }
   ]
 }

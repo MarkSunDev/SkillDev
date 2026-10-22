@@ -27,7 +27,7 @@ The renderer is deterministic HTML/CSS → PNG through a local Chromium browser.
 - **Never reuse the supplied person.** If the screenshot contains a person and the content must change, generate a new fictional adult from text only. Delete any output with exposed chest, suggestive pose, celebrity likeness, text, or logos.
 - **AI is for decoration and fictional cast only.** Generated images may be abstract backdrops or fictional adult portraits for mockups. They are never app UI, never the final logo, and never a real person's likeness.
 - **Correct device frame.** Google Play uses a Pixel frame; the App Store uses an iPhone 18 frame when the set is device-specific. Keep the frame fully visible, including its bottom edge.
-- **One style pack per set.** For dating/social, pick one of the 20 built-in packs. Random is a starting point, not a mandate: reject a pack that fights the app's own palette/type. Use `next` when the user is unhappy. Do not mix two packs in one carousel.
+- **One style pack per set.** For dating/social, pick one of the 30 built-in packs. Random is a starting point, not a mandate: reject a pack that fights the app's own palette/type. Use `next` when the user is unhappy. Do not mix two packs in one carousel.
 - **iOS icon:** exactly 1024 × 1024, RGB, no alpha, no baked rounded corners, no transparency. Apple applies the mask.
 - **Google Play icon:** exactly 512 × 512, 32-bit PNG with an alpha channel, at most 1 MB. Full-bleed artwork is safer than a floating transparent mark.
 - **Store screenshots:** flattened RGB, no alpha. Apple masters 1320 × 2868 and 1206 × 2622. Play masters 1440 × 2560 and 1080 × 1920.
@@ -75,7 +75,7 @@ If a fact cannot be derived, mark it `[待确认]` and keep going. Do not invent
 
 **Art direction**
 
-For dating/social, pick one of the 20 packs in `assets/style-packs/dating.json`:
+For dating/social, pick one of the 30 packs in `assets/style-packs/dating.json`:
 
 ```bash
 python3 scripts/style_packs.py --random
@@ -416,7 +416,7 @@ Never use these images inside the device as app UI. Never use a generated person
 | `references/layer-compositing.md` | Preserve the original layout, replace only people, avatar/card masks, overflow cards |
 | `references/screenshot-repair.md` | Fill placeholder silhouettes, avatars, empty cards, and missing photo regions |
 | `references/mockups-and-cast.md` | Full mockup mode, fictional cast generation, safety checks, app-screen workflow |
-| `references/dating-style-packs.md` | The 20 dating/social art-direction packs and the random/next picker |
+| `references/dating-style-packs.md` | The 30 dating/social art-direction packs and the random/next picker |
 | `references/store-specs.md` | Current App Store / Play sizes, alpha rules, validator rules, common failures |
 | `references/research-and-ai.md` | iconLibrary / Lucide / Mobbin / logo-generator-skill usage, licensing, AI backdrop workflow |
 | `references/demo.md` | A working example and the exact commands used to test this skill |
@@ -464,7 +464,7 @@ Never use these images inside the device as app UI. Never use a generated person
 - Logo methodology adapted from `op7418/logo-generator-skill` (MIT): six-variant workflow, simplicity/negative-space principles, showcase backgrounds. This skill replaces its AI showcase dependency with deterministic composition and adds store-safe icon/gallery specifications.
 - Icon library research: iconLibrary (directory), Lucide (ISC). Mobbin is used as a paid reference library only; never copy its screens.
 - The high-conversion patterns were distilled from reference store sets supplied by the user in October 2026. The sets are analyzed for structure; no reference imagery is redistributed in this skill.
-- The 20 dating/social style packs, poster template, app-screen mockup template, and fictional-cast workflow are original to this skill.
+- The 30 dating/social style packs, poster template, app-screen mockup template, and fictional-cast workflow are original to this skill.
 - Generated cast images are fictional adults created from text prompts. They are never the supplied person, a real user, or a celebrity likeness. Inspect every output before use.
 - Bundled fonts: Instrument Serif and Public Sans, SIL Open Font License. License files are in `assets/fonts/`.
 - The renderer uses the locally installed browser; no browser binaries are redistributed.

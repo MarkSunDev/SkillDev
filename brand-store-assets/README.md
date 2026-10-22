@@ -146,11 +146,11 @@ brand-store-assets/
     generate_cast.py        # fictional adult cast for mockups (text-only)
     render_mockups.py       # deterministic app-screen mockups
     repair_region.py        # fill placeholder/photo regions without touching UI
-    style_packs.py          # random/next picker for 20 dating style packs
+    style_packs.py          # random/next picker for 30 dating style packs
     make_showcase.py        # deterministic logo + backdrop composite
   assets/
     templates/              # gallery, poster, app-screen, feature, overview, icon, showcase
-    style-packs/dating.json # 20 art-direction packs
+    style-packs/dating.json # 30 art-direction packs
     fonts/                  # Instrument Serif + Public Sans (OFL)
   examples/demo/            # fictional demo, placeholder screens
 ```
@@ -186,7 +186,7 @@ brand-store-assets/
   there is no usable base, rebuild the UI deterministically and generate a new
   fictional cast. Never reuse the supplied person's photo, and never present a
   mockup as a real build capture.
-- **Style packs are one-per-set.** Pick one of the 20 dating/social packs at
+- **Style packs are one-per-set.** Pick one of the 30 dating/social packs at
   random; use `--next` when the user wants a different direction. Do not mix two
   packs in one carousel.
 
