@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>Store poster</title>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans-Italic.ttf") format("truetype");font-weight:100 900;font-style:italic;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+:root{
+  --font-display:"Public Sans","PingFang SC","Noto Sans SC",sans-serif;
+  --font-serif:"Instrument Serif","Songti SC","Noto Serif SC",serif;
+  --font-body:"Public Sans","PingFang SC","Noto Sans SC",sans-serif;
+  --w:1440px;--h:2560px;--u:2.56px;--mx:92px;
+  --bg:#141014;--ink:#F5ECE4;--accent:#E8876A;--accent2:#F2C6A0;
+}
+.canvas{position:relative;width:var(--w);height:var(--h);overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.wash{position:absolute;inset:0;pointer-events:none;opacity:.9;background:
+  radial-gradient(100% 55% at 88% -6%, color-mix(in srgb,var(--accent) 22%, transparent), transparent 62%),
+  radial-gradient(80% 55% at 4% 108%, color-mix(in srgb,var(--accent2) 14%, transparent), transparent 62%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.045;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='240' height='240' filter='url(%23n)' opacity='.65'/></svg>");
+  background-size:240px 240px}
+.bg-spark{position:absolute;right:-8%;top:-12%;width:56%;aspect-ratio:1;opacity:.09;color:var(--accent);pointer-events:none}
+.bg-spark svg,.bg-spark img{display:block;width:100%;height:100%;object-fit:contain}
+.arc{position:absolute;left:50%;top:58%;width:86%;aspect-ratio:1;transform:translate(-50%,-50%);border:2px dashed color-mix(in srgb,var(--accent) 42%, transparent);border-radius:50%;opacity:.35;pointer-events:none}
+.arc::after{content:"";position:absolute;inset:9%;border:1px solid color-mix(in srgb,var(--ink) 18%, transparent);border-radius:50%}
+
+.eyebrow{position:absolute;left:var(--mx);top:calc(var(--h)*.055);z-index:4;display:inline-flex;align-items:center;gap:calc(var(--u)*8);padding:calc(var(--u)*9) calc(var(--u)*16);border-radius:999px;background:color-mix(in srgb,var(--ink) 12%, transparent);border:1px solid color-mix(in srgb,var(--ink) 24%, transparent);font-size:calc(var(--u)*12);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);white-space:nowrap;backdrop-filter:blur(8px)}
+.eyebrow .dot{width:calc(var(--u)*7);height:calc(var(--u)*7);border-radius:50%;background:var(--accent)}
+.headline{position:absolute;left:var(--mx);top:calc(var(--h)*.095);width:calc(100% - var(--mx)*2);z-index:4;font-size:calc(var(--h)*.073);line-height:.92;letter-spacing:-.04em}
+.headline .l1{display:block;font-family:var(--font-display);font-weight:var(--headline-weight,850);white-space:nowrap;color:var(--ink)}
+.headline .l2{display:block;font-family:var(--font-serif);font-style:italic;font-weight:400;white-space:nowrap;color:var(--accent);letter-spacing:-.015em;margin-top:calc(var(--u)*2)}
+body[data-line2="sans"] .headline .l2{font-family:var(--font-display);font-style:normal;font-weight:var(--headline-weight,850);letter-spacing:-.035em}
+.support{position:absolute;left:var(--mx);top:calc(var(--h)*.255);width:76%;z-index:4;font-size:calc(var(--h)*.0155);line-height:1.38;font-weight:500;color:var(--ink);opacity:.78}
+.support .line{display:block;white-space:nowrap}
+
+.badge{position:absolute;right:calc(var(--mx)*.9);top:calc(var(--h)*.30);z-index:5;width:calc(var(--u)*112);height:calc(var(--u)*112);display:flex;align-items:center;justify-content:center;text-align:center;background:var(--accent);color:var(--badge-ink,#1A1012);transform:rotate(7deg);clip-path:polygon(50% 0%,61% 14%,78% 8%,82% 25%,98% 29%,91% 45%,100% 58%,86% 68%,89% 85%,72% 86%,62% 100%,50% 89%,38% 100%,28% 86%,11% 85%,14% 68%,0% 58%,9% 45%,2% 29%,18% 25%,22% 8%,39% 14%)}
+.badge span{display:block;font-size:calc(var(--u)*12.5);font-weight:850;line-height:1.02;letter-spacing:.02em;text-transform:uppercase;padding:0 calc(var(--u)*13)}
+.sticker{position:absolute;right:calc(var(--mx)*.92);top:calc(var(--h)*.455);z-index:5;padding:calc(var(--u)*8) calc(var(--u)*14);border-radius:999px;background:var(--ink);color:var(--bg);font-size:calc(var(--u)*11);font-weight:800;letter-spacing:.06em;text-transform:uppercase;transform:rotate(-6deg);box-shadow:0 calc(var(--u)*8) calc(var(--u)*20) rgba(0,0,0,.2);white-space:nowrap}
+.callout{position:absolute;left:calc(var(--mx)*.82);top:calc(var(--h)*.57);z-index:5;max-width:calc(var(--u)*118);padding:calc(var(--u)*10) calc(var(--u)*12);border-radius:calc(var(--u)*14);background:color-mix(in srgb,var(--ink) 94%, transparent);color:var(--bg);font-size:calc(var(--u)*12);line-height:1.3;font-weight:600;box-shadow:0 calc(var(--u)*10) calc(var(--u)*26) rgba(0,0,0,.22);transform:rotate(-2deg)}
+.callout::after{content:"";position:absolute;right:calc(var(--u)*-9);top:50%;transform:translateY(-50%);border-left:calc(var(--u)*10) solid color-mix(in srgb,var(--ink) 94%, transparent);border-top:calc(var(--u)*8) solid transparent;border-bottom:calc(var(--u)*8) solid transparent}
+.callout.right{left:auto;right:calc(var(--mx)*.82);transform:rotate(2deg)}
+.callout.right::after{right:auto;left:calc(var(--u)*-9);border-left:0;border-right:calc(var(--u)*10) solid color-mix(in srgb,var(--ink) 94%, transparent)}
+
+.device{position:absolute;left:50%;z-index:3;transform:translateX(-50%) rotate(var(--tilt));transform-origin:50% 50%;overflow:visible}
+.device .screen{position:relative;width:100%;height:100%;overflow:hidden;background:#000}
+.device .screen img{display:block;width:100%;height:100%;object-fit:cover}
+.device.pixel{background:#08080A;border:1px solid #3B3438;border-radius:calc(var(--u)*50);box-shadow:0 calc(var(--u)*34) calc(var(--u)*70) rgba(0,0,0,.42),inset 0 0 0 1px rgba(255,255,255,.10)}
+.device.pixel .screen{border-radius:calc(var(--u)*40)}
+.device.pixel .punch{position:absolute;top:calc(var(--u)*14);left:50%;transform:translateX(-50%);width:calc(var(--u)*11);height:calc(var(--u)*11);border-radius:50%;background:#000;z-index:6;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
+.device.pixel .side{position:absolute;right:calc(var(--u)*-4);width:calc(var(--u)*4);border-radius:calc(var(--u)*3);background:#1B1A1C;box-shadow:inset 1px 0 0 rgba(255,255,255,.08)}
+.device.pixel .side.power{top:30%;height:calc(var(--u)*80)}
+.device.pixel .side.volume{top:20%;height:calc(var(--u)*52)}
+.device.iphone{background:#050506;border:1px solid #6B625C;border-radius:calc(var(--u)*58);box-shadow:0 calc(var(--u)*36) calc(var(--u)*76) rgba(0,0,0,.44),inset 0 0 0 1px rgba(255,255,255,.12)}
+.device.iphone .screen{border-radius:calc(var(--u)*50)}
+.device.iphone .island{position:absolute;top:calc(var(--u)*13);left:50%;transform:translateX(-50%);width:calc(var(--u)*76);height:calc(var(--u)*22);border-radius:999px;background:#000;z-index:6}
+.device.iphone .side{position:absolute;width:calc(var(--u)*4);border-radius:calc(var(--u)*3);background:#2A2724;box-shadow:inset 1px 0 0 rgba(255,255,255,.10)}
+.device.iphone .side.power{right:calc(var(--u)*-4);top:30%;height:calc(var(--u)*82)}
+.device.iphone .side.volume{left:calc(var(--u)*-4);top:23%;height:calc(var(--u)*46)}
+.device.card{background:transparent;border-radius:calc(var(--u)*34);box-shadow:0 calc(var(--u)*30) calc(var(--u)*64) rgba(0,0,0,.24)}
+.device.card .screen{border-radius:calc(var(--u)*34)}
+
+.overflow-card{position:absolute;z-index:2;width:calc(var(--u)*132);aspect-ratio:.72;border-radius:calc(var(--u)*24);overflow:hidden;background:#241A1E;box-shadow:0 calc(var(--u)*26) calc(var(--u)*56) rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.14);transform:rotate(var(--overflow-rotate,-7deg))}
+.overflow-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+.overflow-card .overflow-shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,7,8,.96),rgba(10,7,8,.15) 62%,transparent 82%)}
+.overflow-card .overflow-meta{position:absolute;left:calc(var(--u)*16);right:calc(var(--u)*16);bottom:calc(var(--u)*14)}
+.overflow-card .overflow-name{font-family:var(--font-serif);font-size:calc(var(--u)*19);line-height:1.02;color:#F5ECE4;white-space:nowrap}
+.overflow-card .overflow-sub{font-size:calc(var(--u)*8);font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-top:calc(var(--u)*5);line-height:1.25;white-space:normal}
+.overflow-card.left,.overflow-card.right{top:52%}
+.overflow-card.left .overflow-meta{right:calc(20% + var(--u)*16)}
+.overflow-card.right .overflow-meta{left:calc(20% + var(--u)*16);right:calc(var(--u)*16);text-align:left}
+.overflow-card .overflow-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-bottom:calc(var(--u)*80);color:var(--ink);opacity:.5}
+.overflow-card .overflow-placeholder svg{width:calc(var(--u)*56);height:calc(var(--u)*56);fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+
+.footer{position:absolute;left:var(--mx);right:var(--mx);bottom:calc(var(--h)*.022);z-index:6;display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*20)}
+.brand{display:flex;align-items:center;gap:calc(var(--u)*9)}
+.brand .mark{width:calc(var(--u)*20);height:calc(var(--u)*20);display:flex;align-items:center;justify-content:center}
+.brand .mark svg,.brand .mark img{display:block;width:100%;height:100%;object-fit:contain}
+.brand .name{font-size:calc(var(--u)*12);font-weight:800;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.footer .note{font-size:calc(var(--u)*10);font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.48;white-space:nowrap}
+
+body[data-mood="neon"] .device.pixel{border-color:color-mix(in srgb,var(--accent) 55%, #3B3438)}
+body[data-mood="neon"] .device.iphone{border-color:color-mix(in srgb,var(--accent) 48%, #6B625C)}
+body[data-mood="neon"] .device{box-shadow:0 0 calc(var(--u)*58) color-mix(in srgb,var(--accent) 34%, transparent),0 calc(var(--u)*34) calc(var(--u)*70) rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,255,255,.12)}
+body[data-mood="neon"] .canvas::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--ink) 10%, transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--ink) 10%, transparent) 1px,transparent 1px);background-size:calc(var(--u)*42) calc(var(--u)*42);opacity:.16;mask-image:linear-gradient(180deg,#000 0%,transparent 58%)}
+body[data-store="apple"] .headline{font-size:calc(var(--h)*.070)}
+body[data-store="apple"] .support{top:calc(var(--h)*.252)}
+</style>
+</head>
+<body>
+<div class="canvas" id="canvas">
+  <div class="wash" id="wash"></div>
+  <div class="arc" id="arc"></div>
+  <div class="bg-spark" id="bgSpark"></div>
+  <div class="grain"></div>
+
+  <div class="eyebrow" id="eyebrow"><span class="dot"></span><span id="eyebrowText"></span></div>
+  <div class="headline" id="headline">
+    <span class="l1" id="h1"></span>
+    <span class="l2" id="h2"></span>
+  </div>
+  <div class="support" id="support"></div>
+
+  <div class="badge" id="badge" hidden><span id="badgeText"></span></div>
+  <div class="sticker" id="sticker" hidden></div>
+  <div class="callout" id="callout" hidden></div>
+
+  <div class="device" id="device">
+    <div class="screen"><img id="shot" alt=""></div>
+    <div class="punch" id="punch" hidden></div>
+    <div class="island" id="island" hidden></div>
+    <div class="side power"></div>
+    <div class="side volume"></div>
+  </div>
+
+  <div class="overflow-card" id="overflowCard" hidden>
+    <img id="overflowPhoto" alt="">
+    <div class="overflow-shade"></div>
+    <div class="overflow-placeholder" id="overflowPlaceholder" hidden>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+    </div>
+    <div class="overflow-meta">
+      <div class="overflow-name" id="overflowName"></div>
+      <div class="overflow-sub" id="overflowSub"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="mark" id="mark"></div>
+      <div class="name" id="brandName"></div>
+    </div>
+    <div class="note" id="note"></div>
+  </div>
+</div>
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const I = D.image || {};
+  const root = document.documentElement;
+  const W = Number(D.width) || 1440;
+  const H = Number(D.height) || 2560;
+  const u = H / 1000;
+  const store = D.store === "apple" ? "apple" : "play";
+  const frame = I.frame || (store === "apple" ? "iphone" : "pixel");
+  const tilt = Number(I.tilt == null ? -2 : I.tilt);
+
+  root.style.setProperty("--w", W + "px");
+  root.style.setProperty("--h", H + "px");
+  root.style.setProperty("--u", u + "px");
+  root.style.setProperty("--mx", Math.round(W * (store === "apple" ? 0.07 : 0.064)) + "px");
+  root.style.setProperty("--bg", I.bg || "#141014");
+  root.style.setProperty("--ink", I.ink || "#F5ECE4");
+  root.style.setProperty("--accent", I.accent || "#E8876A");
+  root.style.setProperty("--accent2", I.accent2 || I.accent || "#F2C6A0");
+  root.style.setProperty("--badge-ink", I.badge_ink || "#1A1012");
+  root.style.setProperty("--tilt", tilt + "deg");
+  root.style.setProperty("--font-display", (D.type && D.type.headline) || getComputedStyle(root).getPropertyValue("--font-display"));
+  root.style.setProperty("--font-body", (D.type && D.type.body) || getComputedStyle(root).getPropertyValue("--font-body"));
+  root.style.setProperty("--headline-weight", (D.type && D.type.headline_weight) || 850);
+  document.body.dataset.store = store;
+  document.body.dataset.frame = frame;
+  document.body.dataset.line2 = (D.type && D.type.line2) || "serif";
+  document.body.dataset.mood = (I.mood || "glow");
+
+  const mood = I.mood || "glow";
+  if (mood === "plain") document.getElementById("wash").style.display = "none";
+  if (mood !== "motif" && mood !== "glow" && mood !== "neon") document.getElementById("arc").style.display = "none";
+
+  if (D.brand && (D.brand.logo_svg || D.brand.logo_url)) {
+    const spark = document.getElementById("bgSpark");
+    if (D.brand.logo_svg) spark.innerHTML = D.brand.logo_svg;
+    else {
+      const img = document.createElement("img");
+      img.src = D.brand.logo_url;
+      spark.appendChild(img);
+    }
+  } else {
+    document.getElementById("bgSpark").style.display = "none";
+  }
+
+  document.getElementById("eyebrowText").textContent = I.eyebrow || I.feature || "";
+  if (!(I.eyebrow || I.feature)) document.getElementById("eyebrow").style.display = "none";
+
+  const title = I.title || ["", ""];
+  document.getElementById("h1").textContent = title[0] || "";
+  document.getElementById("h2").textContent = title[1] || "";
+  if (!title[1]) document.getElementById("h2").style.display = "none";
+
+  const body = I.body || [];
+  const support = document.getElementById("support");
+  body.forEach(function (line) {
+    const span = document.createElement("span");
+    span.className = "line";
+    span.textContent = line;
+    support.appendChild(span);
+  });
+  if (!body.length) support.style.display = "none";
+
+  if (I.badge) {
+    document.getElementById("badgeText").textContent = I.badge;
+    document.getElementById("badge").hidden = false;
+  }
+  if (I.sticker) {
+    const sticker = document.getElementById("sticker");
+    sticker.textContent = I.sticker;
+    sticker.hidden = false;
+  }
+  if (I.callout) {
+    const callout = document.getElementById("callout");
+    callout.textContent = I.callout;
+    callout.hidden = false;
+    if (I.callout_side === "right") callout.classList.add("right");
+  }
+
+  const mark = document.getElementById("mark");
+  const brand = D.brand || {};
+  if (brand.logo_svg) mark.innerHTML = brand.logo_svg;
+  else if (brand.logo_url) {
+    const img = document.createElement("img");
+    img.src = brand.logo_url;
+    mark.appendChild(img);
+  } else {
+    const span = document.createElement("span");
+    span.className = "initials";
+    span.textContent = brand.initials || "A";
+    mark.appendChild(span);
+  }
+  document.getElementById("brandName").textContent = brand.name || D.app || "App";
+  document.getElementById("note").textContent = I.footer || "";
+
+  const device = document.getElementById("device");
+  const shot = document.getElementById("shot");
+  shot.src = I.screenshot || "";
+  device.classList.add(frame === "iphone" ? "iphone" : frame === "card" ? "card" : "pixel");
+  if (frame === "pixel") document.getElementById("punch").hidden = false;
+  if (frame === "iphone") document.getElementById("island").hidden = false;
+
+  const ov = I.overflow;
+  if (ov && (ov.photo || ov.name)) {
+    const card = document.getElementById("overflowCard");
+    const photo = document.getElementById("overflowPhoto");
+    const placeholder = document.getElementById("overflowPlaceholder");
+    card.hidden = false;
+    card.classList.add(ov.side === "right" ? "right" : "left");
+    if (ov.photo) {
+      photo.src = ov.photo;
+      photo.style.objectPosition = ov.photo_position || "50% 22%";
+    } else {
+      photo.style.display = "none";
+      placeholder.hidden = false;
+    }
+    document.getElementById("overflowName").textContent = ov.name || "";
+    document.getElementById("overflowSub").textContent = ov.sub || "";
+    if (ov.rotate != null) card.style.setProperty("--overflow-rotate", ov.rotate + "deg");
+  }
+
+  function fitBlock(el, maxWidth, minScale) {
+    if (!el || !el.textContent.trim()) return;
+    const initial = parseFloat(getComputedStyle(el).fontSize);
+    let size = initial;
+    let guard = 0;
+    while (el.scrollWidth > maxWidth + 1 && size > initial * minScale && guard < 220) {
+      size -= Math.max(0.5, initial * 0.005);
+      el.style.fontSize = size + "px";
+      guard += 1;
+    }
+  }
+
+  function layoutText() {
+    const max = W - 2 * Math.round(W * (store === "apple" ? 0.07 : 0.064));
+    fitBlock(document.getElementById("headline"), max, 0.66);
+    fitBlock(document.getElementById("support"), max * 0.92, 0.72);
+    fitBlock(document.getElementById("eyebrowText"), max * 0.62, 0.78);
+  }
+
+  function layoutDevice() {
+    const topY = H * 0.345;
+    const footerY = H * 0.948;
+    const pad = frame === "iphone" ? u * 7 : frame === "card" ? 0 : u * 9;
+    const capW = W * (store === "apple" ? 0.64 : 0.585);
+    const aspect = Number(I.aspect) > 0 ? Number(I.aspect) : (store === "apple" ? 1320 / 2868 : 1080 / 2400);
+    const available = footerY - topY - u * 56;
+    let outerH = available;
+    let screenH = outerH - pad * 2;
+    let screenW = screenH * aspect;
+    let outerW = screenW + pad * 2;
+    if (outerW > capW) {
+      outerW = capW;
+      screenW = outerW - pad * 2;
+      screenH = screenW / aspect;
+      outerH = screenH + pad * 2;
+    }
+    device.style.width = outerW + "px";
+    device.style.height = outerH + "px";
+    device.style.top = topY + "px";
+
+    const card = document.getElementById("overflowCard");
+    if (card && !card.hidden) {
+      const cw = card.offsetWidth || u * 132;
+      const behind = 0.20;
+      const phoneLeft = W / 2 - outerW / 2;
+      const phoneRight = W / 2 + outerW / 2;
+      if (card.classList.contains("left")) {
+        card.style.left = (phoneLeft - cw * (1 - behind)) + "px";
+      } else {
+        card.style.left = (phoneRight - cw * behind) + "px";
+      }
+    }
+  }
+
+  function start() {
+    layoutDevice();
+    layoutText();
+    document.body.dataset.ready = "1";
+  }
+  if (shot.complete) requestAnimationFrame(start);
+  else shot.addEventListener("load", function () { requestAnimationFrame(start); }, { once: true });
+  document.fonts.ready.then(function () { requestAnimationFrame(start); });
+})();
+</script>
+</body>
+</html>

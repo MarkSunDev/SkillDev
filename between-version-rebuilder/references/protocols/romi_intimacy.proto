@@ -1,0 +1,31 @@
+syntax = "proto3";
+package between.romi;
+option swift_prefix = "RomiWire_";
+// BuzzMe IntimacyProto, commands 21000–21015. Enum fields retain raw wire values.
+message CheckFreeExchangeConditionRequest { int32 male_user_id = 1; int32 female_user_id = 2; }
+message CheckFreeExchangeConditionResponse {
+ int32 code = 1; int32 status = 2; string plan = 3; double score = 4; double threshold = 5;
+ int32 error_code = 8; string toast_message = 9; bool daily_first_round_completed = 10;
+ bool is_ig_online = 11; int32 intimacy_change_status = 12; int32 unlock_card_type = 14;
+ int64 order_created_at = 15; int64 cooldown_end_at = 16; int32 order_create_user_id = 17;
+ int64 order_id = 18; string order_tim_msgid = 19; map<string,bool> platform_online = 20;
+}
+message CreateFreeExchangeOrderRequest {
+ int32 male_user_id = 1; int32 female_user_id = 2; int32 card_type = 3; string experiment_group = 4;
+}
+message CreateFreeExchangeOrderResponse {
+ int32 code = 1; int64 order_id = 2; string status = 3; int64 expire_at = 4;
+ int32 error_code = 5; string toast_message = 6; string pwa_follow_reward = 7;
+}
+message ContactCard {
+ int32 user_id = 2; int32 card_type = 3; string account_id = 4; string avatar_url = 5;
+ int64 created_at = 6; int64 updated_at = 7; string nickname = 8;
+}
+message SaveContactCardRequest {
+ int32 user_id = 1; int32 card_type = 2; string account_id = 3; string avatar_url = 4; string nickname = 5;
+}
+message SaveContactCardResponse { int32 code = 1; string message = 2; ContactCard card = 3; }
+message GetContactCardsRequest { int32 user_id = 1; repeated int32 card_types = 2; }
+message GetContactCardsResponse { int32 code = 1; string message = 2; repeated ContactCard cards = 3; }
+message GetSupportedCardTypesRequest {}
+message GetSupportedCardTypesResponse { int32 code = 1; repeated int32 card_types = 2; }

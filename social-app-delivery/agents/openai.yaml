@@ -1,0 +1,4 @@
+interface:
+  display_name: "Social App Delivery"
+  short_description: "Build or port social apps across stacks and visual systems"
+  default_prompt: "Build or port this social app end-to-end, with real service states and reproducible acceptance evidence."

@@ -1,0 +1,48 @@
+{
+  "_comment": "replicaNew 配置集中化模板。仓库里只放本文件（占位值）；真值写 app-config.local.json（已 gitignore）或 CI secret。构建期注入 BuildConfig，业务代码只引用 AppConfig 常量。rebind 换主体 = 只改这里 + 换 keystore。",
+  "app": {
+    "name": "NewApp",
+    "applicationIdDebug": "com.newapp.dev",
+    "applicationIdRelease": "com.newentity.newapp",
+    "supportEmailTemplate": "support+{userId}_{version}@newdomain.com"
+  },
+  "hosts": {
+    "apiProd": "https://api-prod.newdomain.com",
+    "apiDev": "https://api-dev.newdomain.com",
+    "tcpProd": "prod-tcp.newdomain.com",
+    "tcpDev": "dev-tcp.newdomain.com",
+    "tcpPort": 8000,
+    "legalBase": "https://legal.newdomain.com"
+  },
+  "sdk": {
+    "tencentImSdkAppId": 0,
+    "firebaseGoogleServicesJson": {
+      "debug": "app/src/debug/google-services.json",
+      "release": "app/src/release/google-services.json"
+    },
+    "bytePlusAppId": "",
+    "appsFlyerAppId": "",
+    "pushBusinessId": 0
+  },
+  "billing": {
+    "_comment": "SKU 由服务端下发为默认；这里登记的是客户端做类型判断的前缀",
+    "vipSubscriptionPrefix": "premium",
+    "visitorSubscriptionPrefix": "visitor",
+    "coinProductPrefix": "newapp_coins"
+  },
+  "device": {
+    "deviceIdPrefix": "newapp",
+    "headerAppName": "newapp_android"
+  },
+  "legal": {
+    "privacyPolicyUrl": "https://legal.newdomain.com/privacy",
+    "termsUrl": "https://legal.newdomain.com/terms",
+    "accountDeletionUrl": "https://legal.newdomain.com/delete-account"
+  },
+  "debug": {
+    "_comment": "仅 debug 变体可见；release 构建物理取不到",
+    "demoMode": false,
+    "fakeBilling": false,
+    "logProto": true
+  }
+}

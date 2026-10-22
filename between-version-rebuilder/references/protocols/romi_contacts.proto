@@ -1,0 +1,73 @@
+syntax = "proto3";
+package between.romi;
+option swift_prefix = "RomiWire_";
+import "romi_auth.proto";
+
+// BuzzMe ContactsProto.pb.swift / ProtoRegistry.swift (1.3.0/develop).
+// Related contacts are a full snapshot, not a friendship or cursor endpoint.
+message ListMaleRelatedFemalesRequest {}
+message ListMaleRelatedFemalesResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated UserInfo females = 3;
+}
+message MatchFeedFilter {
+  int32 gender = 1;
+  int32 min_age = 2;
+  int32 max_age = 3;
+  int32 user_score = 4;
+}
+message GetSuggestedFriendsFeedsRequest {
+  int32 limit = 1;
+  MatchFeedFilter filter = 2;
+  string zip_code = 3;
+  double latitude = 4;
+  double longitude = 5;
+}
+message GetSuggestedFriendsFeedsResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated UserInfo user_infos = 3;
+  repeated MatchCardExtra ext_infos = 4;
+}
+
+// Stranger discovery, rather than the suggested-friends endpoint above.
+message GetMatchFeedsV3Request {
+  int32 limit = 1;
+  MatchFeedFilter filter = 2;
+  string zip_code = 3;
+  double latitude = 4;
+  double longitude = 5;
+}
+message GetMatchFeedsV3Response {
+  int32 code = 1;
+  string message = 2;
+  repeated UserInfo user_infos = 3;
+  repeated MatchCardExtra ext_infos = 4;
+}
+message MatchCardExtra { int32 user_id = 1; double distance = 2; string distant_content = 3; }
+message SwipeCardRequest { int32 user_id = 1; int32 swipe_type = 2; int64 view_duration = 3; }
+message SwipeCardResponse { int32 code = 1; string message = 2; bool trigger_match = 3; }
+
+// Sitin 4.3 nearbyApi.ts: public online male discovery, cursor pagination.
+// Request 5108 / response 5109. Not GraceChat's eligibility-gated 4492.
+message GetNearbyOnlineUsersRequest {
+  string cursor = 1;
+  int32 limit = 2;
+}
+message NearbyExtInfo {
+  int32 user_id = 1;
+  double distance_km = 2;
+  string distance_content = 3;
+  bool has_greeted = 4;
+  string conversation_id = 5;
+}
+message GetNearbyOnlineUsersResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated UserInfo user_infos = 3;
+  repeated NearbyExtInfo ext_infos = 4;
+  string next_cursor = 5;
+  bool has_more = 6;
+  int32 say_hi_count = 7;
+}

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>Store gallery image</title>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans-Italic.ttf") format("truetype");font-weight:100 900;font-style:italic;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+:root{
+  --font-headline:"Instrument Serif","Songti SC","Noto Serif SC",serif;
+  --font-body:"Public Sans","PingFang SC","Noto Sans SC",sans-serif;
+  --w:1320px;--h:2868px;--u:2.868px;--mx:82px;
+  --bg:#F7F4ED;--ink:#3C2634;--accent:#D7EA8E;
+}
+.canvas{
+  position:relative;width:var(--w);height:var(--h);overflow:hidden;
+  background:var(--bg);color:var(--ink);font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;
+}
+.wash{position:absolute;inset:0;pointer-events:none;opacity:.8;
+  background:
+    radial-gradient(115% 65% at 82% -8%, color-mix(in srgb,var(--accent) 15%, transparent), transparent 62%),
+    radial-gradient(85% 55% at -8% 108%, color-mix(in srgb,var(--accent) 9%, transparent), transparent 60%);
+}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.045;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='240' height='240' filter='url(%23n)' opacity='.65'/></svg>");
+  background-size:240px 240px;
+}
+.motif{position:absolute;width:62%;aspect-ratio:1;right:-17%;bottom:3%;opacity:.055;pointer-events:none;color:var(--ink)}
+.motif svg,.motif img{display:block;width:100%;height:100%;object-fit:contain}
+
+.brand{position:absolute;left:var(--mx);top:var(--mx);z-index:4;display:flex;align-items:center;gap:calc(var(--u)*9)}
+.brand .mark{width:calc(var(--u)*18);height:calc(var(--u)*18);flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.brand .mark svg,.brand .mark img{display:block;width:100%;height:100%;object-fit:contain}
+.brand .mark .initials{font-family:var(--font-headline);font-size:calc(var(--u)*9.5);line-height:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;border:1.5px solid currentColor;border-radius:50%}
+.brand .name{font-size:calc(var(--u)*9.4);font-weight:600;letter-spacing:.17em;text-transform:uppercase;white-space:nowrap;line-height:1}
+
+.rule{position:absolute;left:var(--mx);right:var(--mx);top:var(--rule-y);height:1px;background:color-mix(in srgb,var(--ink) 22%, transparent);z-index:3}
+.rule::after{content:"";position:absolute;left:0;top:-1px;width:calc(var(--u)*27);height:2px;background:var(--accent)}
+
+.eyebrow{position:absolute;left:var(--mx);top:var(--eyebrow-y);z-index:3;font-size:calc(var(--u)*9.2);font-weight:600;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;opacity:.62}
+.headline{position:absolute;left:var(--mx);top:var(--headline-y);z-index:3;width:calc(100% - var(--mx)*2);font-family:var(--font-headline);font-size:calc(var(--h)*.039);line-height:.97;font-weight:400;letter-spacing:-.012em}
+.headline .line{display:block;white-space:nowrap}
+.headline .line2{font-style:italic;color:var(--accent)}
+.body{position:absolute;left:var(--mx);top:var(--body-y);z-index:3;width:calc(100% - var(--mx)*2);font-size:calc(var(--h)*.014);line-height:1.38;letter-spacing:.002em;opacity:.8}
+.body .line{display:block;white-space:nowrap}
+.meta{position:absolute;left:var(--mx);right:var(--mx);top:var(--meta-y);z-index:3;display:flex;align-items:center;justify-content:space-between}
+.meta .bar{width:calc(var(--u)*34);height:2px;background:var(--accent)}
+.meta .num{font-size:calc(var(--u)*9);letter-spacing:.18em;opacity:.55;font-variant-numeric:tabular-nums}
+
+.device{position:absolute;left:50%;top:var(--device-y);transform:translateX(-50%);z-index:2;background:#0b0b0c;border-radius:calc(var(--u)*44);padding:calc(var(--u)*7);box-shadow:0 calc(var(--u)*30) calc(var(--u)*64) rgba(0,0,0,.24),inset 0 0 0 1px rgba(255,255,255,.10)}
+.device.card{background:transparent;padding:0;border-radius:calc(var(--u)*34);box-shadow:0 calc(var(--u)*30) calc(var(--u)*64) rgba(0,0,0,.20)}
+.screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:calc(var(--u)*38);background:#000}
+.device.card .screen{border-radius:calc(var(--u)*34)}
+.screen img{display:block;width:100%;height:100%;object-fit:cover}
+.island{position:absolute;top:calc(var(--u)*13);left:50%;transform:translateX(-50%);width:calc(var(--u)*84);height:calc(var(--u)*24);border-radius:999px;background:#000;z-index:5}
+.footer{position:absolute;left:var(--mx);right:var(--mx);top:var(--footer-y);z-index:4;text-align:center;font-size:calc(var(--u)*7.4);font-weight:500;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;opacity:.58}
+
+body[data-store="apple"]{--rule-y:6.85%;--eyebrow-y:9.0%;--headline-y:11.45%;--body-y:21.5%;--meta-y:27.25%;--device-y:30.6%;--footer-y:96.9%}
+body[data-store="play"]{--rule-y:7.8%;--eyebrow-y:10.2%;--headline-y:12.8%;--body-y:24.2%;--meta-y:30.6%;--device-y:33.0%;--footer-y:96.8%}
+body[data-layout="tablet"] .headline{font-size:calc(var(--h)*.034)}
+body[data-layout="tablet"] .body{font-size:calc(var(--h)*.0125)}
+</style>
+</head>
+<body>
+<div class="canvas" id="canvas">
+  <div class="wash" id="wash"></div>
+  <div class="motif" id="motif"></div>
+  <div class="grain"></div>
+
+  <div class="brand" id="brand">
+    <div class="mark" id="mark"></div>
+    <div class="name" id="brandName"></div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="eyebrow" id="eyebrow"></div>
+  <div class="headline" id="headline">
+    <span class="line line1" id="title1"></span>
+    <span class="line line2" id="title2"></span>
+  </div>
+  <div class="body" id="body">
+    <span class="line" id="body1"></span>
+    <span class="line" id="body2"></span>
+  </div>
+  <div class="meta">
+    <div class="bar"></div>
+    <div class="num" id="slideNum">01 / 05</div>
+  </div>
+
+  <div class="device" id="device">
+    <div class="screen" id="screen">
+      <img id="shot" alt="">
+      <div class="island" id="island" hidden></div>
+    </div>
+  </div>
+
+  <div class="footer" id="footer"></div>
+</div>
+
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const I = D.image || {};
+  const root = document.documentElement;
+  const body = document.body;
+  const W = Number(D.width) || 1320;
+  const H = Number(D.height) || 2868;
+  const store = D.store === "play" ? "play" : "apple";
+  const layout = I.layout || D.layout || "phone";
+  const u = H / 1000;
+
+  root.style.setProperty("--w", W + "px");
+  root.style.setProperty("--h", H + "px");
+  root.style.setProperty("--u", u + "px");
+  root.style.setProperty("--mx", Math.round(H * (store === "play" ? 0.0352 : 0.0286)) + "px");
+  root.style.setProperty("--bg", I.bg || "#F7F4ED");
+  root.style.setProperty("--ink", I.ink || "#3C2634");
+  root.style.setProperty("--accent", I.accent || "#D7EA8E");
+  root.style.setProperty("--font-headline", (D.type && D.type.headline) || getComputedStyle(root).getPropertyValue("--font-headline"));
+  root.style.setProperty("--font-body", (D.type && D.type.body) || getComputedStyle(root).getPropertyValue("--font-body"));
+  body.dataset.store = store;
+  body.dataset.layout = layout;
+
+  const mood = I.mood || D.mood || "plain";
+  if (mood !== "glow" && mood !== "washed") {
+    document.getElementById("wash").style.display = "none";
+  }
+  if (mood === "motif" && D.brand && (D.brand.logo_svg || D.brand.logo_url)) {
+    const motif = document.getElementById("motif");
+    if (D.brand.logo_svg) motif.innerHTML = D.brand.logo_svg;
+    else {
+      const img = document.createElement("img");
+      img.src = D.brand.logo_url;
+      motif.appendChild(img);
+    }
+  } else {
+    document.getElementById("motif").style.display = "none";
+  }
+
+  const brand = D.brand || {};
+  const mark = document.getElementById("mark");
+  if (brand.logo_svg) mark.innerHTML = brand.logo_svg;
+  else if (brand.logo_url) {
+    const img = document.createElement("img");
+    img.src = brand.logo_url;
+    img.alt = "";
+    mark.appendChild(img);
+  } else {
+    const span = document.createElement("span");
+    span.className = "initials";
+    span.textContent = brand.initials || "A";
+    mark.appendChild(span);
+  }
+  document.getElementById("brandName").textContent = brand.name || D.app || "App";
+
+  document.getElementById("eyebrow").textContent = I.feature || "";
+  document.getElementById("title1").textContent = (I.title && I.title[0]) || "";
+  document.getElementById("title2").textContent = (I.title && I.title[1]) || "";
+  document.getElementById("body1").textContent = (I.body && I.body[0]) || "";
+  document.getElementById("body2").textContent = (I.body && I.body[1]) || "";
+  document.getElementById("footer").textContent = I.footer || "";
+  if (I.show_footer === false || !I.footer) {
+    document.getElementById("footer").style.display = "none";
+  }
+
+  const total = Number(I.total) || 5;
+  const index = Number(I.index) || 1;
+  document.getElementById("slideNum").textContent =
+    String(index).padStart(2, "0") + " / " + String(total).padStart(2, "0");
+
+  const shot = document.getElementById("shot");
+  shot.src = I.screenshot || "";
+  if (I.notch) document.getElementById("island").hidden = false;
+
+  function fitBlock(el, maxWidth, minScale) {
+    if (!el || !el.textContent.trim()) return;
+    const initial = parseFloat(getComputedStyle(el).fontSize);
+    let size = initial;
+    let guard = 0;
+    while (el.scrollWidth > maxWidth + 1 && size > initial * minScale && guard < 240) {
+      size -= Math.max(0.4, initial * 0.004);
+      el.style.fontSize = size + "px";
+      guard += 1;
+    }
+    if (el.scrollWidth > maxWidth + 1) body.dataset.overflow = "1";
+  }
+
+  function layoutDevice() {
+    const device = document.getElementById("device");
+    const footerEl = document.getElementById("footer");
+    const frame = I.frame || D.frame || "phone";
+    if (frame === "card") device.classList.add("card");
+    const aspect = Number(I.aspect) > 0 ? Number(I.aspect) : (store === "play" ? 9 / 16 : 1320 / 2868);
+    const footerVisible = getComputedStyle(footerEl).display !== "none";
+    const footerY = footerVisible ? H * (store === "play" ? 0.968 : 0.969) : H * 0.985;
+    const topY = H * (store === "play" ? 0.33 : 0.306);
+    const gap = H * 0.016;
+    const available = footerY - topY - gap;
+    const maxW = W * (layout === "tablet" ? 0.64 : (I.frame || D.frame) === "card" ? 0.78 : store === "play" ? 0.64 : 0.70);
+    const width = Math.max(120, Math.min(maxW, available * aspect));
+    const screenH = width / aspect;
+    const pad = frame === "card" ? 0 : u * 7;
+    device.style.width = width + "px";
+    device.style.height = (screenH + pad * 2) + "px";
+  }
+
+  function layoutText() {
+    const maxWidth = W - 2 * Math.round(H * (store === "play" ? 0.0352 : 0.0286));
+    fitBlock(document.getElementById("eyebrow"), maxWidth, 0.78);
+    fitBlock(document.getElementById("headline"), maxWidth, 0.70);
+    fitBlock(document.getElementById("body"), maxWidth, 0.80);
+    fitBlock(document.getElementById("footer"), maxWidth, 0.78);
+    const brandName = document.getElementById("brandName");
+    const markWidth = u * 18 + u * 9;
+    fitBlock(brandName, maxWidth - markWidth, 0.68);
+  }
+
+  function start() {
+    layoutDevice();
+    layoutText();
+    document.body.dataset.ready = "1";
+  }
+
+  if (shot.complete) {
+    requestAnimationFrame(start);
+  } else {
+    shot.addEventListener("load", function () { requestAnimationFrame(start); }, { once: true });
+    shot.addEventListener("error", function () {
+      document.body.dataset.imageError = "1";
+      requestAnimationFrame(start);
+    }, { once: true });
+  }
+  document.fonts.ready.then(function () { requestAnimationFrame(start); });
+})();
+</script>
+</body>
+</html>

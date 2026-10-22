@@ -1,93 +1,156 @@
-# android_skills
+# Android Skills
 
+内部 Android 产品交付 skill 集合。每个子目录都是一个自包含的 agent skill：`SKILL.md` 是入口和工作流，`references/` 放方法论与契约，`scripts/` 放可执行校验工具，`assets/` 放模板与素材。
 
+适用于支持 `SKILL.md` 约定的 agent 运行时（ZCode、Codex、Claude Code 等）。目录名与 `SKILL.md` frontmatter 的 `name` 保持一致。
 
-## Getting started
+## 技能目录
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 产品交付
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+| Skill | 用途 | 典型触发 |
+| --- | --- | --- |
+| [social-app-delivery](social-app-delivery/) | 跨栈（Android / iOS / Flutter / React Native / Web）构建或移植生产级社交发现 App，以行为契约、垂直切片和证据标准驱动。 | "build/port a social app"、"社交 App 交付" |
+| [between-version-rebuilder](between-version-rebuilder/) | 从 Between 1.0 基线规划并重建 1.1 / 1.2 版本阶梯，保持 Romi 后端契约和商业规则。 | "Between 1.1"、"release ladder"、"parity audit" |
+| [replicaNew](replicaNew/) | 从自有源码做功能等价、指纹无关的 clean-room 复刻；七阶段 + 原创性 / 行为 / 上架品质门禁。 | "复刻"、"clean-room rebuild"、"code-distinct rebuild" |
 
-## Add your files
+### 商店物料
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+| Skill | 用途 | 典型触发 |
+| --- | --- | --- |
+| [brand-store-assets](brand-store-assets/) | Logo、App 图标、商店五图、海报、Feature Graphic、设备 mockup 与虚构人物；确定性 HTML/CSS → PNG。 | "logo"、"app icon"、"商店五图"、"store screenshots" |
+| [app-store-prd-metadata](app-store-prd-metadata/) | 给 PRD 补 App Store 基本信息、审核备注、五图计划、英文隐私政策 / 条款草稿。 | "App Store metadata"、"review notes"、"privacy policy" |
+| [google-play-prd-metadata](google-play-prd-metadata/) | 给 PRD 补 Google Play 元数据、审核备注、五图 + Feature Graphic、App content 声明、法务草稿。 | "Google Play metadata"、"data safety"、"feature graphic" |
 
+### 合规
+
+| Skill | 用途 | 典型触发 |
+| --- | --- | --- |
+| [legalH5](legalH5/) | 生成隐私政策 / 用户协议 / 删除账户三张响应式 H5，`site.json` 一处改域名与主体。 | "法务页"、"隐私政策"、"删号页" |
+| [content-policy-gate](content-policy-gate/) | 透明、确定性的内容可用性门禁（地区 / 年龄 / 账号状态）；只接受声明输入，可解释、可审计。 | "content gate"、"age gate"、"regional gating" |
+
+## 仓库结构
+
+```text
+android_skills/
+├── README.md
+├── social-app-delivery/
+│   ├── SKILL.md
+│   ├── README.md
+│   ├── agents/openai.yaml
+│   ├── references/
+│   └── assets/
+├── replicaNew/
+│   ├── SKILL.md
+│   ├── README.md
+│   ├── references/
+│   ├── scripts/
+│   └── templates/
+└── ... 其余 skill 目录
 ```
-cd existing_repo
-git remote add origin https://gitlab.sitinai.com/sunxiaoyang/android_skills.git
-git branch -M main
-git push -uf origin main
+
+每个 skill 目录都可以单独复制或软链到 agent 的 skills 目录，不依赖仓库里的其他目录。
+
+## 安装
+
+```bash
+git clone git@gitlab.sitinai.com:sunxiaoyang/android_skills.git
+cd android_skills
 ```
 
-## Integrate with your tools
+ZCode 从 `~/.agents/skills/` 发现用户级 skill：
 
-* [Set up project integrations](https://gitlab.sitinai.com/sunxiaoyang/android_skills/-/settings/integrations)
+```bash
+mkdir -p "$HOME/.agents/skills"
+for d in */; do
+  [ -f "$d/SKILL.md" ] && ln -sfn "$(pwd)/${d%/}" "$HOME/.agents/skills/${d%/}"
+done
+```
 
-## Collaborate with your team
+Codex 从 `~/.codex/skills/` 发现：
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+for d in */; do
+  [ -f "$d/SKILL.md" ] && ln -sfn "$(pwd)/${d%/}" "${CODEX_HOME:-$HOME/.codex}/skills/${d%/}"
+done
+```
 
-## Test and Deploy
+只安装某一个 skill 时，把对应目录单独复制或软链过去即可。
 
-Use the built-in continuous integration in GitLab.
+## 使用
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+安装后可以按名称触发，也可以直接用自然语言描述任务：
 
-***
+```text
+/replicaNew        # ZCode 斜杠命令
+$replicaNew        # Codex 技能引用
+Use replicaNew to rebuild this app from its source.
+Use legalH5 to generate privacy, terms, and delete-account pages.
+Use google-play-prd-metadata to add the Play submission sections to this PRD.
+```
 
-# Editing this README
+每个 skill 的 `SKILL.md` 都写了触发条件、工作流、硬边界和产出位置；`README.md` 提供更短的入口说明。
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## 依赖
 
-## Suggestions for a good README
+- Python 3.9+。大多数脚本只用标准库。
+- `brand-store-assets` 需要 Pillow、NumPy 和一个 Chromium 内核浏览器：
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```bash
+python3 -m pip install -r brand-store-assets/requirements.txt
+export BROWSER_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  # 可选覆盖
+```
 
-## Name
-Choose a self-explaining name for your project.
+- `app-store-prd-metadata` / `google-play-prd-metadata` 的 `--check-files` 需要 Pillow；不做栅格文件校验时不需要。
+- `legalH5`、`replicaNew`、`content-policy-gate`、`between-version-rebuilder` 无第三方依赖。
+- 不需要 Node.js。
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## 校验工具
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+| Skill | 命令 | 作用 |
+| --- | --- | --- |
+| replicaNew | `python3 replicaNew/scripts/sweep.py <new-project> --config replica/origin.json` | 扫描原项目名字、包名、域名、色值、key、证书残留 |
+| replicaNew | `python3 replicaNew/scripts/simcheck.py <origin> <new> --markdown` | 量化代码 8-gram containment |
+| replicaNew | `python3 replicaNew/scripts/contrast.py replica/design/tokens.json` | 校验 token 配色的 WCAG 对比度 |
+| app-store-prd-metadata | `python3 scripts/check_metadata.py metadata.json` | 校验 App Store 字段限额 |
+| app-store-prd-metadata | `python3 scripts/check_gallery.py gallery.json --pretty` | 校验五图 manifest 与栅格文件 |
+| google-play-prd-metadata | `python3 scripts/check_metadata.py metadata.json` | 校验 Play 字段限额 |
+| google-play-prd-metadata | `python3 scripts/check_gallery.py gallery.json --pretty --check-files --assets-dir ./assets` | 校验截图、图标和 Feature Graphic |
+| brand-store-assets | `python3 scripts/check_assets.py --gallery out/apple/gallery.json --store apple --pretty` | 校验商店素材尺寸、格式和透明度 |
+| between-version-rebuilder | `python3 scripts/audit_originality.py --reference <ref> --candidate <new>` | 源码 / 资产近似重复审计 |
+| legalH5 | `python3 scripts/build.py site.json --check` | 校验配置与占位符，不输出 |
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 分支模型
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```text
+main        受保护，只通过 Merge Request 合并
+develop     日常集成分支
+feature/*   从 develop 切出，完成后 MR 回 develop
+```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+本次技能上传提交在 `develop` 分支，`main` 不做直接提交。发布时从 `develop` 向 `main` 发 MR。
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+## 不纳入仓库
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- `flicker-store/`：约 94MB 的生成商店物料，属于产物而不是 skill。
+- `_refs/`：旧版 skill 快照归档，内容与根目录下四个 skill 重复，避免重复发现。
+- `.DS_Store`、`__pycache__/`、`.venv/` 等本地产物。
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## 安全约定
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- 不提交 keystore / `.jks`、`app-config.local.json`、`google-services.json`、API key、token 或真实用户数据。
+- 示例和模板只使用占位值；`replicaNew/examples/` 中的 keystore 口令、个人邮箱和 token 已脱敏。
+- 新 skill 的脚本从环境变量或本地配置文件读取凭据，不把真值写进仓库。
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## 新增 skill
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+1. 新建目录，目录名与 `SKILL.md` frontmatter 的 `name` 一致。
+2. `SKILL.md` 写清触发条件、工作流、硬边界和产出。
+3. 补一份 `README.md`，说明何时使用、输入、产出、命令和关联 skill。
+4. 需要时增加 `references/`、`scripts/`、`assets/`；脚本保持可直接运行。
+5. 更新本 README 的技能目录表。
 
-## License
-For open source projects, say how it is licensed.
+## 许可与归属
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+内部使用。各 skill 引用的第三方字体、图标和素材，其许可证与出处记录在对应 skill 的 `references/` 或 `README.md` 中；对外发布前需按各自许可证复核。

@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>Flicker app screen mockup</title>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+*{box-sizing:border-box}
+svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#i-battery rect:last-of-type{fill:currentColor;stroke:none}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#171417}
+:root{
+  --bg:#171417;--ink:#F5ECE4;--coral:#E8876A;--peach:#F2C6A0;--muted:#9C8A82;
+  --card:#241A1E;--line:#3A2C31;--serif:"Instrument Serif","Songti SC",serif;
+  --sans:"Public Sans","PingFang SC","Noto Sans SC",sans-serif;
+  --w:1080px;--h:2400px;--u:1.08px;
+}
+.app{position:relative;width:var(--w);height:var(--h);overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans);display:flex;flex-direction:column}
+.statusbar{height:calc(var(--u)*56);flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--u)*14) calc(var(--u)*34) 0;font-size:calc(var(--u)*15);font-weight:600;letter-spacing:.01em}
+.sysicons{display:flex;align-items:center;gap:calc(var(--u)*7);opacity:.95}
+.sysicons svg{width:calc(var(--u)*17);height:calc(var(--u)*17);display:block}
+.header{flex:0 0 auto;padding:calc(var(--u)*28) calc(var(--u)*30) calc(var(--u)*18);display:flex;align-items:flex-start;justify-content:space-between;gap:calc(var(--u)*20)}
+.eyebrow{font-size:calc(var(--u)*11);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--peach);opacity:.9;margin-bottom:calc(var(--u)*7);white-space:nowrap}
+.header h1{font-family:var(--serif);font-weight:400;font-size:calc(var(--u)*56);line-height:.95;letter-spacing:-.01em;margin:0;white-space:nowrap}
+.header h1 .dot{color:var(--coral)}
+.round{width:calc(var(--u)*54);height:calc(var(--u)*54);border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 7%, transparent);display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:calc(var(--u)*6)}
+.round svg{width:calc(var(--u)*22);height:calc(var(--u)*22)}
+.round.plus{background:var(--coral);border-color:var(--coral);color:#1A1012}
+.content{flex:1 1 auto;min-height:0;padding:0 calc(var(--u)*30);position:relative;overflow:hidden}
+.screen{display:none;flex:1 1 auto;min-height:0;flex-direction:column}
+body[data-screen="discover"] #discover{display:flex}
+body[data-screen="feed"] #feed{display:flex}
+body[data-screen="likes"] #likes{display:flex}
+body[data-screen="chat"] #chat{display:flex}
+body[data-screen="me"] #me{display:flex}
+
+/* Discover */
+#discover{flex-direction:column;gap:calc(var(--u)*16);padding-bottom:calc(var(--u)*8)}
+.card-photo{position:relative;flex:1 1 auto;min-height:0;border-radius:calc(var(--u)*30);overflow:hidden;background:var(--card);box-shadow:0 calc(var(--u)*18) calc(var(--u)*40) rgba(0,0,0,.22)}
+.card-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%}
+.card-photo .shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,7,8,.95) 0%,rgba(10,7,8,.55) 24%,rgba(10,7,8,.05) 56%,transparent 72%)}
+.progress{position:absolute;left:calc(var(--u)*18);right:calc(var(--u)*18);top:calc(var(--u)*18);display:flex;gap:calc(var(--u)*5);z-index:2}
+.progress i{height:calc(var(--u)*3);flex:1;border-radius:99px;background:rgba(255,255,255,.28)}
+.progress i.on{background:rgba(255,255,255,.92)}
+.profile-meta{position:absolute;left:calc(var(--u)*26);right:calc(var(--u)*26);bottom:calc(var(--u)*22);z-index:2}
+.profile-meta .name{font-family:var(--serif);font-size:calc(var(--u)*47);line-height:1;margin-bottom:calc(var(--u)*7);white-space:nowrap}
+.profile-meta .name span{color:var(--peach)}
+.profile-meta .loc{display:flex;align-items:center;gap:calc(var(--u)*5);font-size:calc(var(--u)*16);color:var(--ink);opacity:.78;margin-bottom:calc(var(--u)*13)}
+.profile-meta .loc svg{width:calc(var(--u)*15);height:calc(var(--u)*15)}
+.tags{display:flex;gap:calc(var(--u)*7);flex-wrap:nowrap}
+.tag{padding:calc(var(--u)*8) calc(var(--u)*14);border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(10,7,8,.28);font-size:calc(var(--u)*13);font-weight:500;white-space:nowrap;backdrop-filter:blur(6px)}
+.actions{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center;gap:calc(var(--u)*38);padding-top:calc(var(--u)*2)}
+.action{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*8);width:calc(var(--u)*120)}
+.action .circle{width:calc(var(--u)*86);height:calc(var(--u)*86);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 5%, transparent)}
+.action.super .circle{width:calc(var(--u)*94);height:calc(var(--u)*94);background:var(--peach);border-color:var(--peach);color:#241A1E}
+.action .circle svg{width:calc(var(--u)*34);height:calc(var(--u)*34)}
+.action .label{font-size:calc(var(--u)*11);font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.78;white-space:nowrap}
+.action.super .label{color:var(--peach);opacity:1}
+.hint{flex:0 0 auto;text-align:center;font-size:calc(var(--u)*13);color:var(--muted);padding:calc(var(--u)*6) 0 calc(var(--u)*4);white-space:nowrap}
+
+/* Feed */
+#feed{flex-direction:column;min-height:0}
+.feed-list{flex:1 1 auto;min-height:0;overflow:hidden}
+.post{padding:calc(var(--u)*4) 0 calc(var(--u)*20);border-bottom:1px solid var(--line)}
+.post-head{display:flex;align-items:center;gap:calc(var(--u)*12)}
+.avatar{width:calc(var(--u)*52);height:calc(var(--u)*52);border-radius:50%;overflow:hidden;flex:0 0 auto;background:var(--card)}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.post-name{font-size:calc(var(--u)*17);font-weight:700;line-height:1.2}
+.post-sub{font-size:calc(var(--u)*13);color:var(--muted);margin-top:calc(var(--u)*2)}
+.post-time{font-size:calc(var(--u)*11);color:var(--muted);margin-left:auto;letter-spacing:.04em}
+.quote{font-family:var(--serif);font-size:calc(var(--u)*46);line-height:.6;color:var(--coral);margin:calc(var(--u)*18) 0 calc(var(--u)*4)}
+.post-text{font-family:var(--serif);font-size:calc(var(--u)*28);line-height:1.22;margin-bottom:calc(var(--u)*12)}
+.post-actions{display:flex;align-items:center;gap:calc(var(--u)*22);font-size:calc(var(--u)*13);color:var(--muted)}
+.post-actions span{display:flex;align-items:center;gap:calc(var(--u)*6)}
+.post-actions svg{width:calc(var(--u)*18);height:calc(var(--u)*18)}
+.post-photo{width:100%;height:calc(var(--u)*270);border-radius:calc(var(--u)*24);overflow:hidden;margin-top:calc(var(--u)*12);background:var(--card)}
+.post-photo img{width:100%;height:100%;object-fit:cover}
+
+/* Likes */
+#likes{flex-direction:column;min-height:0}
+.tabs{display:flex;gap:calc(var(--u)*10);margin-bottom:calc(var(--u)*18)}
+.tab{padding:calc(var(--u)*10) calc(var(--u)*20);border-radius:999px;border:1px solid var(--line);font-size:calc(var(--u)*14);color:var(--muted);white-space:nowrap}
+.tab.on{background:var(--peach);border-color:var(--peach);color:#241A1E;font-weight:700}
+.likes-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*14);flex:1 1 auto;min-height:0;align-content:start}
+.like-card{position:relative;height:calc(var(--u)*500);border-radius:calc(var(--u)*24);overflow:hidden;background:var(--card);border:1px solid transparent}
+.like-card.on{border-color:var(--coral)}
+.like-card img{width:100%;height:100%;object-fit:cover;object-position:center 26%}
+.like-card .shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,7,8,.95) 0%,rgba(10,7,8,.35) 38%,transparent 65%)}
+.like-card .name{position:absolute;left:calc(var(--u)*16);bottom:calc(var(--u)*30);font-family:var(--serif);font-size:calc(var(--u)*27);line-height:1}
+.like-card .label{position:absolute;left:calc(var(--u)*16);bottom:calc(var(--u)*13);font-size:calc(var(--u)*10);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--peach)}
+.like-card .heart{position:absolute;right:calc(var(--u)*13);top:calc(var(--u)*13);width:calc(var(--u)*34);height:calc(var(--u)*34);border-radius:50%;background:var(--coral);color:#241A1E;display:flex;align-items:center;justify-content:center}
+.like-card .heart svg{width:calc(var(--u)*18);height:calc(var(--u)*18)}
+
+/* Chat */
+#chat{flex-direction:column;min-height:0}
+.match-banner{display:flex;align-items:center;gap:calc(var(--u)*12);padding:calc(var(--u)*12) calc(var(--u)*14);border-radius:calc(var(--u)*18);background:color-mix(in srgb,var(--coral) 16%, transparent);border:1px solid color-mix(in srgb,var(--coral) 38%, transparent);font-size:calc(var(--u)*14);margin-bottom:calc(var(--u)*18)}
+.match-banner svg{width:calc(var(--u)*20);height:calc(var(--u)*20);color:var(--coral)}
+.new-row{display:flex;gap:calc(var(--u)*18);margin-bottom:calc(var(--u)*20);overflow:hidden}
+.new-person{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*7);width:calc(var(--u)*86);flex:0 0 auto}
+.new-person .ring{width:calc(var(--u)*74);height:calc(var(--u)*74);border-radius:50%;padding:calc(var(--u)*3);background:linear-gradient(135deg,var(--coral),var(--peach))}
+.new-person .ring .avatar{width:100%;height:100%}
+.new-person span{font-size:calc(var(--u)*11);color:var(--ink);opacity:.72;white-space:nowrap}
+.conversations{flex:1 1 auto;min-height:0;overflow:hidden}
+.conv{display:flex;align-items:center;gap:calc(var(--u)*13);padding:calc(var(--u)*14) 0;border-bottom:1px solid var(--line)}
+.conv .avatar{width:calc(var(--u)*60);height:calc(var(--u)*60)}
+.conv-main{flex:1;min-width:0}
+.conv-name{font-size:calc(var(--u)*17);font-weight:700;line-height:1.2}
+.conv-msg{font-size:calc(var(--u)*14);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:calc(var(--u)*3)}
+.conv-side{display:flex;flex-direction:column;align-items:flex-end;gap:calc(var(--u)*7)}
+.conv-time{font-size:calc(var(--u)*11);color:var(--muted)}
+.unread{min-width:calc(var(--u)*24);height:calc(var(--u)*24);border-radius:99px;background:var(--coral);color:#241A1E;font-size:calc(var(--u)*11);font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 calc(var(--u)*6)}
+.chat-thread{display:none;flex:1 1 auto;min-height:0;flex-direction:column}
+body[data-chat-mode="thread"] #chat .header{display:none}
+body[data-chat-mode="thread"] #chatListContent{display:none!important}
+body[data-chat-mode="thread"] #chatThread{display:flex}
+body[data-chat-mode="thread"] .tabbar{display:none}
+.thread-head{flex:0 0 auto;display:flex;align-items:center;gap:calc(var(--u)*12);padding:calc(var(--u)*10) calc(var(--u)*30) calc(var(--u)*14);border-bottom:1px solid var(--line)}
+.thread-head .back{width:calc(var(--u)*24);height:calc(var(--u)*24);transform:rotate(180deg);color:var(--ink)}
+.thread-head .avatar{width:calc(var(--u)*46);height:calc(var(--u)*46)}
+.thread-head .thread-name{font-size:calc(var(--u)*18);font-weight:700;line-height:1.15}
+.thread-head .thread-sub{font-size:calc(var(--u)*12);color:var(--coral);margin-top:calc(var(--u)*2)}
+.thread-head .round{width:calc(var(--u)*42);height:calc(var(--u)*42);margin-left:auto;margin-top:0}
+.messages{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;padding:calc(var(--u)*18) calc(var(--u)*30) calc(var(--u)*10);overflow:hidden}
+.thread-day{align-self:center;font-size:calc(var(--u)*10);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(var(--u)*14)}
+.msg{max-width:76%;padding:calc(var(--u)*14) calc(var(--u)*16);border-radius:calc(var(--u)*20);font-size:calc(var(--u)*16);line-height:1.32;margin-bottom:calc(var(--u)*10)}
+.msg.them{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:calc(var(--u)*6)}
+.msg.me{align-self:flex-end;background:var(--coral);color:#241A1E;border-bottom-right-radius:calc(var(--u)*6)}
+.msg .msg-time{display:block;font-size:calc(var(--u)*10);opacity:.55;margin-top:calc(var(--u)*6);letter-spacing:.04em}
+.msg-photo{max-width:72%;align-self:flex-end;border-radius:calc(var(--u)*20);overflow:hidden;margin-bottom:calc(var(--u)*10);border:1px solid var(--line)}
+.msg-photo img{display:block;width:100%;height:auto}
+.thread-input{flex:0 0 auto;display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*14) calc(var(--u)*24);border-top:1px solid var(--line);background:var(--bg)}
+.thread-input .field{flex:1;height:calc(var(--u)*46);border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;padding:0 calc(var(--u)*16);color:var(--muted);font-size:calc(var(--u)*14);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread-input .send{width:calc(var(--u)*46);height:calc(var(--u)*46);border-radius:50%;background:var(--coral);color:#241A1E;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.thread-input .send svg{width:calc(var(--u)*20);height:calc(var(--u)*20)}
+
+/* Me */
+#me{flex-direction:column;min-height:0}
+.me-head{display:flex;align-items:center;gap:calc(var(--u)*18);margin-bottom:calc(var(--u)*20)}
+.me-avatar{width:calc(var(--u)*140);height:calc(var(--u)*140);border-radius:50%;overflow:hidden;flex:0 0 auto;border:2px solid color-mix(in srgb,var(--peach) 60%, transparent)}
+.me-avatar img{width:100%;height:100%;object-fit:cover;object-position:center 26%}
+.me-name{font-family:var(--serif);font-size:calc(var(--u)*38);line-height:1.05}
+.me-loc{display:flex;align-items:center;gap:calc(var(--u)*5);font-size:calc(var(--u)*14);color:var(--muted);margin-top:calc(var(--u)*7)}
+.me-loc svg{width:calc(var(--u)*14);height:calc(var(--u)*14)}
+.edit{margin-left:auto;padding:calc(var(--u)*9) calc(var(--u)*16);border-radius:999px;border:1px solid var(--line);font-size:calc(var(--u)*12);font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.stats{display:flex;border:1px solid var(--line);border-radius:calc(var(--u)*20);padding:calc(var(--u)*16) 0;margin-bottom:calc(var(--u)*18)}
+.stat{flex:1;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--serif);font-size:calc(var(--u)*30);font-weight:400;line-height:1}
+.stat span{display:block;font-size:calc(var(--u)*10);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:calc(var(--u)*7)}
+.section-label{font-size:calc(var(--u)*11);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--peach);margin:0 0 calc(var(--u)*10)}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*8);margin-bottom:calc(var(--u)*20)}
+.chip{padding:calc(var(--u)*8) calc(var(--u)*13);border-radius:999px;border:1px solid var(--line);font-size:calc(var(--u)*13);color:var(--ink);opacity:.9;white-space:nowrap}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*8);margin-bottom:calc(var(--u)*20)}
+.photo-grid img{width:100%;height:calc(var(--u)*300);object-fit:cover;object-position:center 22%;border-radius:calc(var(--u)*16)}
+.settings{border-top:1px solid var(--line)}
+.setting{display:flex;align-items:center;gap:calc(var(--u)*12);padding:calc(var(--u)*14) 0;border-bottom:1px solid var(--line);font-size:calc(var(--u)*15)}
+.setting svg{width:calc(var(--u)*19);height:calc(var(--u)*19);color:var(--peach)}
+.setting .chev{margin-left:auto;color:var(--muted)}
+
+/* Bottom nav */
+.tabbar{flex:0 0 auto;height:calc(var(--u)*118);border-top:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-around;padding-top:calc(var(--u)*13);background:rgba(23,20,23,.96)}
+.nav{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*6);width:calc(var(--u)*100);font-size:calc(var(--u)*10);font-weight:600;color:var(--muted);position:relative;letter-spacing:.02em}
+.nav svg{width:calc(var(--u)*25);height:calc(var(--u)*25)}
+.nav.on{color:var(--coral)}
+.nav.on::after{content:"";position:absolute;bottom:calc(var(--u)*-10);width:calc(var(--u)*26);height:calc(var(--u)*3);border-radius:99px;background:var(--coral)}
+.nav .badge{position:absolute;top:calc(var(--u)*-5);right:calc(var(--u)*20);min-width:calc(var(--u)*18);height:calc(var(--u)*18);border-radius:99px;background:var(--coral);color:#241A1E;font-size:calc(var(--u)*10);font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 calc(var(--u)*4)}
+.home{flex:0 0 auto;height:calc(var(--u)*34);display:flex;align-items:center;justify-content:center}
+.home i{width:calc(var(--u)*130);height:calc(var(--u)*4);border-radius:99px;background:var(--ink);opacity:.85}
+</style>
+</head>
+<body>
+<svg style="display:none">
+  <symbol id="i-swipe" viewBox="0 0 24 24"><rect x="7" y="4" width="12" height="16" rx="3"/><path d="M4 8v8"/></symbol>
+  <symbol id="i-feed" viewBox="0 0 24 24"><path d="M12 4 3 9l9 5 9-5-9-5Z"/><path d="m3 14 9 5 9-5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9.2C5 8 7 6.5 9.2 6.5c1.2 0 2.2.6 2.8 1.5.6-.9 1.6-1.5 2.8-1.5C19 6.5 21 8 21 10.8 21 15.6 12 20 12 20Z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3v-3H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1L3.2 9.4l6.1-.9L12 3Z"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h5"/><circle cx="17" cy="12" r="2"/><circle cx="11" cy="17" r="2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 13a9 9 0 0 1 12 0M9 17a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></symbol>
+  <symbol id="i-signal" viewBox="0 0 24 24"><path d="M4 18v-3M9 18v-7M14 18V7M19 18V4"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="3"/><path d="M21 10v4"/><rect x="4" y="9" width="13" height="6" rx="1.5" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="sysicons">
+      <svg><use href="#i-signal"/></svg>
+      <svg><use href="#i-wifi"/></svg>
+      <svg><use href="#i-battery"/></svg>
+    </span>
+  </div>
+
+  <div id="discover" class="screen">
+    <div class="header">
+      <div><div class="eyebrow">THE CITY IS STILL AWAKE</div><h1>Discover<span class="dot">.</span></h1></div>
+      <div class="round"><svg><use href="#i-filter"/></svg></div>
+    </div>
+    <div class="content" style="display:flex;flex-direction:column">
+      <div class="card-photo">
+        <img id="heroPhoto" alt="">
+        <div class="shade"></div>
+        <div class="progress"><i class="on"></i><i></i><i></i><i></i></div>
+        <div class="profile-meta">
+          <div class="name" id="heroName"></div>
+          <div class="loc"><svg><use href="#i-pin"/></svg><span id="heroLoc"></span></div>
+          <div class="tags" id="heroTags"></div>
+        </div>
+      </div>
+      <div class="actions" style="margin-top:calc(var(--u)*16)">
+        <div class="action"><div class="circle"><svg><use href="#i-x"/></svg></div><div class="label">Dislike</div></div>
+        <div class="action super"><div class="circle"><svg><use href="#i-star"/></svg></div><div class="label">Superlike</div></div>
+        <div class="action"><div class="circle" style="color:var(--coral)"><svg><use href="#i-heart"/></svg></div><div class="label">Like</div></div>
+      </div>
+      <div class="hint">Swipe left to dislike · right to like · tap the star to stand out.</div>
+    </div>
+  </div>
+
+  <div id="feed" class="screen">
+    <div class="header">
+      <div><div class="eyebrow">SMALL MOMENTS · REAL LIFE</div><h1>The everyday<span class="dot">.</span></h1></div>
+      <div class="round plus"><svg><use href="#i-plus"/></svg></div>
+    </div>
+    <div class="content"><div class="feed-list" id="feedList"></div></div>
+  </div>
+
+  <div id="likes" class="screen">
+    <div class="header">
+      <div><div class="eyebrow">THE FEELING MIGHT BE MUTUAL</div><h1>A little interest<span class="dot">.</span></h1></div>
+    </div>
+    <div class="content" style="display:flex;flex-direction:column">
+      <div class="tabs"><div class="tab on">Likes you</div><div class="tab">Visitors</div></div>
+      <div class="likes-grid" id="likesGrid"></div>
+    </div>
+  </div>
+
+  <div id="chat" class="screen">
+    <div class="header">
+      <div><div class="eyebrow">KEEP THE NIGHT GOING</div><h1>Chat<span class="dot">.</span></h1></div>
+    </div>
+    <div class="content" id="chatListContent" style="display:flex;flex-direction:column">
+      <div class="match-banner"><svg><use href="#i-heart"/></svg><span id="matchText"></span></div>
+      <div class="new-row" id="newRow"></div>
+      <div class="conversations" id="conversations"></div>
+    </div>
+    <div class="chat-thread" id="chatThread">
+      <div class="thread-head">
+        <svg class="back"><use href="#i-chev"/></svg>
+        <div class="avatar" id="threadAvatar"></div>
+        <div><div class="thread-name" id="threadName"></div><div class="thread-sub">Matched tonight</div></div>
+        <div class="round"><svg><use href="#i-settings"/></svg></div>
+      </div>
+      <div class="messages" id="messages"><div class="thread-day">TONIGHT</div></div>
+      <div class="thread-input">
+        <div class="field">Message <span id="threadInputName"></span>…</div>
+        <div class="send"><svg><use href="#i-plus"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="me" class="screen">
+    <div class="header">
+      <div><div class="eyebrow">YOUR CORNER OF THE CITY</div><h1>Me<span class="dot">.</span></h1></div>
+      <div class="round"><svg><use href="#i-settings"/></svg></div>
+    </div>
+    <div class="content" style="display:flex;flex-direction:column">
+      <div class="me-head">
+        <div class="me-avatar"><img id="mePhoto" alt=""></div>
+        <div><div class="me-name" id="meName"></div><div class="me-loc"><svg><use href="#i-pin"/></svg><span id="meLoc"></span></div></div>
+        <div class="edit">Edit profile</div>
+      </div>
+      <div class="stats" id="meStats"></div>
+      <div class="section-label">A FEW THINGS ABOUT ME</div>
+      <div class="chips" id="meChips"></div>
+      <div class="section-label">YOUR PHOTOS</div>
+      <div class="photo-grid" id="mePhotos"></div>
+      <div class="settings">
+        <div class="setting"><svg><use href="#i-user"/></svg> Edit profile <span class="chev">›</span></div>
+        <div class="setting"><svg><use href="#i-filter"/></svg> Preferences <span class="chev">›</span></div>
+        <div class="setting"><svg><use href="#i-heart"/></svg> Notifications <span class="chev">›</span></div>
+        <div class="setting"><svg><use href="#i-settings"/></svg> Privacy <span class="chev">›</span></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <div class="nav" data-tab="discover"><svg><use href="#i-swipe"/></svg><span>Swipe</span></div>
+    <div class="nav" data-tab="feed"><svg><use href="#i-feed"/></svg><span>Feed</span></div>
+    <div class="nav" data-tab="likes"><svg><use href="#i-heart"/></svg><span>Likes</span></div>
+    <div class="nav" data-tab="chat"><svg><use href="#i-chat"/></svg><span>Chat</span><span class="badge" id="chatBadge">2</span></div>
+    <div class="nav" data-tab="me"><svg><use href="#i-user"/></svg><span>Me</span></div>
+  </nav>
+  <div class="home"><i></i></div>
+</div>
+
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const root = document.documentElement;
+  const W = Number(D.width) || 1080;
+  const H = Number(D.height) || 2400;
+  const u = W / 1000;
+  root.style.setProperty("--w", W + "px");
+  root.style.setProperty("--h", H + "px");
+  root.style.setProperty("--u", u + "px");
+  const c = D.colors || {};
+  root.style.setProperty("--bg", c.bg || "#171417");
+  root.style.setProperty("--ink", c.ink || "#F5ECE4");
+  root.style.setProperty("--coral", c.coral || "#E8876A");
+  root.style.setProperty("--peach", c.peach || "#F2C6A0");
+  root.style.setProperty("--muted", c.muted || "#9C8A82");
+  root.style.setProperty("--card", c.card || "#241A1E");
+  root.style.setProperty("--line", c.line || "#3A2C31");
+  document.body.dataset.screen = D.screen || "discover";
+  document.body.dataset.chatMode = D.chat_mode || "list";
+
+  const cast = D.cast || {};
+  const hero = cast[D.discover_key || "maya"] || {};
+  document.getElementById("heroPhoto").src = hero.photo || "";
+  document.getElementById("heroName").innerHTML = (hero.name || "") + (hero.age ? ", <span>" + hero.age + "</span>" : "");
+  document.getElementById("heroLoc").textContent = hero.location || "";
+  const heroTags = document.getElementById("heroTags");
+  (hero.tags || []).forEach(function (tag) {
+    const span = document.createElement("span");
+    span.className = "tag";
+    span.textContent = tag;
+    heroTags.appendChild(span);
+  });
+
+  function avatar(key) {
+    const person = cast[key] || {};
+    return '<div class="avatar"><img src="' + (person.photo || "") + '" alt=""></div>';
+  }
+
+  const feedList = document.getElementById("feedList");
+  (D.feed || []).forEach(function (post) {
+    const person = cast[post.key] || {};
+    const el = document.createElement("div");
+    el.className = "post";
+    el.innerHTML =
+      '<div class="post-head">' + avatar(post.key) +
+      '<div><div class="post-name">' + (person.name || "") + '</div><div class="post-sub">A moment worth sharing</div></div>' +
+      '<div class="post-time">' + (post.time || "") + '</div></div>' +
+      '<div class="quote">“</div>' +
+      '<div class="post-text">' + (post.text || "") + '</div>' +
+      (post.photo ? '<div class="post-photo"><img src="' + post.photo + '" alt=""></div>' : '') +
+      '<div class="post-actions" style="margin-top:calc(var(--u)*12)"><span><svg><use href="#i-heart"/></svg>' + (post.likes || 0) + '</span><span><svg><use href="#i-comment"/></svg>' + (post.comments || 0) + '</span></div>';
+    feedList.appendChild(el);
+  });
+
+  const likesGrid = document.getElementById("likesGrid");
+  (D.likes || []).forEach(function (item) {
+    const person = cast[item.key] || {};
+    const el = document.createElement("div");
+    el.className = "like-card" + (item.liked ? " on" : "");
+    el.innerHTML =
+      '<img src="' + (person.photo || "") + '" alt="">' +
+      '<div class="shade"></div>' +
+      (item.liked ? '<div class="heart"><svg><use href="#i-heart"/></svg></div>' : '') +
+      '<div class="name">' + (person.name || "") + ', ' + (person.age || "") + '</div>' +
+      '<div class="label">' + (item.label || "") + '</div>';
+    likesGrid.appendChild(el);
+  });
+
+  const matchText = document.getElementById("matchText");
+  const matchPerson = cast[D.match_key || "jules"] || {};
+  matchText.textContent = "You and " + (matchPerson.name || "someone") + " liked each other";
+  const newRow = document.getElementById("newRow");
+  (D.new_matches || []).forEach(function (key) {
+    const person = cast[key] || {};
+    const el = document.createElement("div");
+    el.className = "new-person";
+    el.innerHTML = '<div class="ring">' + avatar(key) + '</div><span>' + (person.name || "") + '</span>';
+    newRow.appendChild(el);
+  });
+  const conversations = document.getElementById("conversations");
+  (D.chats || []).forEach(function (chat) {
+    const person = cast[chat.key] || {};
+    const el = document.createElement("div");
+    el.className = "conv";
+    el.innerHTML = avatar(chat.key) +
+      '<div class="conv-main"><div class="conv-name">' + (person.name || "") + '</div><div class="conv-msg">' + (chat.message || "") + '</div></div>' +
+      '<div class="conv-side"><div class="conv-time">' + (chat.time || "") + '</div>' +
+      (chat.unread ? '<div class="unread">' + chat.unread + '</div>' : '') + '</div>';
+    conversations.appendChild(el);
+  });
+  const badge = document.getElementById("chatBadge");
+  if (D.chat_unread) badge.textContent = D.chat_unread;
+  else badge.style.display = "none";
+
+  const threadPerson = cast[D.match_key || "jules"] || {};
+  document.getElementById("threadAvatar").innerHTML =
+    '<img src="' + (threadPerson.photo || "") + '" alt="">';
+  document.getElementById("threadName").textContent = threadPerson.name || "";
+  document.getElementById("threadInputName").textContent = threadPerson.name || "";
+  const messages = document.getElementById("messages");
+  (D.thread || []).forEach(function (message) {
+    const el = document.createElement("div");
+    if (message.photo) {
+      const photo = document.createElement("div");
+      photo.className = "msg-photo";
+      photo.innerHTML = '<img src="' + message.photo + '" alt="">';
+      messages.appendChild(photo);
+    } else {
+      el.className = "msg " + (message.from === "me" ? "me" : "them");
+      el.innerHTML = (message.text || "") + '<span class="msg-time">' + (message.time || "") + '</span>';
+      messages.appendChild(el);
+    }
+  });
+
+  const me = cast[D.me_key || "riley"] || {};
+  document.getElementById("mePhoto").src = me.photo || "";
+  document.getElementById("meName").textContent = (me.name || "") + (me.age ? ", " + me.age : "");
+  document.getElementById("meLoc").textContent = me.location || "";
+  const meStats = document.getElementById("meStats");
+  (D.me && D.me.stats || []).forEach(function (stat) {
+    const el = document.createElement("div");
+    el.className = "stat";
+    el.innerHTML = '<b>' + stat.value + '</b><span>' + stat.label + '</span>';
+    meStats.appendChild(el);
+  });
+  const meChips = document.getElementById("meChips");
+  (D.me && D.me.interests || []).forEach(function (interest) {
+    const el = document.createElement("span");
+    el.className = "chip";
+    el.textContent = interest;
+    meChips.appendChild(el);
+  });
+  const mePhotos = document.getElementById("mePhotos");
+  (D.me && D.me.photos || []).forEach(function (src) {
+    const img = document.createElement("img");
+    img.src = src;
+    mePhotos.appendChild(img);
+  });
+
+  document.querySelectorAll(".nav").forEach(function (nav) {
+    if (nav.dataset.tab === (D.screen || "discover")) nav.classList.add("on");
+  });
+  document.fonts.ready.then(function () { document.body.dataset.ready = "1"; });
+})();
+</script>
+</body>
+</html>

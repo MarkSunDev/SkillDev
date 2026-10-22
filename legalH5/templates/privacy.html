@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — {{APP_NAME}}</title>
+<link rel="canonical" href="{{PRIVACY_URL}}">
+<meta property="og:title" content="Privacy Policy — {{APP_NAME}}">
+<meta property="og:url" content="{{PRIVACY_URL}}">
+<style>
+:root{--ink:#1c1c22;--muted:#5c5c66;--line:#e3e3e8;--bg:#fbfbfd;--accent:#0b6f63}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{border-bottom:1px solid var(--line);background:#fff}
+.nav{max-width:720px;margin:0 auto;padding:14px 20px;display:flex;gap:18px;flex-wrap:wrap}
+.nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
+.nav a[aria-current]{color:var(--accent)}
+main{max-width:720px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+.meta{color:var(--muted);font-size:13px;margin:0 0 26px}
+h2{font-size:18px;margin:30px 0 8px}
+p,li{margin:8px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#f3f3f7;font-size:13px}
+footer{border-top:1px solid var(--line);max-width:720px;margin:0 auto;padding:18px 20px 40px;
+color:var(--muted);font-size:13px}
+footer a{color:var(--accent)}
+address{font-style:normal}
+</style>
+</head>
+<body>
+<header>
+<nav class="nav" aria-label="Legal pages">
+<a href="{{PRIVACY_URL}}" aria-current="page">Privacy Policy</a>
+<a href="{{TERMS_URL}}">Terms of Service</a>
+<a href="{{DELETE_URL}}">Delete Account</a>
+</nav>
+</header>
+<main>
+<h1>{{APP_NAME}} Privacy Policy</h1>
+<p class="meta">Effective {{EFFECTIVE_DATE}} · Version {{VERSION}} · {{REGION}}</p>
+
+<h2>Who we are</h2>
+<p>This policy explains how {{APP_NAME}} ("we", "us") handles information when you use our
+mobile application and related services. You can reach us for any privacy question,
+request, or complaint at <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>.</p>
+
+<h2>Information we may collect</h2>
+<table>
+<tr><th>Category</th><th>Examples</th></tr>
+<tr><td>Account information</td><td>Username or device identifier, profile details you add
+(name, age, gender, photos, preferences).</td></tr>
+<tr><td>User content</td><td>Messages, posts, photos, and other content you create or
+share in the app.</td></tr>
+<tr><td>Device and usage information</td><td>Device model, operating system, app version,
+language, approximate region derived from postal code, and in-app activity.</td></tr>
+<tr><td>Transaction information</td><td>Records of purchases, subscriptions, and virtual
+currency balances processed through the app stores.</td></tr>
+<tr><td>Communications</td><td>Reports you submit, and messages you send to support.</td></tr>
+</table>
+
+<h2>How we use information</h2>
+<ul>
+<li>To create and maintain your account and session.</li>
+<li>To operate core features: matching, chat, feed, and calls.</li>
+<li>To process purchases and enforce entitlements, quotas, and fair-use limits.</li>
+<li>To keep the service safe: moderation, spam and abuse prevention, enforcement of our
+Terms.</li>
+<li>To communicate service changes, account notices, and responses to your requests.</li>
+</ul>
+
+<h2>How we share information</h2>
+<p>We may share information with: service providers that operate infrastructure we rely on
+(for example messaging and audio/video providers, payment verification through the app
+stores, crash reporting, and delivery services); authorities where required by law; and
+other users, to the extent you choose to share content with them. We do not sell personal
+information as that term is used under applicable state privacy law.</p>
+
+<h2>Advertising identifiers</h2>
+<p>Where the app includes attribution or advertising SDKs, the platform advertising
+identifier and limited device signals may be processed to measure installs or campaigns.
+You can reset or limit the advertising identifier in your device settings.</p>
+
+<h2>Data retention</h2>
+<p>We keep information for as long as your account is active, plus a period needed for
+legitimate business, safety, and legal record-keeping purposes after deletion. When you
+delete your account, profile content and user content associated with it are removed
+within the timeframe described on our
+<a href="{{DELETE_URL}}">Delete Account</a> page, except records we must retain for legal,
+fraud-prevention, or accounting reasons.</p>
+
+<h2>Your choices and rights</h2>
+<p>Depending on your region, you may have rights to access, correct, or delete personal
+information, to object to or restrict certain processing, and to not be discriminated
+against for exercising these rights. California residents may request disclosure of
+categories of information collected and may opt out of any sale or sharing of personal
+information. To exercise any right, email
+<a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a> or use the in-app account
+deletion option.</p>
+
+<h2>Children</h2>
+<p>{{APP_NAME}} is intended for users {{AGE_GATE}} and older. We do not knowingly collect
+personal information from children. If you believe a child is using the app, contact us
+and we will remove the account.</p>
+
+<h2>Security</h2>
+<p>We use encryption in transit and access controls appropriate to the sensitivity of the
+information. No method of transmission or storage is perfectly secure; please do not share
+sensitive information in chats with strangers.</p>
+
+<h2>Changes to this policy</h2>
+<p>We may update this policy and will revise the effective date above. Material changes
+are surfaced in the app before they take effect.</p>
+
+<h2>Contact</h2>
+<address>
+{{APP_NAME}} · <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>
+</address>
+</main>
+<footer>
+<p><a href="{{PRIVACY_URL}}">Privacy Policy</a> ·
+<a href="{{TERMS_URL}}">Terms of Service</a> ·
+<a href="{{DELETE_URL}}">Delete Account</a></p>
+<p>© {{APP_NAME}}. Version {{VERSION}}, effective {{EFFECTIVE_DATE}}.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Between Version Rebuilder"
+  short_description: "Rebuild Between 1.1 and 1.2 with backend and product parity"
+  default_prompt: "Rebuild this Between 1.0 baseline into code-distinct 1.1 and 1.2 releases with matching product behavior, Romi backend contracts, design quality, and release evidence."

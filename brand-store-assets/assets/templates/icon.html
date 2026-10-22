@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>App icon</title>
+<style>
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+*{box-sizing:border-box}
+.canvas{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:transparent}
+.canvas.solid{background:var(--bg)}
+.canvas.gradient{background:linear-gradient(var(--angle),var(--bg),var(--bg2))}
+.canvas.finish::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(120% 90% at 22% 12%, rgba(255,255,255,.10), transparent 52%),
+  radial-gradient(120% 100% at 82% 96%, rgba(0,0,0,.10), transparent 58%);
+  mix-blend-mode:soft-light}
+.mark{position:relative;z-index:1;width:var(--mark-size);height:var(--mark-size);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.mark svg,.mark img{display:block;width:100%;height:100%;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="canvas" id="canvas">
+  <div class="mark" id="mark"></div>
+</div>
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const root = document.documentElement;
+  const canvas = document.getElementById("canvas");
+  const size = Math.min(Number(D.width) || 1024, Number(D.height) || 1024);
+
+  root.style.setProperty("--bg", D.bg || "#3C2634");
+  root.style.setProperty("--bg2", D.bg2 || D.bg || "#3C2634");
+  root.style.setProperty("--angle", (Number(D.angle) || 135) + "deg");
+  root.style.setProperty("--ink", D.ink || "#F7F4ED");
+  root.style.setProperty("--mark-size", Math.round(size * (Number(D.mark_ratio) || 0.62)) + "px");
+
+  if (D.show_bg === false) {
+    canvas.classList.remove("solid", "gradient", "finish");
+  } else if (D.bg2) {
+    canvas.classList.add("gradient", "finish");
+  } else {
+    canvas.classList.add("solid", "finish");
+  }
+
+  if (D.svg) document.getElementById("mark").innerHTML = D.svg;
+  else if (D.logo_url) {
+    const img = document.createElement("img");
+    img.src = D.logo_url;
+    img.alt = "";
+    document.getElementById("mark").appendChild(img);
+  }
+
+  document.fonts.ready.then(function () { document.body.dataset.ready = "1"; });
+})();
+</script>
+</body>
+</html>

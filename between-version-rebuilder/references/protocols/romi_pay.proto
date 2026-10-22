@@ -1,0 +1,54 @@
+syntax = "proto3";
+package RomiPay;
+import "romi_auth.proto";
+// Wire fields audited against BuzzMe PayProto.pb.swift / GiftProto.pb.swift.
+message Empty {}
+message Subscription {
+ int32 id = 1; int32 subscription_id = 2; string name = 3; string description = 4;
+ double price = 5; string duration = 6; int32 remaining_msgs = 7; int32 remaining_match_count = 8;
+ int64 expiry_time = 9; int32 remaining_boost_count = 10; int32 remaining_like_count = 11;
+}
+message SubscriptionResponse { int32 code = 1; string message = 2; Subscription subscription = 3; }
+message Benefit { string text = 1; string icon = 2; }
+message Plan {
+ string ios_product_id = 1; string name = 2; string description = 3; string price = 4;
+ int64 sub_coins = 5; string android_product_id = 6; repeated Benefit vip_detail = 7;
+}
+message CatalogResponse { int32 code = 1; string message = 2; repeated Plan normal = 3; repeated Plan visitor = 4; }
+message VerifyRequest {
+ int32 subscription_id = 1; string issuer_id = 2; string key_id = 3; string bundle_id = 4;
+ string transaction_id = 5; int64 app_apple_id = 6;
+}
+message VisitorInfo { string ios_product_id = 1; int64 expiry_time = 2; string android_product_id = 3; }
+message VisitorResponse { int32 code = 1; string message = 2; VisitorInfo info = 3; }
+message VisitorVerifyRequest { string transaction_id = 1; }
+message BalanceResponse { int32 code = 1; int64 coin = 2; }
+message CoinProduct {
+ string coin_bundle_id = 1; int64 coin = 2; double price = 3; repeated string pages = 4;
+ int64 first_coin = 5; int64 retention_coin = 6;
+}
+message CoinsResponse { repeated CoinProduct products = 1; bool is_first = 2; repeated CoinProduct dtc_products = 3; }
+message BuyCoinRequest { string coin_bundle_id = 1; string transaction_id = 2; int32 scene = 3; }
+message BuyCoinResponse { int32 code = 1; string message = 2; int64 coin = 3; }
+message CoinHistory {
+ int64 change_time = 1; int64 coin_value = 2; int32 change_type = 3; string ext = 4;
+ int32 from_userid = 5; int32 to_userid = 6; string to_username = 7;
+}
+message HistoryResponse { int32 code = 1; repeated CoinHistory histories = 2; }
+message Cost { int32 message_type = 1; int64 coin = 2; }
+message CostsResponse { int32 code = 1; string message = 2; repeated Cost costs = 3; }
+
+// BuzzMe NotificationProto / ProtoRegistry: 4512 / 4513, full snapshot.
+message VisitorStat {
+ between.romi.UserInfo user = 1;
+ int64 last_visit_time = 4;
+}
+message VisitorsResponse {
+ int32 code = 1; string message = 2;
+ int32 recent_count = 3; int32 repeat_count = 4; int32 friend_count = 5;
+ repeated VisitorStat visitors = 6;
+}
+
+// BuzzMe EntitlementAPI: ClearEntitlement 4484 / 4485. kind 4 = freeTextV2.
+message ClearEntitlementRequest { int32 kind = 1; }
+message ClearEntitlementResponse { int32 code = 1; string message = 2; }

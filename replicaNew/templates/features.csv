@@ -1,0 +1,9 @@
+feature,area,priority,original,clone,notes
+登录-手机验证码,account,must,yes,no,
+登录-第三方OAuth,account,should,yes,no,原支持哪几家写进 notes
+资料编辑-头像上传,profile,must,yes,no,
+匹配-滑动喜欢/跳过,matching,must,yes,no,
+匹配-每日次数限制,matching,should,yes,no,具体上限写进 spec
+聊天-文本/图片,chat,must,yes,no,
+聊天-已读回执,chat,should,yes,no,
+付费-订阅VIP,membership,must,yes,no,

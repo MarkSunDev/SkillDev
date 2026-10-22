@@ -1,0 +1,19 @@
+{
+  "domain": "legal.newdomain.com",
+  "scheme": "https",
+  "appName": "NewApp",
+  "contactEmail": "support@newdomain.com",
+  "effectiveDate": "2026-10-21",
+  "version": "1.0",
+  "region": "United States",
+  "ageGate": "18+",
+  "pages": {
+    "privacy": "/privacy",
+    "terms": "/terms",
+    "delete-account": "/delete-account"
+  },
+  "paths": {
+    "index": "privacy.html",
+    "outDir": "dist"
+  }
+}

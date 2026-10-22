@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>Feature graphic</title>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+:root{--font-headline:"Instrument Serif","Songti SC","Noto Serif SC",serif;--font-body:"Public Sans","PingFang SC","Noto Sans SC",sans-serif}
+.canvas{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+.canvas.gradient{background:linear-gradient(120deg,var(--bg),var(--bg2))}
+.wash{position:absolute;inset:0;pointer-events:none;opacity:.9;background:
+  radial-gradient(90% 120% at 88% 10%, color-mix(in srgb,var(--accent) 22%, transparent), transparent 62%),
+  radial-gradient(70% 90% at 10% 110%, color-mix(in srgb,var(--accent) 10%, transparent), transparent 60%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.6'/></svg>");
+  background-size:180px 180px}
+.motif{position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:330px;height:330px;opacity:.10;pointer-events:none;color:var(--accent)}
+.motif svg,.motif img{display:block;width:100%;height:100%;object-fit:contain}
+.brand{position:absolute;left:64px;top:54px;display:flex;align-items:center;gap:12px;z-index:2}
+.brand .mark{width:34px;height:34px;display:flex;align-items:center;justify-content:center}
+.brand .mark svg,.brand .mark img{display:block;width:100%;height:100%;object-fit:contain}
+.brand .mark .initials{width:100%;height:100%;border:1.5px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-headline);font-size:16px}
+.brand .name{font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.rule{position:absolute;left:64px;top:170px;width:42px;height:3px;background:var(--accent);z-index:2}
+.headline{position:absolute;left:64px;top:198px;width:660px;font-family:var(--font-headline);font-size:66px;line-height:.98;letter-spacing:-.015em;z-index:2}
+.headline .line{display:block;white-space:nowrap;font-weight:var(--headline-weight,400)}
+.headline .line2{font-style:italic;color:var(--accent)}
+body[data-line2="sans"] .headline .line2{font-family:var(--font-headline);font-style:normal;font-weight:var(--headline-weight,400);letter-spacing:-.03em}
+.support{position:absolute;left:64px;top:366px;width:620px;font-size:22px;line-height:1.3;opacity:.72;white-space:nowrap;z-index:2}
+.footerline{position:absolute;left:64px;bottom:30px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.4;z-index:2}
+</style>
+</head>
+<body>
+<div class="canvas" id="canvas">
+  <div class="wash" id="wash"></div>
+  <div class="grain"></div>
+  <div class="motif" id="motif"></div>
+
+  <div class="brand">
+    <div class="mark" id="mark"></div>
+    <div class="name" id="brandName"></div>
+  </div>
+  <div class="rule"></div>
+  <div class="headline" id="headline">
+    <span class="line line1" id="line1"></span>
+    <span class="line line2" id="line2"></span>
+  </div>
+  <div class="support" id="support"></div>
+  <div class="footerline" id="footerline"></div>
+</div>
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const root = document.documentElement;
+  root.style.setProperty("--bg", D.bg || "#3C2634");
+  root.style.setProperty("--bg2", D.bg2 || D.bg || "#3C2634");
+  root.style.setProperty("--ink", D.ink || "#F7F4ED");
+  root.style.setProperty("--accent", D.accent || "#D7EA8E");
+  root.style.setProperty("--font-headline", (D.type && D.type.headline) || getComputedStyle(root).getPropertyValue("--font-headline"));
+  root.style.setProperty("--font-body", (D.type && D.type.body) || getComputedStyle(root).getPropertyValue("--font-body"));
+  root.style.setProperty("--headline-weight", (D.type && D.type.headline_weight) || 400);
+  document.body.dataset.line2 = (D.type && D.type.line2) || "serif";
+  if (D.bg2) document.getElementById("canvas").classList.add("gradient");
+  if (D.mood === "plain") document.getElementById("wash").style.display = "none";
+  if (D.mood === "motif" && D.brand && (D.brand.logo_svg || D.brand.logo_url)) {
+    const motif = document.getElementById("motif");
+    if (D.brand.logo_svg) motif.innerHTML = D.brand.logo_svg;
+    else {
+      const img = document.createElement("img");
+      img.src = D.brand.logo_url;
+      motif.appendChild(img);
+    }
+  } else {
+    document.getElementById("motif").style.display = "none";
+  }
+
+  const brand = D.brand || {};
+  const mark = document.getElementById("mark");
+  if (brand.logo_svg) mark.innerHTML = brand.logo_svg;
+  else if (brand.logo_url) {
+    const img = document.createElement("img");
+    img.src = brand.logo_url;
+    mark.appendChild(img);
+  } else {
+    const span = document.createElement("span");
+    span.className = "initials";
+    span.textContent = brand.initials || "A";
+    mark.appendChild(span);
+  }
+  document.getElementById("brandName").textContent = brand.name || "App";
+  document.getElementById("line1").textContent = (D.headline && D.headline[0]) || "";
+  document.getElementById("line2").textContent = (D.headline && D.headline[1]) || "";
+  if (!D.headline || !D.headline[1]) document.getElementById("line2").style.display = "none";
+  document.getElementById("support").textContent = D.support || "";
+  if (!D.support) document.getElementById("support").style.display = "none";
+  document.getElementById("footerline").textContent = D.footerline || "";
+
+  function fitBlock(el, maxWidth, minScale) {
+    if (!el || !el.textContent.trim()) return;
+    const initial = parseFloat(getComputedStyle(el).fontSize);
+    let size = initial;
+    let guard = 0;
+    while (el.scrollWidth > maxWidth + 1 && size > initial * minScale && guard < 160) {
+      size -= Math.max(0.5, initial * 0.006);
+      el.style.fontSize = size + "px";
+      guard += 1;
+    }
+  }
+  function start() {
+    fitBlock(document.getElementById("brandName"), 600, 0.75);
+    fitBlock(document.getElementById("headline"), 660, 0.62);
+    fitBlock(document.getElementById("support"), 620, 0.72);
+    document.body.dataset.ready = "1";
+  }
+  document.fonts.ready.then(function () { requestAnimationFrame(start); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# Local OS / editor artifacts
+.DS_Store
+**/.DS_Store
+*.swp
+
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Logs and local environment
+*.log
+.env
+.env.*
+
+# Local / secret configuration
+app-config.local.json
+google-services.json
+
+# Signing material
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+
+# Large generated output and archived snapshots (not skills)
+flicker-store/
+_refs/

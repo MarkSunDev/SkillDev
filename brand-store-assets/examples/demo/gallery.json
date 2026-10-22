@@ -1,0 +1,75 @@
+{
+  "app": "Harbor",
+  "version": "1.0",
+  "store": "apple",
+  "brand": {
+    "name": "Harbor",
+    "logo": "logo.svg"
+  },
+  "feature_graphic": {
+    "headline": ["A calmer way", "to get things done."],
+    "support": "Plan, focus, and close the day.",
+    "bg": "#1E2A2A",
+    "ink": "#F3EFE4",
+    "accent": "#D9A441",
+    "mood": "glow",
+    "footerline": "HARBOR / IDENTITY SYSTEM"
+  },
+  "images": [
+    {
+      "slug": "01-focus",
+      "feature": "LESS NOISE",
+      "title": ["Less noise.", "More focus."],
+      "body": ["One calm workspace for the day.", "No feeds, no clutter."],
+      "footer": "Harbor. Make room to think.",
+      "bg": "#1E2A2A",
+      "ink": "#F3EFE4",
+      "accent": "#D9A441",
+      "screen": "screens/01.png"
+    },
+    {
+      "slug": "02-your-day",
+      "feature": "YOUR DAY",
+      "title": ["Your day,", "in clear view."],
+      "body": ["See the few things that matter.", "Move them forward, one at a time."],
+      "footer": "A quieter plan for busy days.",
+      "bg": "#F3EFE4",
+      "ink": "#1E2A2A",
+      "accent": "#B5653A",
+      "screen": "screens/02.png"
+    },
+    {
+      "slug": "03-deep-focus",
+      "feature": "DEEP FOCUS",
+      "title": ["Focus that", "protects your time."],
+      "body": ["Start a session and let the rest wait.", "A gentle timer, not a pressure clock."],
+      "footer": "Deep work, without the drama.",
+      "bg": "#DCE7DC",
+      "ink": "#1E2A2A",
+      "accent": "#1F6F5C",
+      "screen": "screens/03.png"
+    },
+    {
+      "slug": "04-evening",
+      "feature": "EVENING REVIEW",
+      "title": ["A nightly", "clean slate."],
+      "body": ["Close the day in a minute.", "Carry only what matters to tomorrow."],
+      "footer": "End the day lighter.",
+      "bg": "#F3EFE4",
+      "ink": "#1E2A2A",
+      "accent": "#B5653A",
+      "screen": "screens/04.png"
+    },
+    {
+      "slug": "05-yours",
+      "feature": "MADE FOR YOU",
+      "title": ["Made to", "feel like yours."],
+      "body": ["Pick a palette, set your hours.", "Harbor adapts to your rhythm."],
+      "footer": "Your day. Your pace.",
+      "bg": "#1E2A2A",
+      "ink": "#F3EFE4",
+      "accent": "#D9A441",
+      "screen": "screens/05.png"
+    }
+  ]
+}

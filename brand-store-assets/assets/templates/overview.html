@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=__VIEWPORT_W__, height=__VIEWPORT_H__, initial-scale=1">
+<title>Gallery overview</title>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("../fonts/InstrumentSerif-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"Public Sans";src:url("../fonts/PublicSans.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden}
+:root{--font-headline:"Instrument Serif","Songti SC",serif;--font-body:"Public Sans","PingFang SC",sans-serif}
+.page{position:relative;width:100%;height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);padding:78px 90px 60px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;height:110px}
+.title{font-family:var(--font-headline);font-size:50px;line-height:1;letter-spacing:-.01em;white-space:nowrap}
+.title em{font-style:italic;color:var(--accent);margin-left:.16em}
+.subtitle{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:.5;white-space:nowrap;padding-bottom:5px}
+.rule{height:1px;background:color-mix(in srgb,var(--ink) 18%, transparent);margin-top:30px}
+.row{display:flex;justify-content:center;gap:var(--gap);margin-top:42px}
+.card{width:var(--thumb-w);flex:0 0 auto}
+.thumb{position:relative;width:100%;height:var(--thumb-h);border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 22px 50px rgba(0,0,0,.16)}
+.thumb img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
+.label{display:flex;align-items:baseline;gap:10px;margin-top:18px}
+.label .num{font-family:var(--font-headline);font-size:26px;line-height:1;color:var(--accent)}
+.label .name{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div class="title" id="title"></div>
+    <div class="subtitle" id="subtitle"></div>
+  </div>
+  <div class="rule"></div>
+  <div class="row" id="row"></div>
+</div>
+<script>
+window.__DATA__ = __DATA_JSON__;
+(function () {
+  const D = window.__DATA__;
+  const root = document.documentElement;
+  root.style.setProperty("--bg", D.bg || "#F7F4ED");
+  root.style.setProperty("--ink", D.ink || "#1F1D1A");
+  root.style.setProperty("--accent", D.accent || "#A98232");
+  root.style.setProperty("--thumb-w", (D.thumb_w || 400) + "px");
+  root.style.setProperty("--thumb-h", (D.thumb_h || 869) + "px");
+  root.style.setProperty("--gap", (D.gap || 44) + "px");
+  document.getElementById("title").innerHTML = D.title_html || "";
+  document.getElementById("subtitle").textContent = D.subtitle || "";
+  const row = document.getElementById("row");
+  (D.images || []).forEach(function (item) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+    const img = document.createElement("img");
+    img.src = item.url;
+    img.alt = item.name || "";
+    thumb.appendChild(img);
+    const label = document.createElement("div");
+    label.className = "label";
+    const num = document.createElement("span");
+    num.className = "num";
+    num.textContent = item.label || "";
+    const name = document.createElement("span");
+    name.className = "name";
+    name.textContent = item.name || "";
+    label.appendChild(num);
+    label.appendChild(name);
+    card.appendChild(thumb);
+    card.appendChild(label);
+    row.appendChild(card);
+  });
+  document.fonts.ready.then(function () { document.body.dataset.ready = "1"; });
+})();
+</script>
+</body>
+</html>

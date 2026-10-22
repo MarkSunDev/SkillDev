@@ -1,0 +1,3 @@
+interface:
+  display_name: "Content Policy Gate"
+  short_description: "Add transparent regional and age content gating"
