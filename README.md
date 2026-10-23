@@ -28,6 +28,7 @@
 | --- | --- | --- |
 | [legalH5](legalH5/) | 生成隐私政策 / 用户协议 / 删除账户三张响应式 H5，`site.json` 一处改域名与主体。 | "法务页"、"隐私政策"、"删号页" |
 | [content-policy-gate](content-policy-gate/) | 透明、确定性的内容可用性门禁（地区 / 年龄 / 账号状态）；只接受声明输入，可解释、可审计。 | "content gate"、"age gate"、"regional gating" |
+| [app-store-legal-review](app-store-legal-review/) | 把当前构建的事实整理成英文 ToS、Privacy、儿童安全、删号四页初稿，含 preflight、HTML 清单和法务交接包。 | "上架协议审核"、"四页协议"、"隐私政策草稿"、"删除账户页面"、"app-function-checklist" |
 
 ## 仓库结构
 
@@ -120,6 +121,10 @@ export BROWSER_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome
 | brand-store-assets | `python3 scripts/check_assets.py --gallery out/apple/gallery.json --store apple --pretty` | 校验商店素材尺寸、格式和透明度 |
 | between-version-rebuilder | `python3 scripts/audit_originality.py --reference <ref> --candidate <new>` | 源码 / 资产近似重复审计 |
 | legalH5 | `python3 scripts/build.py site.json --check` | 校验配置与占位符，不输出 |
+| app-store-legal-review | `python3 scripts/prepare_brief.py --config app-legal.json --checklist checklist-result.txt --out legal-brief.md` | 校验事实配置、填充 Prompt、与清单交叉核对 |
+| app-store-legal-review | `python3 scripts/check_draft.py --draft legal-draft.md --config app-legal.json --checklist checklist-result.txt` | 检查协议必备条款、禁用承诺、占位符、邮箱与功能覆盖 |
+| app-store-legal-review | `python3 scripts/preflight.py --config app-legal.json --scope four-pages` | 检查四页协议缺失的法律事实 |
+| app-store-legal-review | `python3 scripts/check_four_pages.py --terms terms-of-service.md --privacy privacy-policy.md --child-safety child-safety-policy.md --deletion account-deletion.md --config app-legal.json` | 检查四页协议的儿童安全与删号要求 |
 
 ## 分支模型
 

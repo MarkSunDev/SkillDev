@@ -1,0 +1,3 @@
+interface:
+  display_name: "App Store Legal Review"
+  short_description: "Preflight facts, draft ToS/Privacy/Child Safety/Deletion, QA and hand off to legal"

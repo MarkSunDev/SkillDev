@@ -1,0 +1,41 @@
+{
+  "app_name": "MyApp",
+  "store_app_name": "MyApp",
+  "developer_legal_name": "Example Dating Labs, Inc.",
+  "platforms": ["iOS", "Google Play"],
+  "region": "仅美国",
+  "contact_email": "support@example.com",
+  "privacy_email": "",
+  "child_safety_email": "childsafety@example.com",
+  "dpo_email": "",
+  "company_address": "",
+  "website": "https://example.com",
+  "monetization": ["免费"],
+  "features": ["账号注册登录", "社交或 UGC"],
+  "age_gate": "18+",
+  "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"],
+  "account_model": "device",
+  "sdk_categories": ["即时通讯"],
+  "sells_or_shares": "unknown",
+  "sensitive_data": ["sexual orientation"],
+  "governing_law": "Delaware",
+  "arbitration_provider": "AAA",
+  "arbitration_venue": "Wilmington, Delaware",
+  "arbitration_opt_out_days": 30,
+  "deletion": {
+    "in_app_path": "Settings → Delete account → Delete",
+    "web_url": "https://example.com/account-deletion",
+    "request_method": "google_form",
+    "google_form_url": "https://docs.google.com/forms/d/e/REPLACE/viewform",
+    "google_form_response_url": "https://docs.google.com/forms/d/e/REPLACE/formResponse",
+    "google_form_entry_ids": {
+      "email": "entry.111111111",
+      "account": "entry.222222222",
+      "reason": "entry.333333333",
+      "details": "entry.444444444"
+    },
+    "cancellation_window_days": 7,
+    "retention_summary": "Account and profile data are removed after the cancellation window. Limited records may be retained for legal, safety, fraud-prevention, or accounting reasons, and backups may persist for a limited period.",
+    "subscription_cancellation": "Deleting the account does not cancel a subscription; cancel it in the applicable app store."
+  }
+}

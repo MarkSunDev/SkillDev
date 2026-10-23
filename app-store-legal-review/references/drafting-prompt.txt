@@ -1,0 +1,51 @@
+你是一位熟悉美国市场 App 合规的法务，擅长为 iOS / Google Play 上架起草英文《用户协议（Terms of Service）》和《隐私政策（Privacy Policy）》。你可以参考同类功能、面向美国市场的知名 App 的协议结构和常见措辞，但不要照搬具体内容。请根据以下 App 信息起草两份英文初稿，要求满足 Apple App Store、Google Play、CCPA/CPRA、COPPA 及美国一般消费者保护的最低合规要求，同时把我方责任降到最低，避免任何法律强制要求之外的明确承诺。
+
+【App 信息 - 请填写】
+- App 名称（商店用名）：{App 名称}
+- 上架平台：{iOS / Google Play / 两者都有}
+- 分发地区：{仅美国 / 其他：___}
+- 统一联系邮箱（隐私、支持、注销、权利请求等所有对外联系一律用这一个）：{contact@example.com}
+- 商业化模式：{免费 / 订阅 / 内购 / 广告，可多选}
+- 年龄门槛：默认 18+，进入时做年龄验证，未满 18 岁禁止使用。
+
+【本版本实际包含的核心功能】（有哪些保留哪些，没有的删掉）
+{账号注册登录 / 社交或 UGC / 支付 / AI 生成功能 / 定位 / 相机或麦克风 / 通讯录或相册 / 推送通知 / 健康或健身数据 / 云存储}
+
+【起草原则（重要）】
+1. 全文不要出现公司法定名称、注册地址、官网地址、实体主体等任何信息；指代本 App 及其运营方时，一律使用上面填写的 App 名称，或用 "we / us / our" 指代，不要使用任何 [COMPANY LEGAL NAME]、[WEBSITE URL]、[ADDRESS] 之类的占位符。
+2. 不要写出"我们不收集……""我们不出售……""我们绝不共享……""数据保留不超过 X 天"这类对我方不利、把话说死的承诺性表述。一律使用留有余地的措辞，例如"we may collect/share ... as described in this Policy"。
+3. 第三方 SDK 名称、数据共享的具体接收方、跨境传输目的地、数据保留期限等，本初稿阶段一律不写具体名称，用类别化、通用化表述带过（例如"we may share information with analytics, advertising, crash-reporting, payment and login service providers as necessary; the list of providers may be updated from time to time"），具体留待法务后续按实际清单补充。
+4. 所有对外联系入口（隐私咨询、支持、注销账号、行使数据权利、DMCA 投诉等）全部统一使用上面填写的同一个联系邮箱，不要出现其他邮箱或地址。
+
+【《用户协议》必须覆盖的要点】
+1. Acceptance of Terms and eligibility（仅限 18 岁以上）。
+2. Accounts：注册、账号安全、我方终止账号的权利。
+3. Purchases, subscriptions and in-app purchases：价格、计费、自动续费披露、通过对应平台取消的方式、退款遵循对应平台的退款政策。
+4. User content / UGC（如适用）：用户授予我方的授权、禁止行为、内容审核与下架权利。
+5. AI features（如适用）：对输出准确性的免责、输出不构成专业建议、使用边界。
+6. Intellectual property 与有限使用许可。
+7. Disclaimer of Warranties，按 "AS IS" 提供。
+8. Limitation of Liability，在法律允许最大范围内限制我方责任。
+9. Indemnification：用户对我方的赔偿义务。
+10. Governing Law：美国特拉华州法律（laws of the State of Delaware），不适用其冲突规范。
+11. Dispute Resolution：任何争议提交美国仲裁协会（American Arbitration Association, AAA）按其《Consumer Arbitration Rules》进行有约束力的个人仲裁，独任仲裁员，仲裁地在特拉华州威尔明顿（Wilmington, Delaware）。必须包含明确的 CLASS ACTION WAIVER：用户放弃以集体、共同、代表诉讼形式提起或参与任何争议的权利，所有争议仅能以个人身份提出。同时保留标准例外：small claims court 诉讼、向法院申请 injunctive relief、知识产权维权。
+12. Changes to Terms：通过 App 内或本政策公示渠道通知。
+13. Contact：统一使用上面填写的联系邮箱。
+
+【《隐私政策》必须覆盖的要点】
+1. Who we are and how to contact us（用 App 名称和上面填写的统一邮箱）。
+2. Information we collect：按类别笼统描述（account info、profile info、device info 与广告标识符如 IDFA/GAID、IP 与网络状态、location（如适用）、usage 与 diagnostic data、用户主动提交的 content、photos/camera/microphone（如适用）、payment info（由平台或 payment processors 处理））。不要列具体 SDK 名称。
+3. How we use the information（provide the service、improve and develop、security、analytics、法律允许范围内的 advertising 与 marketing、enforce the Terms）。
+4. How we share information（service providers、payment processors、ad networks 与 analytics partners、legal 或 regulatory requirements、corporate transaction 情形）。统一使用 "may" 措辞，不要明确表态是否 "sell" 数据。
+5. Cookies and similar technologies，包括 advertising identifiers，以及在设备层面如何关闭个性化广告。
+6. Data retention：笼统表述为 "we retain information for as long as necessary to provide the service, comply with legal obligations, resolve disputes and enforce our agreements"，不要给具体天数。
+7. Your rights：说明用户可能享有的权利类别（access、correction、deletion、account deletion、opt-out of sale/sharing、opt-out of targeted advertising），以及如何通过上面填写的统一邮箱行使。针对加州用户，写入标准 CCPA/CPRA 权利（Right to Know、Right to Delete、Right to Correct、Right to Opt-Out of "Sharing/Selling"、Right to Non-Discrimination），但不要明确表态本企业是否 "sells" 或 "shares" personal information，使用能同时保留两种立场的合规表述。
+8. Children's privacy：本服务面向 18 岁以上用户，we do not knowingly collect information from children under 13；如发现儿童已提供信息，可通过统一邮箱联系我们删除。
+9. International data transfers（如适用）：笼统说明 information may be processed in jurisdictions outside the user's country。
+10. Security：笼统说明已采取 administrative、technical、physical safeguards，但不承诺绝对安全。
+11. Policy updates 与通知方式。
+12. Contact：统一使用上面填写的联系邮箱。
+
+【输出要求】
+- 先输出《Terms of Service》全文，再输出《Privacy Policy》全文，全部用英文、Markdown 编号分节；使用平实、可执行的合同语言，不要堆砌套话。
+- 可参考功能类似、面向美国市场的 App 的协议结构与常见条款措辞，但不要直接照抄其公司名称、SDK 名单或具体承诺。

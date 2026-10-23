@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App 功能与数据清单（研发填写版）</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#f5f6f8; color:#1f2329; padding:20px; }
+  .wrap { max-width:680px; margin:0 auto; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  .sub { font-size:13px; color:#646a73; margin-bottom:20px; }
+  .card { background:#fff; border-radius:10px; padding:16px 18px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .card h2 { font-size:14px; color:#3370ff; margin-bottom:12px; font-weight:600; }
+  .row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #f2f3f5; }
+  .row:last-child { border-bottom:none; }
+  .row .label { font-size:14px; }
+  .row .label small { display:block; color:#8f959e; font-size:11px; font-weight:400; }
+  .row input { width:220px; padding:6px 10px; border:1px solid #d0d3d9; border-radius:6px; font-size:13px; }
+  .yn { display:flex; gap:6px; }
+  .yn button { min-width:52px; padding:4px 10px; border-radius:6px; border:1px solid #d0d3d9; background:#fff; color:#646a73; font-size:13px; cursor:pointer; transition:all .15s; }
+  .yn button.yes.on { background:#00b42a; border-color:#00b42a; color:#fff; }
+  .yn button.no.on { background:#4e5969; border-color:#4e5969; color:#fff; }
+  .opt { display:flex; flex-wrap:wrap; gap:6px; }
+  .opt button { padding:5px 12px; border-radius:6px; border:1px solid #d0d3d9; background:#fff; color:#4e5969; font-size:13px; cursor:pointer; transition:all .15s; }
+  .opt button.on { background:#3370ff; border-color:#3370ff; color:#fff; }
+  .opt button.none.on { background:#4e5969; border-color:#4e5969; color:#fff; }
+  .bar { display:flex; gap:10px; margin-top:18px; }
+  .bar button { flex:1; padding:11px; border-radius:8px; border:none; font-size:15px; font-weight:600; cursor:pointer; }
+  .bar .gen { background:#3370ff; color:#fff; }
+  .bar .gen:hover { background:#2468f2; }
+  .bar .rst { background:#fff; color:#4e5969; border:1px solid #d0d3d9; }
+  #out { display:none; margin-top:16px; background:#0f172a; color:#d7e0f0; border-radius:8px; padding:14px; font-size:13px; line-height:1.7; white-space:pre-wrap; word-break:break-all; font-family:Menlo,Consolas,monospace; }
+  #out .hint { color:#8b98a9; }
+  .tip { font-size:12px; color:#8f959e; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>App 功能与数据清单</h1>
+  <div class="sub">研发填写版 · 每项只点「是 / 否」，不用打字 · 约 1 分钟完成 · 填完点「生成结果」复制给审核<br>选中项会高亮：<span style="color:#00b42a;font-weight:600;">是 = 绿色</span>，<span style="color:#4e5969;font-weight:600;">否 = 深灰</span>，SDK 选中 = 蓝色</div>
+
+  <div class="card">
+    <h2>① 基本信息（唯一需要打字的地方：App 名称 + 联系邮箱）</h2>
+    <div class="row">
+      <span class="label">App 名称（商店用名）</span>
+      <input id="appname" type="text" placeholder="例：MyApp">
+    </div>
+    <div class="row">
+      <span class="label">联系邮箱<small>隐私联系 / 支持邮箱，需真实可用</small></span>
+      <input id="appemail" type="text" placeholder="例：support@app.com">
+    </div>
+    <div class="row">
+      <span class="label">上架平台</span>
+      <span class="opt">
+        <button data-p="ios">iOS</button>
+        <button data-p="gp">Google Play</button>
+      </span>
+    </div>
+    <div class="row">
+      <span class="label">商店分发地区</span>
+      <span class="opt">
+        <button data-r="us" class="on">仅美国</button>
+        <button data-r="other">其他地区</button>
+      </span>
+    </div>
+    <div class="row">
+      <span class="label">商业化模式<small>可多选</small></span>
+      <span class="opt">
+        <button data-m="free">免费</button>
+        <button data-m="sub">订阅</button>
+        <button data-m="iap">内购</button>
+        <button data-m="ads">广告</button>
+      </span>
+    </div>
+    <div class="row">
+      <span class="label">年龄限制<small>进入时验证年龄，低于限制禁止使用</small></span>
+      <span class="opt">
+        <button data-a="18" class="on">18+（公司统一）</button>
+        <button data-a="none">无限制</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>② 核心功能（App 有哪些功能就点「是」）</h2>
+    <div class="row"><span class="label">账号注册 / 登录</span><span class="yn"><button data-q="f_account" class="yes">是</button><button data-q="f_account" class="no">否</button></span></div>
+    <div class="row"><span class="label">社交 / 社区 / UGC（用户发内容）</span><span class="yn"><button data-q="f_social" class="yes">是</button><button data-q="f_social" class="no">否</button></span></div>
+    <div class="row"><span class="label">支付 / 电商交易</span><span class="yn"><button data-q="f_pay" class="yes">是</button><button data-q="f_pay" class="no">否</button></span></div>
+    <div class="row"><span class="label">AI 功能（生成 / 对话 / 识别）</span><span class="yn"><button data-q="f_ai" class="yes">是</button><button data-q="f_ai" class="no">否</button></span></div>
+    <div class="row"><span class="label">定位服务</span><span class="yn"><button data-q="f_loc" class="yes">是</button><button data-q="f_loc" class="no">否</button></span></div>
+    <div class="row"><span class="label">相机 / 麦克风</span><span class="yn"><button data-q="f_cam" class="yes">是</button><button data-q="f_cam" class="no">否</button></span></div>
+    <div class="row"><span class="label">通讯录 / 相册访问</span><span class="yn"><button data-q="f_contact" class="yes">是</button><button data-q="f_contact" class="no">否</button></span></div>
+    <div class="row"><span class="label">推送通知</span><span class="yn"><button data-q="f_push" class="yes">是</button><button data-q="f_push" class="no">否</button></span></div>
+    <div class="row"><span class="label">健康 / 健身数据</span><span class="yn"><button data-q="f_health" class="yes">是</button><button data-q="f_health" class="no">否</button></span></div>
+    <div class="row"><span class="label">文件存储 / 云同步</span><span class="yn"><button data-q="f_sync" class="yes">是</button><button data-q="f_sync" class="no">否</button></span></div>
+  </div>
+
+  <div class="card">
+    <h2>③ 数据收集（App 会收集以下数据吗？收集就点「是」）</h2>
+    <div class="row"><span class="label">注册信息（邮箱 / 手机号 / 用户名）</span><span class="yn"><button data-q="d_account" class="yes">是</button><button data-q="d_account" class="no">否</button></span></div>
+    <div class="row"><span class="label">个人资料（姓名 / 头像 / 生日 / 性别）</span><span class="yn"><button data-q="d_profile" class="yes">是</button><button data-q="d_profile" class="no">否</button></span></div>
+    <div class="row"><span class="label">广告标识符（IDFA / GAID）</span><span class="yn"><button data-q="d_adid" class="yes">是</button><button data-q="d_adid" class="no">否</button></span></div>
+    <div class="row"><span class="label">设备信息（型号 / 系统版本）</span><span class="yn"><button data-q="d_device" class="yes">是</button><button data-q="d_device" class="no">否</button></span></div>
+    <div class="row"><span class="label">IP 地址 / 网络状态</span><span class="yn"><button data-q="d_ip" class="yes">是</button><button data-q="d_ip" class="no">否</button></span></div>
+    <div class="row"><span class="label">精确位置（GPS）</span><span class="yn"><button data-q="d_gps" class="yes">是</button><button data-q="d_gps" class="no">否</button></span></div>
+    <div class="row"><span class="label">模糊位置（粗略定位）</span><span class="yn"><button data-q="d_approx" class="yes">是</button><button data-q="d_approx" class="no">否</button></span></div>
+    <div class="row"><span class="label">使用行为（浏览 / 点击 / 搜索记录）</span><span class="yn"><button data-q="d_behavior" class="yes">是</button><button data-q="d_behavior" class="no">否</button></span></div>
+    <div class="row"><span class="label">崩溃日志 / 诊断信息</span><span class="yn"><button data-q="d_crash" class="yes">是</button><button data-q="d_crash" class="no">否</button></span></div>
+    <div class="row"><span class="label">聊天 / 评论等用户内容</span><span class="yn"><button data-q="d_ucg" class="yes">是</button><button data-q="d_ucg" class="no">否</button></span></div>
+    <div class="row"><span class="label">通讯录内容</span><span class="yn"><button data-q="d_contacts" class="yes">是</button><button data-q="d_contacts" class="no">否</button></span></div>
+    <div class="row"><span class="label">相册照片 / 视频</span><span class="yn"><button data-q="d_album" class="yes">是</button><button data-q="d_album" class="no">否</button></span></div>
+    <div class="row"><span class="label">麦克风录音</span><span class="yn"><button data-q="d_mic" class="yes">是</button><button data-q="d_mic" class="no">否</button></span></div>
+    <div class="row"><span class="label">支付信息（卡号 / 账单地址）</span><span class="yn"><button data-q="d_pay" class="yes">是</button><button data-q="d_pay" class="no">否</button></span></div>
+  </div>
+
+  <div class="card">
+    <h2>④ 权限（App 实际申请了以下权限吗？申请就点「是」）</h2>
+    <div class="row"><span class="label">相机</span><span class="yn"><button data-q="p_cam" class="yes">是</button><button data-q="p_cam" class="no">否</button></span></div>
+    <div class="row"><span class="label">麦克风</span><span class="yn"><button data-q="p_mic" class="yes">是</button><button data-q="p_mic" class="no">否</button></span></div>
+    <div class="row"><span class="label">位置</span><span class="yn"><button data-q="p_loc" class="yes">是</button><button data-q="p_loc" class="no">否</button></span></div>
+    <div class="row"><span class="label">通知</span><span class="yn"><button data-q="p_notif" class="yes">是</button><button data-q="p_notif" class="no">否</button></span></div>
+    <div class="row"><span class="label">相册</span><span class="yn"><button data-q="p_album" class="yes">是</button><button data-q="p_album" class="no">否</button></span></div>
+    <div class="row"><span class="label">通讯录</span><span class="yn"><button data-q="p_contact" class="yes">是</button><button data-q="p_contact" class="no">否</button></span></div>
+  </div>
+
+  <div class="card">
+    <h2>⑤ 第三方服务（集成了哪些就点哪些，可多选）</h2>
+    <div class="row"><span class="label">广告 SDK</span><span class="opt">
+      <button data-s="ads_none" class="none">无</button><button data-s="ads_admob">AdMob</button><button data-s="ads_meta">Meta</button><button data-s="ads_applovin">AppLovin</button><button data-s="ads_other">其他</button>
+    </span></div>
+    <div class="row"><span class="label">数据分析 SDK</span><span class="opt">
+      <button data-s="ana_none" class="none">无</button><button data-s="ana_firebase">Firebase</button><button data-s="ana_appsflyer">AppsFlyer</button><button data-s="ana_adjust">Adjust</button><button data-s="ana_other">其他</button>
+    </span></div>
+    <div class="row"><span class="label">崩溃上报</span><span class="opt">
+      <button data-s="crash_none" class="none">无</button><button data-s="crash_firebase">Crashlytics</button><button data-s="crash_sentry">Sentry</button><button data-s="crash_other">其他</button>
+    </span></div>
+    <div class="row"><span class="label">支付 / 内购</span><span class="opt">
+      <button data-s="pay_none" class="none">无</button><button data-s="pay_iap">App/Play 内购</button><button data-s="pay_stripe">Stripe</button><button data-s="pay_other">其他</button>
+    </span></div>
+    <div class="row"><span class="label">第三方登录</span><span class="opt">
+      <button data-s="lg_none" class="none">无</button><button data-s="lg_apple">Apple ID</button><button data-s="lg_google">Google</button><button data-s="lg_fb">Facebook</button><button data-s="lg_other">其他</button>
+    </span></div>
+  </div>
+
+  <div class="card">
+    <h2>⑥ 数据处理（每项都点一下）</h2>
+    <div class="row"><span class="label">数据是否共享给第三方</span><span class="yn"><button data-q="dp_share" class="yes">是</button><button data-q="dp_share" class="no">否</button></span></div>
+    <div class="row"><span class="label">数据是否出售给第三方</span><span class="yn"><button data-q="dp_sell" class="yes">是</button><button data-q="dp_sell" class="no">否</button></span></div>
+    <div class="row"><span class="label">数据是否跨境传输</span><span class="yn"><button data-q="dp_xfer" class="yes">是</button><button data-q="dp_xfer" class="no">否</button></span></div>
+    <div class="row"><span class="label">用户能否删除数据 / 注销账户</span><span class="yn"><button data-q="dp_del" class="yes">是</button><button data-q="dp_del" class="no">否</button></span></div>
+    <div class="row"><span class="label">可能被 13 岁以下儿童使用</span><span class="yn"><button data-q="dp_child" class="yes">是</button><button data-q="dp_child" class="no">否</button></span></div>
+  </div>
+
+  <div class="bar">
+    <button class="gen" onclick="gen()">生成结果</button>
+    <button class="rst" onclick="rst()">重置</button>
+  </div>
+  <div class="tip">每项请主动点选确认（默认不选中）；未点击的是/否项按「否」处理，未点击的 SDK 按「无」处理；「其他 SDK」若选中会在结果中标注待补充。</div>
+  <div id="out"></div>
+</div>
+
+<script>
+var P = {};   // 平台
+var R = "us"; // 分发地区
+var M = {};   // 商业化多选
+var A = "18"; // 年龄限制
+var Q = {};   // 是/否问题
+var S = {};   // SDK 多选（含 none 互斥）
+
+document.querySelectorAll('.opt [data-p]').forEach(function(b){
+  b.onclick = function(){
+    b.classList.toggle('on');
+    if (b.classList.contains('on')) { P[b.dataset.p]=1; } else { delete P[b.dataset.p]; }
+  };
+});
+document.querySelectorAll('.opt [data-r]').forEach(function(b){
+  b.onclick = function(){ document.querySelectorAll('[data-r]').forEach(function(x){x.classList.remove('on')}); b.classList.add('on'); R = b.dataset.r; };
+});
+document.querySelectorAll('.opt [data-a]').forEach(function(b){
+  b.onclick = function(){ document.querySelectorAll('[data-a]').forEach(function(x){x.classList.remove('on')}); b.classList.add('on'); A = b.dataset.a; };
+});
+document.querySelectorAll('.opt [data-m]').forEach(function(b){
+  b.onclick = function(){ b.classList.toggle('on'); M[b.dataset.m] = b.classList.contains('on')?1:0; };
+});
+document.querySelectorAll('.yn button').forEach(function(b){
+  b.onclick = function(){
+    var q = b.dataset.q, v = b.classList.contains('yes')?'yes':'no';
+    b.parentNode.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on'); Q[q] = v;
+  };
+});
+document.querySelectorAll('.opt [data-s]').forEach(function(b){
+  b.onclick = function(){
+    var grp = b.dataset.s.split('_')[0];
+    if (b.classList.contains('none')) {
+      document.querySelectorAll('[data-s^="'+grp+'"]').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on'); S[b.dataset.s]=1;
+      document.querySelectorAll('[data-s^="'+grp+'"]').forEach(function(x){ if(x!==b) delete S[x.dataset.s]; });
+    } else {
+      if (S[grp+'_none']) { document.querySelector('[data-s="'+grp+'_none"]').classList.remove('on'); delete S[grp+'_none']; }
+      b.classList.toggle('on'); S[b.dataset.s] = b.classList.contains('on')?1:0;
+    }
+  };
+});
+
+var LABELS = {
+  f_account:'账号注册/登录', f_social:'社交/社区/UGC', f_pay:'支付/电商', f_ai:'AI 功能',
+  f_loc:'定位服务', f_cam:'相机/麦克风', f_contact:'通讯录/相册', f_push:'推送通知',
+  f_health:'健康/健身数据', f_sync:'文件存储/云同步',
+  d_account:'注册信息', d_profile:'个人资料', d_adid:'广告标识符', d_device:'设备信息',
+  d_ip:'IP/网络', d_gps:'精确位置', d_approx:'模糊位置', d_behavior:'使用行为',
+  d_crash:'崩溃日志', d_ucg:'用户内容', d_contacts:'通讯录内容', d_album:'相册照片/视频',
+  d_mic:'麦克风录音', d_pay:'支付信息',
+  p_cam:'相机', p_mic:'麦克风', p_loc:'位置', p_notif:'通知', p_album:'相册', p_contact:'通讯录',
+  dp_share:'共享第三方', dp_sell:'出售数据', dp_xfer:'跨境传输', dp_del:'可注销', dp_child:'儿童可用'
+};
+var SDKL = {
+  ads:{none:'无',admob:'AdMob',meta:'Meta',applovin:'AppLovin',other:'其他（待补充）'},
+  ana:{none:'无',firebase:'Firebase',appsflyer:'AppsFlyer',adjust:'Adjust',other:'其他（待补充）'},
+  crash:{none:'无',firebase:'Crashlytics',sentry:'Sentry',other:'其他（待补充）'},
+  pay:{none:'无',iap:'App/Play 内购',stripe:'Stripe',other:'其他（待补充）'},
+  lg:{none:'无',apple:'Apple ID',google:'Google',fb:'Facebook',other:'其他（待补充）'}
+};
+var PLAT = {ios:'iOS', gp:'Google Play'};
+
+function pickYes(prefix){
+  var arr = [];
+  Object.keys(Q).forEach(function(k){
+    if (k.indexOf(prefix)===0 && Q[k]==='yes') arr.push(LABELS[k]);
+  });
+  return arr.join('、') || '无';
+}
+
+function gen(){
+  var name = document.getElementById('appname').value.trim();
+  var email = document.getElementById('appemail').value.trim();
+  var out = document.getElementById('out');
+  if (!name) { out.style.display='block'; out.innerHTML='<span class="hint">请先填写 App 名称（商店用名）。</span>'; return; }
+  if (!email) { out.style.display='block'; out.innerHTML='<span class="hint">请先填写联系邮箱（隐私联系/支持邮箱）。</span>'; return; }
+  var lines = [];
+  lines.push('【App 信息清单】');
+  lines.push('App 名称：' + name);
+  lines.push('联系邮箱：' + email);
+  lines.push('上架平台：' + (Object.keys(P).map(function(k){return PLAT[k];}).join(' + ') || '未选择'));
+  lines.push('商店分发：' + (R==='us'?'仅美国':'其他地区'));
+  var modes = ['free','sub','iap','ads'].filter(function(m){return M[m];});
+  lines.push('商业化：' + (modes.map(function(m){return {free:'免费',sub:'订阅',iap:'内购',ads:'广告'}[m];}).join('、') || '未选择'));
+  lines.push('年龄门槛：' + (A==='18' ? '18+（进入时验证年龄，低于18岁禁止使用）' : '无限制'));
+  lines.push('');
+  lines.push('核心功能（是）：' + pickYes('f_'));
+  lines.push('数据收集（是）：' + pickYes('d_'));
+  lines.push('权限（是）：' + pickYes('p_'));
+  lines.push('');
+  lines.push('第三方服务：');
+  ['ads','ana','crash','pay','lg'].forEach(function(g){
+    var sel = Object.keys(S).filter(function(k){return k.indexOf(g+'_')===0 && S[k];});
+    var val = sel.length ? sel.map(function(k){return SDKL[g][k.split('_')[1]];}).join('、') : '无';
+    lines.push('  ' + ({ads:'广告',ana:'数据分析',crash:'崩溃上报',pay:'支付/内购',lg:'第三方登录'}[g]) + '：' + val);
+  });
+  lines.push('');
+  lines.push('数据处理：共享 ' + (Q.dp_share==='yes'?'是':'否') + '｜出售 ' + (Q.dp_sell==='yes'?'是':'否') + '｜跨境 ' + (Q.dp_xfer==='yes'?'是':'否') + '｜可注销 ' + (Q.dp_del==='yes'?'是':'否') + '｜儿童可用 ' + (A==='18' ? '否（因18+门槛）' : (Q.dp_child==='yes'?'是':'否')));
+  lines.push('');
+  lines.push('（未点击项默认按「否」处理；SDK 未点击按「无」；「其他 SDK」名称待补充）');
+  out.style.display = 'block';
+  out.textContent = lines.join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lines.join('\n')).then(function(){
+      out.innerHTML = lines.join('\n') + '\n\n<span class="hint">✅ 已复制到剪贴板，可直接粘贴给审核。</span>';
+    }).catch(function(){ selectOut(out); });
+  } else { selectOut(out); }
+}
+function selectOut(out){
+  var r = document.createRange(); r.selectNodeContents(out);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function rst(){
+  P={}; R='us'; M={}; A='18'; Q={}; S={};
+  document.querySelectorAll('.opt [data-p]').forEach(function(x){x.classList.remove('on')});
+  document.querySelectorAll('.opt [data-r]').forEach(function(x){x.classList.remove('on'); if(x.dataset.r==='us')x.classList.add('on')});
+  document.querySelectorAll('.opt [data-a]').forEach(function(x){x.classList.remove('on'); if(x.dataset.a==='18')x.classList.add('on')});
+  document.querySelectorAll('.opt [data-m]').forEach(function(x){x.classList.remove('on')});
+  document.querySelectorAll('.yn button').forEach(function(x){x.classList.remove('on')});
+  document.querySelectorAll('.opt [data-s]').forEach(function(x){x.classList.remove('on')});
+  document.getElementById('appname').value='';
+  document.getElementById('appemail').value='';
+  document.getElementById('out').style.display='none';
+}
+</script>
+</body>
+</html>
