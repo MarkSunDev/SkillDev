@@ -31,4 +31,11 @@ google-services.json
 
 # Large generated output and archived snapshots (not skills)
 flicker-store/
+blush-icon/
 _refs/
+
+# Local rotation state written by brand-store-assets/scripts/style_packs.py
+**/.style-pack-state.json
+
+# macOS Finder alias
+port-orchestrator的替身
