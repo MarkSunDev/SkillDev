@@ -1,0 +1,80 @@
+# Port state. Keep this file updated after every gate/decision.
+project:
+  name: ""
+  adopted: false          # true = existing project taken over via port adopt
+  source:
+    type: ""             # local / remote / apk
+    path: ""             # local path, or cloned path
+    url: ""              # remote Git URL
+    version: ""          # tag/commit/branch
+    commit: ""
+    cloned_to: ""
+    stack: ""
+  target:
+    path: ""
+    stack: ""
+    platforms: []
+    backend: ""
+
+phase: P0_INTAKE
+# P0_INTAKE / P1_ANALYZE / P2_SCOPE / P3_STANDARDS
+# P4_BUILD_1_0 / P5_VERIFY_1_0 / WAIT_1_1
+# P6_BUILD_1_1 / P7_VERIFY_1_1 / DONE
+
+completeness:
+  status: unknown          # unknown / partial / complete
+  report: ""               # docs/port/adopt/04-completeness.md
+
+gates:
+  # status: pending / claimed / partial / verified / failed / waived
+  G0: pending
+  G1: pending
+  G2: pending
+  G3: pending
+  G4: pending
+  G5: pending
+  G6: pending
+  G7: pending
+  G8: pending
+
+scope:
+  v1:
+    included: []
+    excluded: []
+  v1_1:
+    included: []
+    excluded: []
+
+decisions: []
+# - id: D001
+#   title:
+#   status: accepted/proposed/pending
+#   note:
+
+worktrees: []
+# - slice:
+#   branch:
+#   path:
+#   owner:
+#   status:
+
+agents: []
+# - role:
+#   scope:
+#   write_paths: []
+#   status:
+
+manual_config: []
+# - key:
+#   purpose:
+#   where:
+#   format:
+#   phase:
+#   status: missing/placeholder/filled
+
+open_questions: []
+# - id: Q01
+#   question:
+#   owner:
+#   deadline:
+#   status: open/answered/deferred
